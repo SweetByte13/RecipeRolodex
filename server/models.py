@@ -22,7 +22,7 @@ class User(db.Model, SerializerMixin):
     _password_hash=db.Column(db.String, nullable=False)
     email=db.Column(db.String, nullable=False)
     zipcode=db.Column(db.String, nullable=False)
-    recipe_id=db.Column(db.Integer, ForeignKey=('recipe.id'))
+    recipe_id=db.Column(db.Integer, db.ForeignKey('recipe.id'))
     
     recipe_users=db.relationship('Recipe_User', back_populates='user', cascade='all, delete-orphan')
     recipes=association_proxy('recipe_users', 'recipe')
@@ -97,8 +97,9 @@ class User(db.Model, SerializerMixin):
 class Recipe_User(db.Model, SerializerMixin):
     __tablename__ = 'recipe_users'
     
-    recipe_id=db.Column(db.Integer,nullable=False, ForeignKey=('recipe.id'))
-    user_id=db.Column(db.Integer, nullable=False, ForeignKey=('user.id'))
+    id=db.Column(db.Integer, primary_key=True)
+    recipe_id=db.Column(db.Integer, db.ForeignKey('recipe.id'), nullable=False)
+    user_id=db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     
     recipe=db.relationship('Recipe', back_populates='recipe_user')
     user=db.relationship('User', back_populates='recipe_user')
@@ -130,7 +131,7 @@ class Recipe(db.Model, SerializerMixin):
     image=db.Column(db.String)
     category=db.Column(db.String, nullable=False)
     public=db.Column(db.Boolean, nullable=False)
-    creator=db.Column(db.Integer, ForeignKey=('user.id'))
+    creator=db.Column(db.Integer, db.ForeignKey('user.id'))
     
     
     recipe_users=db.relationship('Recipe_User', back_populates='recipe', cascade='all, delete-orphan')
@@ -166,9 +167,10 @@ class Recipe(db.Model, SerializerMixin):
 class Recipe_Ingredient(db.Model, SerializerMixin):
     __tablename__ = 'recipe_ingredients'
     
+    id=db.Column(db.Integer, primary_key=True)
     weight_of_ingr=db.Column(db.Integer, nullable=False)
-    recipe_id=db.Column(db.Integer, ForeignKey=('recipe.id'))
-    ingredient_id=db.Column(db.Integer, ForeignKey=('ingredient.id'))
+    recipe_id=db.Column(db.Integer, db.ForeignKey('recipe.id'))
+    ingredient_id=db.Column(db.Integer, db.ForeignKey('ingredient.id'))
     
     recipe=db.relationship('Recipe', back_populates='recipe_ingredient', cascade='all, delete-orphan')
     ingredient=db.relationship('Ingredient', back_populates='recipe_ingredient', cascade='all, delete-orphan')
@@ -184,7 +186,7 @@ class Recipe_Ingredient(db.Model, SerializerMixin):
 class Ingredient(db.Model, SerializerMixin):
     __tablename__ = 'ingredients'
  
-    id=db.Column(db.integer, primary_key=True)
+    id=db.Column(db.Integer, primary_key=True)
     name=db.Column(db.String, nullable=False, unique=True)
     category=db.Column(db.String, nullable=False)
     nutrition=db.Column(db.String)
@@ -207,8 +209,9 @@ class Ingredient(db.Model, SerializerMixin):
 class Dietary_No(db.Model,SerializerMixin):
     __tablename__ = 'dietary_nos'
     
-    ingredient_id=db.Column(db.Integer, nullable=False, ForeignKey=('ingredient'))
-    user_id=db.Column(db.Integer, nullable=False, Foreignkey=('user.id'))
+    id=db.Column(db.Integer, primary_key=True)
+    ingredient_id=db.Column(db.Integer, db.ForeignKey('ingredient.id'), nullable=False)
+    user_id=db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     
     user=db.relationship('User', back_populates='dietary_no', cascade='all, delete-orphan')
     
