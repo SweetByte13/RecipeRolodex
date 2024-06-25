@@ -121,7 +121,7 @@ class Recipe(db.Model, SerializerMixin):
     __tablename__ = 'recipes'
     
     __table_args__ = (
-        db.CheckConstraint('length(instruction)<100', name='instruction_length_under_hundred'),
+        db.CheckConstraint('length(instruction)<200', name='instruction_length_under_two_hundred'),
     )
     
     id=db.Column(db.Integer, primary_key=True)
@@ -129,8 +129,8 @@ class Recipe(db.Model, SerializerMixin):
     instruction=db.Column(db.String, nullable=False)
     image=db.Column(db.String)
     category=db.Column(db.String, nullable=False)
-    private_or_public=db.Column(db.Boolean, nullable=False)
-    creater=db.Column(db.Integer, ForeignKey=('user.id'))
+    public=db.Column(db.Boolean, nullable=False)
+    creator=db.Column(db.Integer, ForeignKey=('user.id'))
     
     
     recipe_users=db.relationship('Recipe_User', back_populates='recipe', cascade='all, delete-orphan')
@@ -138,11 +138,30 @@ class Recipe(db.Model, SerializerMixin):
     user=association_proxy('recipe_users', 'user')
     ingredient=association_proxy('recipe_ingredients', 'ingredient')
     
+    def __repr__(self):
+        return f"<Recipe {self.id}: {self.title}, {self.instruction}, {self.image}, {self.category}, Public(1=true):{self.public}, user_id:{self.creator}"
+    
     @validates('title')
     def validates_title(self, key, new_title):
         if not new_title:
             raise ValueError("Must have a title")
-        if not 
+        if not len(new_title)>3:
+            raise ValueError("Title is too short")
+        
+    @validates('instruction')
+    def validates_instructions(self, key, new_instruction):
+        if not new_instruction:
+            raise ValueError("instructions are required")
+        if len(new_instruction)<6:
+            raise ValueError("Instrutions are not long enough")
+        if len(new_instruction)>200:
+            raise ValueError("Instructions are too long")
+        
+    @validates('category')
+    def validate_category(self, key, new_category):
+        if not new_category:
+            raise ValueError("Category is required")
+    
     
 class Recipe_Ingredient(db.Model, SerializerMixin):
     __tablename__ = 'recipe_ingredients'
@@ -154,6 +173,14 @@ class Recipe_Ingredient(db.Model, SerializerMixin):
     recipe=db.relationship('Recipe', back_populates='recipe_ingredient', cascade='all, delete-orphan')
     ingredient=db.relationship('Ingredient', back_populates='recipe_ingredient', cascade='all, delete-orphan')
     
+    def __repr__(self):
+        return f"<Recipe_Ingredient: {self.weight_of_ingr}, recipe_id={self.recipe_id}, ingredient_id={self.ingredient_id}"
+    
+    @validates('weight_of_ingr')
+    def validate_weight(self, key, new_weight):
+        if not new_weight:
+            raise ValueError("Must have weight of ingredient")
+    
 class Ingredient(db.Model, SerializerMixin):
     __tablename__ = 'ingredients'
  
@@ -164,10 +191,36 @@ class Ingredient(db.Model, SerializerMixin):
     
     dietary_nos=db.relationship('Dietary_No', back_populates='ingredient', cascade='all, delete-orphan')
     
+    def __repr__(self):
+        return f"<Ingredient{self.id}: {self.name}, {self.category}, {self.nutrition}"
+    
+    @validates('name')
+    def validates_name(self, key, new_name):
+        if not new_name:
+            raise ValueError("Name is required")
+        
+    @validates('category')
+    def validates_category(self, key, new_category):
+        if not new_category:
+            raise ValueError("Category is required")
+    
 class Dietary_No(db.Model,SerializerMixin):
     __tablename__ = 'dietary_nos'
     
-    ingredient_id=db.Column(db.Integer, ForeignKey=('ingredient'))
-    user_id=db.Column(db.Integer, Foreignkey=('user.id'))
+    ingredient_id=db.Column(db.Integer, nullable=False, ForeignKey=('ingredient'))
+    user_id=db.Column(db.Integer, nullable=False, Foreignkey=('user.id'))
     
     user=db.relationship('User', back_populates='dietary_no', cascade='all, delete-orphan')
+    
+    def __repr__(self):
+        return f"<Dietary Restrictions: ingredient_id={self.ingredient_id}, user_id={self.user_id}"
+    
+    @validates('ingredient_id')
+    def validates_ingredient_id(self, key, new_ingredient_id):
+        if not new_ingredient_id:
+            raise ValueError("Must have a ingredient ID")
+        
+    @validates('user_id')
+    def validates_user_id(self, key, new_user_id):
+        if not new_user_id:
+            raise ValueError("Must have a user ID")
