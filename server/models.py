@@ -2,8 +2,8 @@ from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import validates
 from flask_bcrypt import Bcrypt
-from config import db, app
 
+from config import db, app
 bcrypt = Bcrypt(app)
 
 class User(db.Model, SerializerMixin):
@@ -22,11 +22,12 @@ class User(db.Model, SerializerMixin):
     _password_hash=db.Column(db.String, nullable=False)
     email=db.Column(db.String, nullable=False)
     zipcode=db.Column(db.String, nullable=False)
-    recipe_id=db.Column(db.Integer, db.ForeignKey('recipe.id'))
     
     recipe_users=db.relationship('Recipe_User', back_populates='user', cascade='all, delete-orphan')
+    dietary_nos=db.relationship('Dietary_No', back_populates='user', cascade='all, delete-orphan')
     recipes=association_proxy('recipe_users', 'recipe')
-    creator_recipe=db.relationship('User', back_populates='user')
+    ingredients=association_proxy('dietary_nos', 'ingredient')
+    # creator_recipes=db.relationship('Recipe', back_populates='user', foreign_keys="Recipe.creator")
     
     def __repr__(self):
         return f"<User {self.id}: {self.f_name} {self.l_name}, {self.username}, {self.email}, {self.zipcode}"
@@ -74,12 +75,12 @@ class User(db.Model, SerializerMixin):
             raise ValueError("Email address must be valid")
         return new_email
 
-    @validates('zipcode')
-    def validates_zipcode(self, key, new_zipcode):
-        if not new_zipcode:
-            raise ValueError("Zipcode is required")
-        if not len(new_zipcode)==5 or len(new_zipcode)==9:
-            raise ValueError("Zipcode must be valid")
+    # @validates('zipcode')
+    # def validates_zipcode(self, key, new_zipcode):
+    #     if not new_zipcode:
+    #         raise ValueError("Zipcode is required")
+    #     if not len(new_zipcode)==5 or len(new_zipcode)==9:
+    #         raise ValueError("Zipcode must be valid")
         
     @validates('_password_hash')
     def validates_password_hash(self, key, new_password):
@@ -98,11 +99,11 @@ class Recipe_User(db.Model, SerializerMixin):
     __tablename__ = 'recipe_users'
     
     id=db.Column(db.Integer, primary_key=True)
-    recipe_id=db.Column(db.Integer, db.ForeignKey('recipe.id'), nullable=False)
-    user_id=db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    recipe_id=db.Column(db.Integer, db.ForeignKey('recipes.id'), nullable=False)
+    user_id=db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     
-    recipe=db.relationship('Recipe', back_populates='recipe_user')
-    user=db.relationship('User', back_populates='recipe_user')
+    recipe=db.relationship('Recipe', back_populates='recipe_users')
+    user=db.relationship('User', back_populates='recipe_users')
     
     def __repr__(self):
         return f"<Recipe_User: user_id={self.user_id}, recipe_id={self.recipe_id} "
@@ -131,13 +132,14 @@ class Recipe(db.Model, SerializerMixin):
     image=db.Column(db.String)
     category=db.Column(db.String, nullable=False)
     public=db.Column(db.Boolean, nullable=False)
-    creator=db.Column(db.Integer, db.ForeignKey('user.id'))
+    # creator=db.Column(db.Integer, db.ForeignKey('users.id'))
     
     
     recipe_users=db.relationship('Recipe_User', back_populates='recipe', cascade='all, delete-orphan')
-    recipe_ingredients=db.relationship('Recipe_ingredients', back_populates='recipe', cascade='all, delete-orphan')
+    recipe_ingredients=db.relationship('Recipe_Ingredient', back_populates='recipe', cascade='all, delete-orphan')
     user=association_proxy('recipe_users', 'user')
     ingredient=association_proxy('recipe_ingredients', 'ingredient')
+    # creator_user=db.relationship('User', back_populates='recipes')
     
     def __repr__(self):
         return f"<Recipe {self.id}: {self.title}, {self.instruction}, {self.image}, {self.category}, Public(1=true):{self.public}, user_id:{self.creator}"
@@ -169,11 +171,11 @@ class Recipe_Ingredient(db.Model, SerializerMixin):
     
     id=db.Column(db.Integer, primary_key=True)
     weight_of_ingr=db.Column(db.Integer, nullable=False)
-    recipe_id=db.Column(db.Integer, db.ForeignKey('recipe.id'))
-    ingredient_id=db.Column(db.Integer, db.ForeignKey('ingredient.id'))
+    recipe_id=db.Column(db.Integer, db.ForeignKey('recipes.id'))
+    ingredient_id=db.Column(db.Integer, db.ForeignKey('ingredients.id'))
     
-    recipe=db.relationship('Recipe', back_populates='recipe_ingredient', cascade='all, delete-orphan')
-    ingredient=db.relationship('Ingredient', back_populates='recipe_ingredient', cascade='all, delete-orphan')
+    recipe=db.relationship('Recipe', back_populates='recipe_ingredients')
+    ingredient=db.relationship('Ingredient', back_populates='recipe_ingredients')
     
     def __repr__(self):
         return f"<Recipe_Ingredient: {self.weight_of_ingr}, recipe_id={self.recipe_id}, ingredient_id={self.ingredient_id}"
@@ -191,7 +193,10 @@ class Ingredient(db.Model, SerializerMixin):
     category=db.Column(db.String, nullable=False)
     nutrition=db.Column(db.String)
     
+    recipe_ingredients=db.relationship('Recipe_Ingredient', back_populates='ingredient', cascade='all, delete-orphan')
     dietary_nos=db.relationship('Dietary_No', back_populates='ingredient', cascade='all, delete-orphan')
+    recipe=association_proxy('recipe_ingredients', 'recipe')
+    user=association_proxy('dietary_nos', 'user')
     
     def __repr__(self):
         return f"<Ingredient{self.id}: {self.name}, {self.category}, {self.nutrition}"
@@ -210,11 +215,12 @@ class Dietary_No(db.Model,SerializerMixin):
     __tablename__ = 'dietary_nos'
     
     id=db.Column(db.Integer, primary_key=True)
-    ingredient_id=db.Column(db.Integer, db.ForeignKey('ingredient.id'), nullable=False)
-    user_id=db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    ingredient_id=db.Column(db.Integer, db.ForeignKey('ingredients.id'), nullable=False)
+    user_id=db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     
-    user=db.relationship('User', back_populates='dietary_no', cascade='all, delete-orphan')
-    
+    user=db.relationship('User', back_populates='dietary_nos')
+    ingredient=db.relationship('Ingredient', back_populates='dietary_nos')
+
     def __repr__(self):
         return f"<Dietary Restrictions: ingredient_id={self.ingredient_id}, user_id={self.user_id}"
     

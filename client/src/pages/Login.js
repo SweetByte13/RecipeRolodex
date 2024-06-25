@@ -7,15 +7,13 @@ import LoginForm from "../components/LoginForm";
 
 function Login() {
     const navigate = useNavigate();
-    const useAppContext = () => useContext(AppContext);
-    const { user } = useAppContext();
 
     return(
         <>
-        {/* <NavBar /> */}
+        <NavBar />
         <main>
-            <h1 className="login-header">Welcome to RecipeRollodex</h1>
-            <h4 className="signup-loginpage">
+            <h1 className="login-header">Welcome to RecipeRolodex</h1>
+            <h4 className="signup-redirect-from-loginpage">
                 Don't have an account? &nbsp;
                 <Button className="route-to-signup" onClick={() => navigate("/signup")}>
                     Sign Up

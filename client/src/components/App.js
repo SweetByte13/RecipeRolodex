@@ -1,8 +1,8 @@
-import React, { useEffect, useState, createContext, useContext } from "react";
-import {BrowserRouter as Router, Routes, Route,} from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AppContext } from "../context/Context";
-import Login from "../pages/Login";
 import Home from "../pages/Home";
+import Login from "../pages/Login";
 import SignUp from "../pages/Signup";
 
 function App() {
@@ -14,7 +14,7 @@ function App() {
         if (resp.ok) {
           return resp.json()
         }
-      }).then ((user) => {
+      }).then((user) => {
         console.log(user)
         setUser(user)
       });
@@ -23,13 +23,15 @@ function App() {
 
   return (
     <>
-    <AppContext.Provider value= {{user, setUser}}>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login/>} />
-        <Route path="/signup" element={<SignUp/>} />
-      </Routes>
-    </AppContext.Provider>
+      <AppContext.Provider value={{ user, setUser }}>
+        <>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<SignUp />} />
+          </Routes>
+        </>
+      </AppContext.Provider>
     </>
   )
 }
