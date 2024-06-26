@@ -75,12 +75,13 @@ class User(db.Model, SerializerMixin):
             raise ValueError("Email address must be valid")
         return new_email
 
-    # @validates('zipcode')
-    # def validates_zipcode(self, key, new_zipcode):
-    #     if not new_zipcode:
-    #         raise ValueError("Zipcode is required")
-    #     if not len(new_zipcode)==5 or len(new_zipcode)==9:
-    #         raise ValueError("Zipcode must be valid")
+    @validates('zipcode')
+    def validates_zipcode(self, key, new_zipcode):
+        if not new_zipcode:
+            raise ValueError("Zipcode is required")
+        if not len(new_zipcode)==5 or len(new_zipcode)==9:
+            raise ValueError("Zipcode must be valid")
+        return new_zipcode
         
     @validates('_password_hash')
     def validates_password_hash(self, key, new_password):

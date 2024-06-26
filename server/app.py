@@ -28,7 +28,6 @@ class CheckSession(Resource):
 class Signup(Resource):
     def post(self):
         params = request.get_json()
-        print(params)
         f_name=params.get('f_name')
         l_name=params.get('l_name')
         username = params.get('username')
@@ -44,7 +43,6 @@ class Signup(Resource):
             zipcode = zipcode,
         )
         user.password_hash = password
-        
         try:
             db.session.add(user)
             db.session.commit()

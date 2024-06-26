@@ -1,10 +1,11 @@
 import React, { useContext } from "react";
 import { Formik } from 'formik';
 import * as yup from 'yup'
-import { Container } from '@mui/material';
 import { AppContext } from "../context/Context";
 import { useNavigate } from "react-router-dom";
-import {Button, Form} from "react-bootstrap";
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import Container from 'react-bootstrap/Container';
 // import IconButton from "@material-ui/core/IconButton";
 // import InputLabel from "@material-ui/core/InputLabel";
 // import Visibility from "@material-ui/icons/Visibility";
@@ -15,7 +16,7 @@ import {Button, Form} from "react-bootstrap";
 function SignupForm() {
     const navigate = useNavigate();
     const useAppContext = () => useContext(AppContext);
-    const { user, setUser } = useAppContext();
+    const { setUser } = useAppContext();
     // const [values, setValues] = React.useState({
     //     password: "",
     //     showPassword: false,
@@ -28,7 +29,7 @@ function SignupForm() {
         email: yup.string().email("Invalid email address").min(8, "Must be a valid email address"),
         password: yup.string().min(6, "Password must be six characters or more.").max(20, "Passsword can not be longer than twenty characters."),
         confirmPassword: yup.string().oneOf([yup.ref('password')], "Password does not match"),
-        zipcode: yup.number().integer()
+        zipcode: yup.string()
     })
 
     let initialValues = {
@@ -40,24 +41,6 @@ function SignupForm() {
         email: '',
         zipcode: '',
     }
-
-    // const handleClickShowPassword = () => {
-    //     setValues({
-    //         ...values,
-    //         showPassword: !values.showPassword,
-    //     });
-    // };
- 
-    // const handleMouseDownPassword = (event) => {
-    //     event.preventDefault();
-    // };
- 
-    // const handlePasswordChange = (prop) => (event) => {
-    //     setValues({
-    //         ...values,
-    //         [prop]: event.target.value,
-    //     });
-    // };
 
     function handleSignupFormSubmit(values, { setSubmitting }) {
         console.log("!!!!!!!!!!!!!")
@@ -83,7 +66,7 @@ function SignupForm() {
     }
 
     return (
-        <Container className="signup-container">
+        <Container className="signup-form-container">
             <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
@@ -91,50 +74,57 @@ function SignupForm() {
             >
                 {({ handleSubmit, values, handleChange, errors, touched, handleBlur }) => (
                     <Form className="signup-form" onSubmit={handleSubmit}>
-                        <div className="left-column">
-                            <label htmlFor='f_name'>First Name:</label>
-                            <input
+                        <Form.Group className="mb-3" controlId="formFName">
+                            <Form.Label htmlFor='f_name'>First Name:</Form.Label>
+                            <Form.Control
+                                type='text'
                                 id='f_name'
                                 name='f_name'
                                 placeholder="First Name..."
                                 required values={values.f_name}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                // isinvalid={touched.f_name && !!errors.f_name}
                             />
-                        </div>
-                        <div className="right-column">
-                            <label htmlFor='l_name'>Last Name:</label>
-                            <input
+                            <Form.Control.Feedback type="invalid">
+                                {touched.f_name && errors.f_name}
+                            </Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group className="mb-3" controlId="formLName">
+                            <Form.Label htmlFor='l_name'>Last Name:</Form.Label>
+                            <Form.Control
+                                type='text'
                                 id='l_name'
                                 name='l_name'
                                 placeholder="Last Name..."
                                 required values={values.l_name}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                // isinvalid={touched.l_name && !!errors.l_name}
                             />
-                        </div>
-                        <div className="left-column">
-                            <label htmlFor='username'>Username:</label>
-                            <input
+                            <Form.Control.Feedback type="invalid">
+                                {touched.l_name && errors.l_name}
+                            </Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group className="mb-3" controlId="formUsername">
+                            <Form.Label htmlFor='username'>Username:</Form.Label>
+                            <Form.Control
+                                type='text'
                                 id='username'
                                 name='username'
                                 placeholder="Username..."
                                 required values={values.username}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                // isinvalid={touched.username && !!errors.username}
                             />
-                        </div>
-                        <div className="right-column">
-                            <label htmlFor='password'>Password:</label>
-                            <input 
-                            //   type={
-                                //     values.showPassword
-                                //         ? "text"
-                                //         : "password"
-                                // }
+                            <Form.Text id="passwordHelpBlock" muted>
+                                Your username must be at least 5 characters long, and must not contain spaces, special characters, or emoji.
+                            </Form.Text>
+                            <Form.Control.Feedback type="invalid">
+                                {errors.username}
+                            </Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group className="mb-3" controlId="formPassword">
+                            <Form.Label htmlFor='password'>Password:</Form.Label>
+                            <Form.Control
                                 type='password'
                                 id='password'
                                 name='password'
@@ -142,30 +132,18 @@ function SignupForm() {
                                 required values={values.password}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                // endAdornment={
-                                //     <InputAdornment position="end">
-                                //         <IconButton
-                                //             onClick={
-                                //                 handleClickShowPassword
-                                //             }
-                                //             onMouseDown={
-                                //                 handleMouseDownPassword
-                                //             }
-                                //         >
-                                //             {values.password ? (
-                                //                 <Visibility />
-                                //             ) : (
-                                //                 <VisibilityOff />
-                                //             )}
-                                //         </IconButton>
-                                //     </InputAdornment>
-                                // }
-                                // isinvalid={touched.password && !!errors.password}
                             />
-                        </div>
-                        <div className="left-column">
-                            <label htmlFor='confirmPassword'>Confirm Password:</label>
-                            <input
+                            <Form.Text id="passwordHelpBlock" muted>
+                                Your password must be at least 6 characters long, contain letters, numbers, and at least one special characters: !?$@#&^*,
+                                and must not contain spaces, or emoji.
+                            </Form.Text>
+                            <Form.Control.Feedback type="invalid">
+                                {errors.password}
+                            </Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group className="mb-3" controlId="formPassword">
+                            <Form.Label htmlFor='confirmPassword'>Confirm Password:</Form.Label>
+                            <Form.Control
                                 type='password'
                                 id='confirmPassword'
                                 name='confirmPassword'
@@ -173,43 +151,49 @@ function SignupForm() {
                                 required values={values.confirmPassword}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                // isinvalid={touched.confirmPassword && !!errors.confirmPassword}
                             />
-                        </div>
-                        <div className="right-column">
-                            <label htmlFor='email'>Email:</label>
-                            <input
+                            <Form.Text id="passwordHelpBlock" muted>
+                                Your password must be at least 6 characters long, contain letters, numbers, and at least one special characters: !?$@#&^*,
+                                and must not contain spaces, or emoji.
+                            </Form.Text>
+                            <Form.Control.Feedback type="invalid">
+                                {errors.password}
+                            </Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group className="mb-3" controlId="formEmail">
+                            <Form.Label htmlFor='email'>Email:</Form.Label>
+                            <Form.Control
+                                type='text'
                                 id='email'
                                 name='email'
                                 placeholder="Email..."
                                 required values={values.email}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                // isinvalid={touched.email && !!errors.email}
                             />
-                        </div>
-                        <div className="left-column">
-                            <label htmlFor='zipcode'>Zipcode:</label>
-                            <input
+                        </Form.Group>
+                        <Form.Group className="mb-3" controlId="formZipcode">
+                            <Form.Label htmlFor='zipcode'>Zipcode:</Form.Label>
+                            <Form.Control
+                                type='text'
                                 id='zipcode'
                                 name='zipcode'
                                 placeholder="Zipcode..."
                                 values={values.zipcode}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                // isinvalid={touched.zipcode && !!errors.zipcode}
                             />
-                        </div>
-                        <div>
-                            <Button className='signup-form-button' type='submit'>Submit</Button>
-                        </div>
+                        </Form.Group>
+                        <Button className='signup-form-button' type='submit' variant="success">
+                            Submit
+                        </Button>
                     </Form>
                 )}
             </Formik>
             <br></br>
             <div className="login-redirect-from-signup">
                 Already have an account? &nbsp;
-                <Button className="route-to-login" onClick={() => navigate("/login")}>
+                <Button className="route-to-login" variant="success" onClick={() => navigate("/login")}>
                     Log In
                 </Button>
             </div>
