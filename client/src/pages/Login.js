@@ -13,13 +13,14 @@ function Login() {
         <NavBar />
         <main>
             <h1 className="login-header">Welcome to RecipeRolodex</h1>
+            <h3> Sign In</h3>
+            <LoginForm/>
             <h4 className="signup-redirect-from-loginpage">
                 Don't have an account? &nbsp;
-                <Button className="route-to-signup" onClick={() => navigate("/signup")}>
+                <Button className="route-to-signup" variant="success" onClick={() => navigate("/signup")}>
                     Sign Up
                 </Button>
             </h4>
-            {/* <LoginForm/> */}
         </main>
         </>
     )

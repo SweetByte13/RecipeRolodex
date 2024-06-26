@@ -1,27 +1,17 @@
 import React, { useContext } from "react";
-import { Formik } from 'formik';
-import * as yup from 'yup'
 import { AppContext } from "../context/Context";
 import { useNavigate } from "react-router-dom";
-import Button from 'react-bootstrap/Button';
+import { Formik } from 'formik';
+import * as yup from 'yup'
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
-// import IconButton from "@material-ui/core/IconButton";
-// import InputLabel from "@material-ui/core/InputLabel";
-// import Visibility from "@material-ui/icons/Visibility";
-// import InputAdornment from "@material-ui/core/InputAdornment";
-// import VisibilityOff from "@material-ui/icons/VisibilityOff";
-// import TextField  from "@material-ui/core/Input";
+import Button from 'react-bootstrap/Button';
 
 function SignupForm() {
     const navigate = useNavigate();
     const useAppContext = () => useContext(AppContext);
     const { setUser } = useAppContext();
-    // const [values, setValues] = React.useState({
-    //     password: "",
-    //     showPassword: false,
-    // });
-
+   
     const validationSchema = yup.object().shape({
         f_name: yup.string(),
         l_name: yup.string(),
@@ -75,7 +65,7 @@ function SignupForm() {
                 {({ handleSubmit, values, handleChange, errors, touched, handleBlur }) => (
                     <Form className="signup-form" onSubmit={handleSubmit}>
                         <Form.Group className="mb-3" controlId="formFName">
-                            <Form.Label htmlFor='f_name'>First Name:</Form.Label>
+                            <Form.Label>First Name:</Form.Label>
                             <Form.Control
                                 type='text'
                                 id='f_name'
@@ -90,7 +80,7 @@ function SignupForm() {
                             </Form.Control.Feedback>
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="formLName">
-                            <Form.Label htmlFor='l_name'>Last Name:</Form.Label>
+                            <Form.Label>Last Name:</Form.Label>
                             <Form.Control
                                 type='text'
                                 id='l_name'
@@ -105,7 +95,7 @@ function SignupForm() {
                             </Form.Control.Feedback>
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="formUsername">
-                            <Form.Label htmlFor='username'>Username:</Form.Label>
+                            <Form.Label>Username:</Form.Label>
                             <Form.Control
                                 type='text'
                                 id='username'
@@ -123,7 +113,7 @@ function SignupForm() {
                             </Form.Control.Feedback>
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="formPassword">
-                            <Form.Label htmlFor='password'>Password:</Form.Label>
+                            <Form.Label>Password:</Form.Label>
                             <Form.Control
                                 type='password'
                                 id='password'
@@ -142,7 +132,7 @@ function SignupForm() {
                             </Form.Control.Feedback>
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="formPassword">
-                            <Form.Label htmlFor='confirmPassword'>Confirm Password:</Form.Label>
+                            <Form.Label>Confirm Password:</Form.Label>
                             <Form.Control
                                 type='password'
                                 id='confirmPassword'
@@ -161,7 +151,7 @@ function SignupForm() {
                             </Form.Control.Feedback>
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="formEmail">
-                            <Form.Label htmlFor='email'>Email:</Form.Label>
+                            <Form.Label>Email:</Form.Label>
                             <Form.Control
                                 type='text'
                                 id='email'
@@ -173,7 +163,7 @@ function SignupForm() {
                             />
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="formZipcode">
-                            <Form.Label htmlFor='zipcode'>Zipcode:</Form.Label>
+                            <Form.Label>Zipcode:</Form.Label>
                             <Form.Control
                                 type='text'
                                 id='zipcode'
