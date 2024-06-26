@@ -46,58 +46,60 @@ class User(db.Model, SerializerMixin):
     @validates('f_name')
     def validates_f_name(self, key, new_f_name):
         if not new_f_name:
-            raise ValueError("First name is required")
+            raise AssertionError ("First name is required")
         return new_f_name
 
     @validates('l_name')
     def validates_l_name(self, key, new_l_name):
         if not new_l_name:
-            raise ValueError("Last name is required")
+            raise AssertionError ("Last name is required")
         return new_l_name
 
     @validates('username')
     def validates_username(self, key, new_username):
         if not new_username:
-            raise ValueError("Username is required")
+            raise AssertionError ("Username is required")
         if len(new_username)<5:
-            raise ValueError("Username must be longer than 5 characters")
+            raise AssertionError ("Username must be longer than 5 characters")
         if User.query.filter_by(username=new_username).first():
-            raise ValueError("Username already taken") 
+            raise AssertionError ("Username already taken") 
         return new_username
         
     @validates('email')
     def validates_email(self, key, new_email):
         if not new_email:
-            raise ValueError("Email is required")
+            raise AssertionError ("Email is required")
         if '@' not in new_email:
-            raise ValueError("Email is not valid, must include @ symbol")
+            raise AssertionError ("Email is not valid, must include @ symbol")
         if len(new_email)<8:
-            raise ValueError("Email address must be valid")
+            raise AssertionError ("Email address must be valid")
         return new_email
 
     @validates('zipcode')
     def validates_zipcode(self, key, new_zipcode):
         if not new_zipcode:
-            raise ValueError("Zipcode is required")
-        if not len(new_zipcode)==5 or len(new_zipcode)==9:
-            raise ValueError("Zipcode must be valid")
+            raise AssertionError ("Zipcode is required")
+        if not (len(new_zipcode)==5 or len(new_zipcode)==9):
+            raise AssertionError ("Zipcode must be valid")
         return new_zipcode
         
     @validates('_password_hash')
     def validates_password_hash(self, key, new_password):
-        SpecialChar =['$', '@', '#', '%', '?', '!', '&', '^', '*', '<', '>']
+        SpecialChar =['$', '@', '#', '%', '?', '!', '&', '^', '*']
         if not new_password:
-            raise ValueError("Password is required")
+            raise AssertionError ("Password is required")
         if len(new_password)<6:
-            raise ValueError("Password must be longer than six characters")
+            raise AssertionError ("Password must be longer than six characters")
         if not any(char.isdigit() for char in new_password):
-            raise ValueError("Password must contain a number")
+            raise AssertionError ("Password must contain a number")
         if not any(char in SpecialChar for char in new_password):
-            raise ValueError("Password must contain a special symbol: !?$@#&^*<>")
+            raise AssertionError ("Password must contain a special symbol: !?$@#&^*<>")
         return new_password
     
 class Recipe_User(db.Model, SerializerMixin):
     __tablename__ = 'recipe_users'
+    
+    serialize_rules = ('-recipe.recipe_users', '-user.recipe_users')
     
     id=db.Column(db.Integer, primary_key=True)
     recipe_id=db.Column(db.Integer, db.ForeignKey('recipes.id'), nullable=False)
@@ -112,12 +114,14 @@ class Recipe_User(db.Model, SerializerMixin):
     @validates('recipe_id')
     def validates_recipe_id(self, key, new_recipe_id):
         if not new_recipe_id:
-            raise ValueError("Must have a recipe ID")
+            raise AssertionError ("Must have a recipe ID")
+        return new_recipe_id
         
     @validates('user_id')
     def validates_user_id(self, key, new_user_id):
         if not new_user_id:
-            raise ValueError("Must have a user ID")
+            raise AssertionError ("Must have a user ID")
+        return new_user_id
         
     
 class Recipe(db.Model, SerializerMixin):
@@ -147,31 +151,37 @@ class Recipe(db.Model, SerializerMixin):
     
     @validates('title')
     def validates_title(self, key, new_title):
+        print(new_title)
         if not new_title:
-            raise ValueError("Must have a title")
+            raise AssertionError ("Must have a title")
         if not len(new_title)>3:
-            raise ValueError("Title is too short")
+            raise AssertionError ("Title is too short")
+        return new_title
         
     @validates('instruction')
     def validates_instructions(self, key, new_instruction):
         if not new_instruction:
-            raise ValueError("instructions are required")
+            raise AssertionError ("instructions are required")
         if len(new_instruction)<6:
-            raise ValueError("Instrutions are not long enough")
+            raise AssertionError ("Instrutions are not long enough")
         if len(new_instruction)>200:
-            raise ValueError("Instructions are too long")
+            raise AssertionError ("Instructions are too long")
+        return new_instruction
         
     @validates('category')
     def validate_category(self, key, new_category):
         if not new_category:
-            raise ValueError("Category is required")
+            raise AssertionError ("Category is required")
+        return new_category
     
     
 class Recipe_Ingredient(db.Model, SerializerMixin):
     __tablename__ = 'recipe_ingredients'
     
+    serialize_rules = ('-recipe.recipe_ingredients', '-ingredient.recipe_ingredients')
+    
     id=db.Column(db.Integer, primary_key=True)
-    weight_of_ingr=db.Column(db.Integer, nullable=False)
+    weight_of_ingr=db.Column(db.Float, nullable=False)
     recipe_id=db.Column(db.Integer, db.ForeignKey('recipes.id'))
     ingredient_id=db.Column(db.Integer, db.ForeignKey('ingredients.id'))
     
@@ -184,7 +194,8 @@ class Recipe_Ingredient(db.Model, SerializerMixin):
     @validates('weight_of_ingr')
     def validate_weight(self, key, new_weight):
         if not new_weight:
-            raise ValueError("Must have weight of ingredient")
+            raise AssertionError ("Must have weight of ingredient")
+        return new_weight
     
 class Ingredient(db.Model, SerializerMixin):
     __tablename__ = 'ingredients'
@@ -205,15 +216,19 @@ class Ingredient(db.Model, SerializerMixin):
     @validates('name')
     def validates_name(self, key, new_name):
         if not new_name:
-            raise ValueError("Name is required")
+            raise AssertionError ("Name is required")
+        return new_name
         
     @validates('category')
     def validates_category(self, key, new_category):
         if not new_category:
-            raise ValueError("Category is required")
+            raise AssertionError ("Category is required")
+        return new_category
     
 class Dietary_No(db.Model,SerializerMixin):
     __tablename__ = 'dietary_nos'
+    
+    serialize_rules = ('-ingredient.dietary_nos', '-user.dietary_nos')
     
     id=db.Column(db.Integer, primary_key=True)
     ingredient_id=db.Column(db.Integer, db.ForeignKey('ingredients.id'), nullable=False)
@@ -227,10 +242,13 @@ class Dietary_No(db.Model,SerializerMixin):
     
     @validates('ingredient_id')
     def validates_ingredient_id(self, key, new_ingredient_id):
-        if not new_ingredient_id:
-            raise ValueError("Must have a ingredient ID")
+        assert new_ingredient_id is not None, "Must have a ingredient ID"
+        assert Ingredient.query.get(new_ingredient_id) is not None, "Ingredient does not exist"
+        return new_ingredient_id
+        
         
     @validates('user_id')
     def validates_user_id(self, key, new_user_id):
-        if not new_user_id:
-            raise ValueError("Must have a user ID")
+        assert new_user_id is not None, "Must have a user ID"
+        assert User.query.get(new_user_id) is not None, "User does not exist"
+        return new_user_id

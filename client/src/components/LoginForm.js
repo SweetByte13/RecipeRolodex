@@ -23,8 +23,7 @@ function LoginForm() {
     }
 
     function handleLoginSubmit(values, { setSubmitting }) {
-        const endpoint = "/login";
-        fetch(endpoint, {
+        fetch("/login", {
             method: 'POST',
             headers: {
                 "Content-Type": 'application/json'

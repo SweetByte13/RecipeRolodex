@@ -10,9 +10,9 @@ def check_log_status():
     open_access_list = [
         'signup',
         'login',
-        'check_session'
+        'check_session',
     ]
-    if request.endpoint not in open_access_list and (not session.get('user')):
+    if request.endpoint not in open_access_list and (not session.get('user_id')):
         return make_response({"error": "401 Unauthorized"}, 401)
     
 class CheckSession(Resource):
@@ -65,13 +65,46 @@ class Login(Resource):
         else:
             return make_response({"Error": "Invalid password"}, 401)
        
+class Logout(Resource):
+    def delete(self):
+        print("trying to log out")
+        session.pop('user_id', None)
+        return make_response({}, 204)
+    
 class Home(Resource):
-    pass
+    def get(self):
+        pass
+
+class Recipes(Resource):
+    def get(self):
+        recipes = Recipe.query.all()
+        recipe_list = [recipe.to_dict(rules = ("-recipe_users", "-recipe_ingredients")) for recipe in recipes]
+        return make_response(recipe_list, 200)
+    
+    def post(self):
+        data = request.json
+        try:
+            recipe = Recipe(
+                title=data['title'],
+                instructions=data['instructions'],
+                image=data['image'],
+                category=data['category'],
+                public=data['public']
+            )
+            db.session.add(recipe)
+            db.session.commit()
+            return make_response(recipe.to_dict(), 201)
+        except Exception as e:
+            app.logger.error(f"Error creating opportunity: {e}")
+            return make_response({"error": "Could not create Opportunity", "details": str(e)}, 400)
+        
 
 api.add_resource(Home, '/')
 api.add_resource(CheckSession, '/check_session')
 api.add_resource(Signup, '/signup')
 api.add_resource(Login, '/login')
+api.add_resource(Logout, '/logout')
+api.add_resource(Recipes, '/recipes')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

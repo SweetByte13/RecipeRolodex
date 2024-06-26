@@ -34,8 +34,7 @@ function SignupForm() {
 
     function handleSignupFormSubmit(values, { setSubmitting }) {
         console.log("!!!!!!!!!!!!!")
-        const endpoint = "/signup";
-        fetch(endpoint, {
+        fetch("/signup", {
             method: 'POST',
             headers: {
                 "content-Type": 'application/json'
