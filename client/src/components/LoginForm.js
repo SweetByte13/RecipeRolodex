@@ -17,7 +17,7 @@ function LoginForm() {
         password: yup.string().required("Password is required").min(6, "Password is too short, must be longer than six characters.")
     })
 
-    let initialValues = {
+    const initialValues = {
         username: '',
         password: ''
     }

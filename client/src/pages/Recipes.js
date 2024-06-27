@@ -26,9 +26,7 @@ function Recipes() {
         <div>
             <NavBar />
             <main>
-                <h1>
-                    RecipeRolodex
-                </h1>
+                <br></br>
                 <RecipeContainer  recps={recipes}/>
             </main>
         </div>

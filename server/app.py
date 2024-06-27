@@ -74,6 +74,67 @@ class Logout(Resource):
 class Home(Resource):
     def get(self):
         pass
+    
+class Users(Resource):
+    def get(self):
+        users = User.query.all()
+        user_list = [user.to_dict() for user in users]
+        return make_response(user_list, 200)
+    
+    def post(self):
+        params = request.get_json()
+        
+        username = params.get('username')
+        password = params.get('password')
+        f_name = params.get('f_name')
+        l_name= params.get('l_name')
+        email = params.get('email')
+        # phone_number = params.get('phone_number')
+        zipcode = params.get('zipcode')
+        
+        user = User(
+            username = username,
+            f_name = f_name,
+            l_name = l_name,
+            email = email,
+            # phone_number = phone_number,
+            zipcode = zipcode
+        )
+        user.password_hash = password
+        
+        try:
+            db.session.add(user)
+            db.session.commit()
+            session['user_id'] = user.id
+            return make_response(user.to_dict(), 201)
+        except IntegrityError:
+            return make_response({"error": "422 Unprocessable Entity"}, 422)
+        
+class UserById(Resource):
+    def get(self, id):
+        user = db.session.get(User, id)
+        if user:
+            return make_response(user.to_dict(rules=("-recipe_user","-dietary_nos")), 200)
+        else:
+            return make_response({'error': 'User not found'}, 404)
+        
+    def patch(self, id):
+        user = db.session.get(User, id)
+        if user:
+            params = request.json
+            for attr in params:
+                setattr(user , attr, params[attr])
+            db.session.commit()
+            return make_response(user.to_dict())
+    
+    def delete(self, id):
+        user = db.session.get(User, id)
+        if user:
+            db.session.delete(user)
+            db.session.commit()
+            return make_response({"message": "User deleted successfully."}, 204)
+        else:
+            return make_response({"error": "User not found"}, 404)
 
 class Recipes(Resource):
     def get(self):
@@ -93,18 +154,61 @@ class Recipes(Resource):
             )
             db.session.add(recipe)
             db.session.commit()
-            return make_response(recipe.to_dict(), 201)
+            return make_response(recipe.to_dict(rules = ("-recipe_users", "-recipe_ingredients")), 201)
         except Exception as e:
             app.logger.error(f"Error creating opportunity: {e}")
             return make_response({"error": "Could not create Opportunity", "details": str(e)}, 400)
         
+class RecipeById(Resource):
+    def get(self, id):
+        recipe = db.session.get(Recipe, id)
+        if recipe:
+            return make_response(recipe.to_dict(rules = ("-recipe_users", "-recipe_ingredients")), 200)
+        else:
+            return make_response({'error': 'Recipe not found'}, 404)
+        
+    def patch(self, id):
+        recipe = db.session.get(Recipe, id)
+        if recipe:
+            params = request.json
+            for attr in params:
+                setattr(recipe , attr, params[attr])
+            db.session.commit()
+            return make_response(recipe.to_dict(rules = ("-recipe_users", "-recipe_ingredients")))
+    
+    def delete(self, id):
+        recipe = db.session.get(Recipe, id)
+        if recipe:
+            db.session.delete(recipe)
+            db.session.commit()
+            return make_response({"message": "Recipe deleted successfully."}, 204)
+        else:
+            return make_response({"error": "Recipe not found"}, 404)
+
+class CreateRecipes(Resource):
+    def get(self):
+        pass
+    
+    def post(self):
+        pass
+    
+    def patch(self):
+        pass
+    
+    def delete(self):
+        pass
+
 
 api.add_resource(Home, '/')
 api.add_resource(CheckSession, '/check_session')
 api.add_resource(Signup, '/signup')
 api.add_resource(Login, '/login')
 api.add_resource(Logout, '/logout')
+api.add_resource(Users, '/user')
+api.add_resource(UserById, '/user/<int:id>')
 api.add_resource(Recipes, '/recipes')
+api.add_resource(RecipeById, '/recipes/<int:id>')
+api.add_resource(CreateRecipes, '/create_a_recipes')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

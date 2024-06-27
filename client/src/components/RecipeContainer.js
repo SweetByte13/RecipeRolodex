@@ -1,12 +1,9 @@
-import React, { useContext, useEffect } from "react";
-import { AppContext } from "../context/Context";
+import React from "react";
 import RecipeCard from "../components/RecipeCard";
 import Stack from 'react-bootstrap/Stack';
 
 
 function RecipeContainer({recps}) {
-    const useAppContext = () => useContext(AppContext);
-    const { setUser } = useAppContext();
 
     const recipe = recps.map((recipe) => {
         return (
@@ -15,7 +12,7 @@ function RecipeContainer({recps}) {
             </div>
         )
     })
-    console.log(recipe)
+
     return(
         <div>
             <Stack className="recipe-stack" gap={4}>

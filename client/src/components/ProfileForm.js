@@ -1,45 +1,41 @@
 import React, { useContext } from "react";
-import { AppContext } from "../context/Context";
 import { useNavigate } from "react-router-dom";
+import { AppContext } from "../context/Context";
 import { Formik } from 'formik';
 import * as yup from 'yup'
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 
-function SignupForm() {
+function ProfileForm() {
     const navigate = useNavigate();
     const useAppContext = () => useContext(AppContext);
-    const { setUser } = useAppContext();
-   
+    const { user, setUser } = useAppContext();
+
     const validationSchema = yup.object().shape({
         // p_image: yup.string(),
         f_name: yup.string(),
         l_name: yup.string(),
         username: yup.string().min(5, "Username must be five characters or longer.").max(20, "Username can not be more than twenty characters."),
         email: yup.string().email("Invalid email address").min(8, "Must be a valid email address"),
-        password: yup.string().min(6, "Password must be six characters or more.").max(20, "Passsword can not be longer than twenty characters."),
-        confirmPassword: yup.string().oneOf([yup.ref('password')], "Password does not match"),
         zipcode: yup.string()
     })
 
     const initialValues = {
-        // p_image:'',
-        f_name: '',
-        l_name: '',
-        username: '',
-        password: '',
-        confirmPassword: '',
-        email: '',
-        zipcode: '',
+        // p_image: user === null || user === undefined ? '' : user.p_image,
+        f_name: user === null || user === undefined ? '' : user.f_name,
+        l_name: user === null || user === undefined ? '' : user.l_name,
+        username: user === null || user === undefined ? '' : user.username,
+        email: user === null || user === undefined ? '' : user.email,
+        zipcode: user === null || user === undefined ? '' : user.zipcode,
     }
 
-    function handleSignupFormSubmit(values, { setSubmitting }) {
-        console.log("!!!!!!!!!!!!!")
-        fetch("/signup", {
-            method: 'POST',
+    const handleFormSubmit = (values, { setSubmitting }) => {
+        const endpoint = `/user/${user.id}`
+        fetch(endpoint, {
+            method: 'PATCH',
             headers: {
-                "content-Type": 'application/json'
+                "Content-Type": 'application/json'
             },
             body: JSON.stringify(values)
         }).then((resp) => {
@@ -52,19 +48,40 @@ function SignupForm() {
             setUser(user);
             console.log(user);
             navigate("/");
-        })
+        });
         setSubmitting(false);
     }
 
+    const handleAccountDelete = (values) => {
+        if (!window.confirm("Are you sure you want to delete your account?")) {
+            return;
+        }
+        const endpoint = `/user/${user.id}`
+        fetch(endpoint, {
+            method: 'DELETE',
+            headers: {
+                "Content-Type": 'application/json'
+            },
+            body: JSON.stringify(values)
+        }).then((resp) => {
+            if (resp.ok) {
+                alert('Your account has been deleted. We are so sorry to see you go!')
+                setUser(null)
+                navigate("/")
+            } else {
+                alert('Invalid credentials')
+            }
+        });
+    }
     return (
-        <Container className="signup-form-container">
-            <Formik
+        <Container className="profile-form-container">
+            <Formik enableReinitialize
                 initialValues={initialValues}
                 validationSchema={validationSchema}
-                onSubmit={handleSignupFormSubmit}
+                onSubmit={handleFormSubmit}
             >
-                {({ values, errors, touched, handleChange, handleBlur, handleSubmit  }) => (
-                    <Form className="signup-form" onSubmit={handleSubmit}>
+                {({ values, errors, touched, handleChange, handleBlur, handleSubmit }) => (
+                    <Form className="profile-form" onSubmit={handleSubmit}>
                         {/* <Form.Group className="mb-3" controlId="formImage">
                             <Form.Label>Profile Picture:</Form.Label>
                             <Form.Control
@@ -72,7 +89,7 @@ function SignupForm() {
                                 id='p_image'
                                 name='p_image'
                                 placeholder="Profile Picture..."
-                                required values={values.p_image}
+                                required value={values.p_image}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                             />
@@ -87,7 +104,8 @@ function SignupForm() {
                                 id='f_name'
                                 name='f_name'
                                 placeholder="First Name..."
-                                required values={values.f_name}
+                                required 
+                                value={values.f_name}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                             />
@@ -102,7 +120,7 @@ function SignupForm() {
                                 id='l_name'
                                 name='l_name'
                                 placeholder="Last Name..."
-                                required values={values.l_name}
+                                required value={values.l_name}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                             />
@@ -117,53 +135,15 @@ function SignupForm() {
                                 id='username'
                                 name='username'
                                 placeholder="Username..."
-                                required values={values.username}
+                                required value={values.username}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                             />
-                            <Form.Text id="usernameHelpBlock" muted>
+                            <Form.Text id="passwordHelpBlock" muted>
                                 Your username must be at least 5 characters long, and must not contain spaces, special characters, or emoji.
                             </Form.Text>
                             <Form.Control.Feedback type="invalid">
                                 {errors.username}
-                            </Form.Control.Feedback>
-                        </Form.Group>
-                        <Form.Group className="mb-3" controlId="formPassword">
-                            <Form.Label>Password:</Form.Label>
-                            <Form.Control
-                                type='password'
-                                id='password'
-                                name='password'
-                                placeholder="Password..."
-                                required values={values.password}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                            />
-                            <Form.Text id="passwordHelpBlock" muted>
-                                Your password must be at least 6 characters long, contain letters, numbers, and at least one special characters: !?$@#&^*,
-                                and must not contain spaces, or emoji.
-                            </Form.Text>
-                            <Form.Control.Feedback type="invalid">
-                                {errors.password}
-                            </Form.Control.Feedback>
-                        </Form.Group>
-                        <Form.Group className="mb-3" controlId="formPassword">
-                            <Form.Label>Confirm Password:</Form.Label>
-                            <Form.Control
-                                type='password'
-                                id='confirmPassword'
-                                name='confirmPassword'
-                                placeholder="Confirm Password..."
-                                required values={values.confirmPassword}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                            />
-                            <Form.Text id="passwordHelpBlock" muted>
-                                Your password must be at least 6 characters long, contain letters, numbers, and at least one special characters: !?$@#&^*,
-                                and must not contain spaces, or emoji.
-                            </Form.Text>
-                            <Form.Control.Feedback type="invalid">
-                                {errors.password}
                             </Form.Control.Feedback>
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="formEmail">
@@ -173,7 +153,7 @@ function SignupForm() {
                                 id='email'
                                 name='email'
                                 placeholder="Email..."
-                                required values={values.email}
+                                required value={values.email}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                             />
@@ -185,25 +165,24 @@ function SignupForm() {
                                 id='zipcode'
                                 name='zipcode'
                                 placeholder="Zipcode..."
-                                values={values.zipcode}
+                                value={values.zipcode}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                             />
                         </Form.Group>
-                        <Button className='signup-form-button' type='submit' variant="success">
-                            Submit
-                        </Button>
+                        <br></br>
+                        <div className="d-grid gap-2">
+                            <Button className='profile-form-button' type='submit' variant="success" size="lg">
+                                Submit Changes
+                            </Button>
+                            <Button className='profile-form-delete-button' variant="outline-danger" size="lg" onClick={() => handleAccountDelete()}>
+                                Delete Account
+                            </Button>
+                        </div>
                     </Form>
                 )}
             </Formik>
-            <br></br>
-            <div className="login-redirect-from-signup">
-                Already have an account? &nbsp;
-                <Button className="route-to-login" variant="success" onClick={() => navigate("/login")}>
-                    Log In
-                </Button>
-            </div>
         </Container>
-    )
+    );
 }
-export default SignupForm;
+export default ProfileForm;

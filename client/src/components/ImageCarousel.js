@@ -10,6 +10,8 @@ import white_fish from '../images/white_fish.jpg';
 
 
 function ImageCarousel() {
+    const navigate = useNavigate();
+
     return (
         <Carousel fade className="carousel-container">
             <Carousel.Item>
