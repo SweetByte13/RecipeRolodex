@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AppContext } from "../context/Context";
 import NavBar from "../components/NavBar";
-import RecipeTemplate from "../components/RecipeTemplate";
+import RecipeForm from "../components/RecipeForm";
 
 function CreateARecipe() {
     const navigate = useNavigate();
@@ -14,7 +14,7 @@ function CreateARecipe() {
             <NavBar />
             <br></br>
             <main>
-                <RecipeTemplate />
+                <RecipeForm />
             </main>
         </div>
     )

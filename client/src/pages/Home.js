@@ -26,7 +26,7 @@ function Home() {
                         <p>
                             <img src={bundt_cake} alt="Bundt Cake" width="400" height="500" />
                         </p>
-                        <p><strong>Well,</strong> Sure, it’s not the most appetizing<em>-looking</em>
+                        <p>I think it’s the most appetizing<em>-looking</em>
                             <a href="">cake</a>
                         </p>
                         <p><strong></strong></p>
