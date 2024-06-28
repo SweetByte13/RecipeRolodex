@@ -40,3 +40,68 @@ margin-top: 7px;
     margin: 7px 0 17px;
     padding: 0;
 }
+
+.create-recipe-header{
+  padding-top: 4%;
+  place-items: center;
+  text-align: center;
+  width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+.create-recipe-subheader{
+  place-items: center;
+  text-align: center;
+  width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.recipe-template-container{
+  place-items: center;
+  text-align: center;
+  width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.instructions{
+  height:200px;
+  width: 770px;
+}
+
+.public_private_toggle{
+  width: 280px;
+  margin: 20px auto;
+  margin-left: 220px auto;
+}
+
+.recipe-form-button{
+  width: 360px;
+  margin: auto;
+}
+
+.recipe-form-delete-button{
+  width: 360px;
+  margin: auto;
+}
+
+.profile-title{
+  padding-top: 4%;
+  place-items: center;
+  text-align: center;
+  width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.profile-sub-title{
+  padding-top: 1%;
+  place-items: center;
+  text-align: center;
+  width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}

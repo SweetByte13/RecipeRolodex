@@ -22,7 +22,7 @@ class CheckSession(Resource):
             if user_id:
                 user=db.session.get(User, user_id)
                 if user:
-                    return make_response(user.to_dict(), 200)
+                    return make_response(user.to_dict(rules=("-recipe_users","-dietary_nos")), 200)
         return make_response({"error": "Unauthorized: Must login"}, 401)
 
 class Signup(Resource):
@@ -61,7 +61,7 @@ class Login(Resource):
             return make_response({"Error": "User not found."})
         if user.authenticate(params.get('password')):
             session['user_id'] = user.id
-            return make_response(user.to_dict())
+            return make_response(user.to_dict(rules=("-recipe_users","-dietary_nos")))
         else:
             return make_response({"Error": "Invalid password"}, 401)
        
@@ -141,23 +141,7 @@ class Recipes(Resource):
         recipes = Recipe.query.all()
         recipe_list = [recipe.to_dict(rules = ("-recipe_users", "-recipe_ingredients")) for recipe in recipes]
         return make_response(recipe_list, 200)
-    
-    def post(self):
-        data = request.json
-        try:
-            recipe = Recipe(
-                title=data['title'],
-                instructions=data['instructions'],
-                image=data['image'],
-                category=data['category'],
-                public=data['public']
-            )
-            db.session.add(recipe)
-            db.session.commit()
-            return make_response(recipe.to_dict(rules = ("-recipe_users", "-recipe_ingredients")), 201)
-        except Exception as e:
-            app.logger.error(f"Error creating opportunity: {e}")
-            return make_response({"error": "Could not create Opportunity", "details": str(e)}, 400)
+
         
 class RecipeById(Resource):
     def get(self, id):
@@ -186,12 +170,57 @@ class RecipeById(Resource):
             return make_response({"error": "Recipe not found"}, 404)
 
 class CreateRecipes(Resource):
-    def get(self):
-        pass
-    
     def post(self):
+        data = request.json
+        print(data)
+        try:
+            recipe_ingredients=data['ingredients']
+            recipe = Recipe(
+                title=data['title'],
+                instruction=data['instructions'],
+                category=data['category'],
+                public=data['public_private']
+            )
+            db.session.add(recipe)
+            print(recipe)
+            db.session.commit()
+            if recipe:
+                for ri in recipe_ingredients:
+                    ingredient=Ingredient.query.filter_by(name=ri['ingredient'].lower()).first()
+                    if not ingredient:
+                        ingredient=Ingredient(
+                            name=ri['ingredient'].lower(),
+                        )
+                        db.session.add(ingredient)
+                        db.session.commit()
+                    print(ri['measurement'])
+                    recipe_ingredient = Recipe_Ingredient(
+                        weight_of_ingr=ri['amount'],
+                        weight_type=ri['measurement'].strip(),
+                        recipe_id=recipe.id,
+                        ingredient_id = ingredient.id
+                        )
+                    print(recipe_ingredient)
+                    db.session.add(recipe_ingredient)
+                    print(recipe_ingredient)
+                    db.session.commit()      
+                recipe_user = Recipe_User(
+                    recipe_id=recipe.id,
+                    user_id=session['user_id']
+                )
+                db.session.add(recipe_user)
+                db.session.commit()
+            return make_response(recipe.to_dict(rules = ("-recipe_users", "-recipe_ingredients")), 201)
+        except Exception as e:
+            app.logger.error(f"Error creating recipe: {e}")
+            return make_response({"error": "Could not create Recipe", "details": str(e)}, 400)
+        
+        #create recipe
+            #save title, instructions, category, image
+        #for loop thru each ingredient:
+            #create a new recipe_ingredient
+                #save amout(weight type)
         pass
-    
     def patch(self):
         pass
     
@@ -208,7 +237,7 @@ api.add_resource(Users, '/user')
 api.add_resource(UserById, '/user/<int:id>')
 api.add_resource(Recipes, '/recipes')
 api.add_resource(RecipeById, '/recipes/<int:id>')
-api.add_resource(CreateRecipes, '/create_a_recipes')
+api.add_resource(CreateRecipes, '/create_a_recipe')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

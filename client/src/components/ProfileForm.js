@@ -16,7 +16,6 @@ function ProfileForm() {
         // p_image: yup.string(),
         f_name: yup.string(),
         l_name: yup.string(),
-        username: yup.string().min(5, "Username must be five characters or longer.").max(20, "Username can not be more than twenty characters."),
         email: yup.string().email("Invalid email address").min(8, "Must be a valid email address"),
         zipcode: yup.string()
     })
@@ -25,7 +24,6 @@ function ProfileForm() {
         // p_image: user === null || user === undefined ? '' : user.p_image,
         f_name: user === null || user === undefined ? '' : user.f_name,
         l_name: user === null || user === undefined ? '' : user.l_name,
-        username: user === null || user === undefined ? '' : user.username,
         email: user === null || user === undefined ? '' : user.email,
         zipcode: user === null || user === undefined ? '' : user.zipcode,
     }
@@ -126,24 +124,6 @@ function ProfileForm() {
                             />
                             <Form.Control.Feedback type="invalid">
                                 {touched.l_name && errors.l_name}
-                            </Form.Control.Feedback>
-                        </Form.Group>
-                        <Form.Group className="mb-3" controlId="formUsername">
-                            <Form.Label>Username:</Form.Label>
-                            <Form.Control
-                                type='text'
-                                id='username'
-                                name='username'
-                                placeholder="Username..."
-                                required value={values.username}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                            />
-                            <Form.Text id="passwordHelpBlock" muted>
-                                Your username must be at least 5 characters long, and must not contain spaces, special characters, or emoji.
-                            </Form.Text>
-                            <Form.Control.Feedback type="invalid">
-                                {errors.username}
                             </Form.Control.Feedback>
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="formEmail">

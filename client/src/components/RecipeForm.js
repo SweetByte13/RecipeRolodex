@@ -1,14 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AppContext } from "../context/Context";
-import { Formik } from 'formik';
+import { Formik, FieldArray  } from 'formik';
 import * as yup from 'yup'
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import Dropdown from 'react-bootstrap/Dropdown';
-import DropdownButton from 'react-bootstrap/DropdownButton';
-import InputGroup from 'react-bootstrap/InputGroup';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 
@@ -17,10 +14,15 @@ function RecipeForm() {
     const useAppContext = () => useContext(AppContext);
     const { setUser } = useAppContext();
 
+    const [inputFields, setInputFields] = useState([
+        { ingredient: '', amount: '', measurement: '' }
+    ])
+
+    const [publicCheckbox, setPublicCheckBox] = useState(false)
+
     const validationSchema = yup.object().shape({
         r_image: yup.string(),
         title: yup.string(),
-        ingredient: yup.string(),
         instructions: yup.string(),
         category: yup.string()
     })
@@ -28,13 +30,75 @@ function RecipeForm() {
     const initialValues = {
         r_image: '',
         title: '',
-        ingredient: '',
         instructions: '',
         category: ''
     }
 
+    let formFields = inputFields.map((input, index) => {
+        return (
+            <div key={index}>
+                <Row>
+                    <Col>
+                        <Form.Group className="mb-3">
+                            <Form.Control
+                                type='text'
+                                id='ingredient'
+                                name='ingredient'
+                                placeholder="Ingredient..."
+                                value={input.ingredient}
+                                onChange={event => handleFormChange(index, event)}
+                            />
+                        </Form.Group>
+                    </Col>
+                    <Col xs lg="2">
+                        <Form.Control
+                            type='text'
+                            id='amount'
+                            name='amount'
+                            placeholder="Amount..."
+                            value={input.amount}
+                            onChange={event => handleFormChange(index, event)}
+                        />
+                    </Col>
+                    <Col md="auto">
+                        <Form.Select onChange={event => handleFormChange(index, event)} value={input.measurement} name="measurement" aria-label="measurements">
+                            <option>select a unit of measurement:</option>
+                            <option value="tsp">teaspoon</option>
+                            <option value="tbl">tablespoon</option>
+                            <option value="cup">cup</option>
+                            <option value="oz">ounce</option>
+                            <option value="lb">pound</option>
+                            <option value="ml">mililiter</option>
+                            <option value="fl oz">fluid ounce</option>
+                            <option value="g">gram</option>
+                            <option value="kg">kilogram</option>
+                            <option value="each">each</option>
+                        </Form.Select>
+                    </Col>
+                </Row>
+            </div >)
+    })
 
-    const handleFormSubmit = (values, { setSubmitting }) => {
+    function handleFormChange(index, event) {
+        let data = [...inputFields];
+        data[index][event.target.name] = event.target.value;
+        setInputFields(data);
+    }
+
+    function handleCheckBoxChange(event){
+       setPublicCheckBox(event.target.checked)
+    }
+
+    function handleAddFieldsClick() {
+        let newField = { ingredient: '', measurement: '' }
+        setInputFields([...inputFields, newField])
+    }
+
+    function handleFormSubmit(values, { setSubmitting }) {
+        values["ingredients"]=inputFields
+        values["public_private"]=publicCheckbox
+        console.log(values)
+        console.log(JSON.stringify(values))
         fetch(`/create_a_recipe`, {
             method: 'POST',
             headers: {
@@ -45,17 +109,16 @@ function RecipeForm() {
             if (resp.ok) {
                 return resp.json()
             } else {
-                alert('Invalid credentials')
+                alert('Failed to submit Recipe')
             }
         }).then((user) => {
-            setUser(user);
             console.log(user);
-            navigate("/recipes");
-        });
+            // navigate("/recipes");
+         });
         setSubmitting(false);
     }
 
-    const handleRecipeDelete = (values) => {
+    function handleRecipeDelete(values) {
         if (!window.confirm("Are you sure you want to delete your recipe?")) {
             return;
         }
@@ -76,76 +139,90 @@ function RecipeForm() {
         });
     }
 
+    //image
+    //toggle or check for public/private
+    //category dropdown select
+    //input for instructions, one large paragraph format : text area
+
     return (
-        <div className="recipe-template-container">
+        <div className="recipe-template-container" >
             <main>
-                <h2> Create your own Recipes:</h2>
-                <strong>You may keep your recipes private or share them with our other users!</strong>
+                <h2 className="create-recipe-header"> Create your own Recipes:</h2>
+                <div className="create-recipe-subheader"><strong >You may keep your recipes private or share them with our other users!</strong></div>
                 <br></br>
                 <br></br>
-                <Container className="recipe-form-container">
+                <Container className="recipe-form-container" >
                     <Formik initialValues={initialValues}
                         validationSchema={validationSchema}
                         onSubmit={handleFormSubmit}
                     >
-                        {({ values, errors, touched, handleChange, handleBlur, handleSubmit }) => (
-                            <Form className="recipe-form">
-                                    <Col>
-                                        <Form.Group className="mb-3" controlId="formTitle">
-                                            <Form.Label>Recipe Title:</Form.Label>
-                                            <Form.Control
-                                                type='text'
-                                                id='title'
-                                                name='title'
-                                                placeholder="Recipe title..."
-                                                value={values.title}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                            />
-                                        </Form.Group>
-                                    </Col>
-                                <Row>
-                                    <Col>
-                                        <Form.Group className="mb-3" controlId="formIngredient">
-                                            <Form.Label>Ingredient:</Form.Label>
-                                            <Form.Control
-                                                type='text'
-                                                id='ingredient'
-                                                name='ingredient'
-                                                placeholder="Ingredient..."
-                                                value={values.ingredient}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                            />
-                                        </Form.Group>
-                                    </Col>
-                                    <InputGroup className="mb-3">
-                                        <Form.Control aria-label="Text input with dropdown button" />
-                                        <DropdownButton
-                                            variant="outline-secondary"
-                                            title="Select"
-                                            id="weight-selection"
-                                            align="end"
-                                        >
-                                            <Dropdown.Item href="#">teaspoon</Dropdown.Item>
-                                            <Dropdown.Item href="#">tablespoon</Dropdown.Item>
-                                            <Dropdown.Item href="#">cup</Dropdown.Item>
-                                            <Dropdown.Item href="#">cup</Dropdown.Item>
-                                            <Dropdown.Item href="#">ounce</Dropdown.Item>
-                                            <Dropdown.Item href="#">mililiter</Dropdown.Item>
-                                            <Dropdown.Item href="#">fluid ounce</Dropdown.Item>
-                                            <Dropdown.Item href="#">gram</Dropdown.Item>
-                                            <Dropdown.Divider />
-                                            <Dropdown.Item href="#">Separated link</Dropdown.Item>
-                                        </DropdownButton>
-                                    </InputGroup>
+                        {({ newField, values, errors, touched, handleChange, handleBlur, handleSubmit, setFieldValue }) => (
+                            <Form className="recipe-form" onSubmit={handleSubmit}>
+                                <Row >
+                                    <Form.Label className="fw-bold">Category:</Form.Label>
+                                    <Form.Select name="category" aria-label="category" onChange={handleChange}>
+                                        <option>Select a category:</option>
+                                        <option value="appetizers">Appetizers</option>
+                                        <option value="soups">Soups</option>
+                                        <option value="salads">Salads</option>
+                                        <option value="main dishes">Main Dishes</option>
+                                        <option value="side dishes">Side Dishes</option>
+                                        <option value="bread">Breads</option>
+                                        <option value="desserts">Desserts</option>
+                                        <option value="candies">Candies</option>
+                                        <option value="snacks">Snacks</option>
+                                        <option value="beverages">Beverages</option>
+                                        <option value="condiments">Condiments</option>
+                                    </Form.Select>
                                 </Row>
                                 <br></br>
+                                <Col>
+                                    <Form.Group className="mb-3">
+                                        <Form.Label className="fw-bold">Recipe Title:</Form.Label>
+                                        <Form.Control
+                                            type='text'
+                                            id='title'
+                                            name='title'
+                                            placeholder="Recipe title..."
+                                            value={values.title}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                        />
+                                    </Form.Group>
+                                </Col>
+                                <Row>
+                                    <Col>
+                                        <Form.Label className="fw-bold">Ingredient:</Form.Label>
+                                    </Col>
+                                    <Col>
+                                        <Button className="float-sm-end" variant="success" size="sm" onClick={handleAddFieldsClick}>
+                                            Add ingredient
+                                        </Button>
+                                    </Col>
+                                </Row>
+                                <br></br>
+
+                                <FieldArray
+                                    name="ingredients"
+                                    render={() => formFields} />
+                                <br></br>
+                                <textarea onChange={handleChange} className="instructions" name="instructions"></textarea>
+                                <Form.Switch className="public_private_toggle">
+                                    <Form.Check
+                                        type="switch"
+                                        id="custom-switch"
+                                        name='public_check'
+                                        label="Keep your recipe private"
+                                        checked={values.public_check}
+                                        onChange={handleCheckBoxChange}
+                                    />
+                                </Form.Switch>
+
                                 <div className="d-grid gap-2">
-                                    <Button className='recipe-form-button' type='submit' variant="success" size="lg">
+                                    <Button className='recipe-form-button' type='submit' variant="success" size="lg" onSubmit={handleSubmit}>
                                         Submit Recipe
                                     </Button>
-                                    <Button className='recipe-form-delete-button' variant="outline-danger" size="lg" onClick={() => handleRecipeDelete()}>
+                                    <Button className='recipe-form-delete-button' variant="outline-danger" size="lg" onClick={handleRecipeDelete}>
                                         Delete Recipe
                                     </Button>
                                 </div>

@@ -93,7 +93,7 @@ class User(db.Model, SerializerMixin):
         if not any(char.isdigit() for char in new_password):
             raise AssertionError ("Password must contain a number")
         if not any(char in SpecialChar for char in new_password):
-            raise AssertionError ("Password must contain a special symbol: !?$@#&^*<>")
+            raise AssertionError ("Password must contain a special symbol: !?$@#&^*")
         return new_password
     
 class Recipe_User(db.Model, SerializerMixin):
@@ -147,7 +147,7 @@ class Recipe(db.Model, SerializerMixin):
     # creator_user=db.relationship('User', back_populates='recipes')
     
     def __repr__(self):
-        return f"<Recipe {self.id}: {self.title}, {self.instruction}, {self.image}, {self.category}, Public(1=true):{self.public}, user_id:{self.creator}"
+        return f"<Recipe {self.id}: {self.title}, {self.instruction}, {self.image}, {self.category}, Public(1=true):{self.public}"
     
     @validates('title')
     def validates_title(self, key, new_title):
@@ -182,6 +182,7 @@ class Recipe_Ingredient(db.Model, SerializerMixin):
     
     id=db.Column(db.Integer, primary_key=True)
     weight_of_ingr=db.Column(db.Float, nullable=False)
+    weight_type=db.Column(db.String)
     recipe_id=db.Column(db.Integer, db.ForeignKey('recipes.id'))
     ingredient_id=db.Column(db.Integer, db.ForeignKey('ingredients.id'))
     
@@ -189,7 +190,7 @@ class Recipe_Ingredient(db.Model, SerializerMixin):
     ingredient=db.relationship('Ingredient', back_populates='recipe_ingredients')
     
     def __repr__(self):
-        return f"<Recipe_Ingredient: {self.weight_of_ingr}, recipe_id={self.recipe_id}, ingredient_id={self.ingredient_id}"
+        return f"<Recipe_Ingredient: {self.weight_of_ingr}, {self.weight_type}, recipe_id={self.recipe_id}, ingredient_id={self.ingredient_id}"
     
     @validates('weight_of_ingr')
     def validate_weight(self, key, new_weight):
@@ -197,12 +198,21 @@ class Recipe_Ingredient(db.Model, SerializerMixin):
             raise AssertionError ("Must have weight of ingredient")
         return new_weight
     
+    @validates('weight_type')
+    def validates_weight_type(self, key, new_weight):
+        WeightTypes =['teaspoon', 'tablespoon', 'cup', 'ounce', 'pound', 'mililiter', 'fluid ounce', 'gram', 'kilogram', 'each', 'tsp', 'tbl', 'oz', 'lb', 'fl oz', 'ml', 'g', 'kg']
+        if not new_weight:
+            raise AssertionError ("Weight type is required")
+        if not (new_weight in WeightTypes):
+            raise AssertionError ("Weight Type must contain one of these weight type: teaspoon, tablespoon, cup, each, ounce, fluid ounce, mililiter, gram, kilogram")
+        return new_weight
+    
 class Ingredient(db.Model, SerializerMixin):
     __tablename__ = 'ingredients'
  
     id=db.Column(db.Integer, primary_key=True)
     name=db.Column(db.String, nullable=False, unique=True)
-    category=db.Column(db.String, nullable=False)
+    category=db.Column(db.String)
     nutrition=db.Column(db.String)
     
     recipe_ingredients=db.relationship('Recipe_Ingredient', back_populates='ingredient', cascade='all, delete-orphan')

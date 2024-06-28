@@ -14,9 +14,7 @@ function Profile() {
             <NavBar />
             <main>
                 <br></br>
-                <br></br>
             <h1 className="profile-title">Your RecipeRolodex Profile</h1>
-            <br></br>
             <h4 className="profile-sub-title">Maintain and update your profile below.</h4>
             <br></br>
                 <ProfileForm />

@@ -65,6 +65,7 @@ def create_recipe_ingredients(recipes, ingredients):
     for _ in range(5):
         r_i = Recipe_Ingredient(  
             weight_of_ingr=fake.random_number(),
+            weight_type="g",
             recipe_id=rc([res.id for res in recipes]),
             ingredient_id=rc([ing.id for ing in ingredients])
             )

@@ -36,7 +36,7 @@ function App() {
             <Route path="/recipes" element={<Recipes />}/>
             <Route path="/profile" element={<Profile />}/>
             <Route path="/conversion_tables" element={<ConversionTable />}/>
-            <Route path="/create_a_recipes" element={<CreateARecipe />}/>
+            <Route path="/create_a_recipe" element={<CreateARecipe />}/>
             {/* <Route path="/conversion_tables#Top" element={<a name="Top"></a>}/> */}
           </Routes>
         </>
