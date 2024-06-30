@@ -45,8 +45,9 @@ function NavBar() {
                     <Nav className="nav-bar">
                         <Nav.Link href="/">Home</Nav.Link>
                         <Nav.Link href="/recipes">Recipes</Nav.Link>
-                        {user === null || user === undefined ? "" : <Nav.Link className="nav-link" href="/create_a_recipe">Create A Recipe</Nav.Link>}
                         <Nav.Link href="/conversion_tables">Conversions</Nav.Link>
+                        {user === null || user === undefined ? "" : <Nav.Link className="nav-link" href="/create_a_recipe">Create A Recipe</Nav.Link>}
+                        {user === null || user === undefined ? "" : <Nav.Link className="nav-link" href="/my_recipes">My Recipes</Nav.Link>}
                         {user === null || user === undefined ? "" : <Nav.Link className="nav-link" href="/profile">Profile</Nav.Link>}
                         {user === null || user === undefined ? <Nav.Link className="nav-link" href="/signup">Signup</Nav.Link> : ""}
                         {user === null || user === undefined ? <Button className="navbar-login-btn" variant="success" onClick={handleLoginClick}>Login</Button> : <Button className="navbar-login-btn" variant="success" onClick={handleLogoutClick}>Logout</Button>}

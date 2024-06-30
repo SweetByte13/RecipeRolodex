@@ -1,24 +1,34 @@
 import React from "react";
 import RecipeCard from "../components/RecipeCard";
-import Stack from 'react-bootstrap/Stack';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 
-function RecipeContainer({recps}) {
+function RecipeContainer({ recps }) {
 
     const recipe = recps.map((recipe) => {
         return (
             <div key={recipe.idx}>
-                <RecipeCard key={recipe.id} recipe={recipe}/>
+                <RecipeCard key={recipe.id} recipe={recipe} />
             </div>
         )
     })
 
-    return(
-        <div>
-            <Stack className="recipe-stack" gap={4}>
-                {recipe}
-            </Stack>
-        </div>
+    return (
+        <Container>
+            <Row className="recipe-rows">
+                <Col>
+                    {recipe}
+                </Col>
+                <Col>
+                    {recipe}
+                </Col>
+                <Col>
+                    {recipe}
+                </Col>
+            </Row>
+        </Container>
     )
 }
 export default RecipeContainer;

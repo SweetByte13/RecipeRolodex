@@ -8,6 +8,7 @@ import Recipes from "../pages/Recipes";
 import Profile from "../pages/Profile";
 import ConversionTable from "../pages/ConversionTable";
 import CreateARecipe from "../pages/CreateARecipe";
+import MyRecipes from "../pages/MyRecipes";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -34,6 +35,7 @@ function App() {
             <Route path="/login" element={<Login />}/>
             <Route path="/signup" element={<SignUp />}/>
             <Route path="/recipes" element={<Recipes />}/>
+            <Route path="/my_recipes" element={<MyRecipes />}/>
             <Route path="/profile" element={<Profile />}/>
             <Route path="/conversion_tables" element={<ConversionTable />}/>
             <Route path="/create_a_recipe" element={<CreateARecipe />}/>
