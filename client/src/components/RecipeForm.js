@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AppContext } from "../context/Context";
-import { Formik, FieldArray  } from 'formik';
+import { Formik, FieldArray } from 'formik';
 import * as yup from 'yup'
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
@@ -38,7 +38,7 @@ function RecipeForm() {
         return (
             <div key={index}>
                 <Row>
-                    <Col>
+                    <Col md={5}>
                         <Form.Group className="mb-3">
                             <Form.Control
                                 type='text'
@@ -50,7 +50,7 @@ function RecipeForm() {
                             />
                         </Form.Group>
                     </Col>
-                    <Col xs lg="2">
+                    <Col md={3}>
                         <Form.Control
                             type='text'
                             id='amount'
@@ -60,7 +60,7 @@ function RecipeForm() {
                             onChange={event => handleFormChange(index, event)}
                         />
                     </Col>
-                    <Col md="auto">
+                    <Col md={3}>
                         <Form.Select onChange={event => handleFormChange(index, event)} value={input.measurement} name="measurement" aria-label="measurements">
                             <option>select a unit of measurement:</option>
                             <option value="tsp">teaspoon</option>
@@ -75,30 +75,41 @@ function RecipeForm() {
                             <option value="each">each</option>
                         </Form.Select>
                     </Col>
+                        <Col  md={1}>
+                            {inputFields.length > 1 && (
+                                <Button data-index={index} className="minus-ingredient-button" variant="outline-danger" size="sm" onClick={handleRemoveFeildclick}>
+                                    -
+                                </Button>
+                            )}
+                        </Col>
                 </Row>
             </div >)
     })
-
     function handleFormChange(index, event) {
         let data = [...inputFields];
         data[index][event.target.name] = event.target.value;
         setInputFields(data);
     }
 
-    function handleCheckBoxChange(event){
-       setPublicCheckBox(event.target.checked)
+    function handleCheckBoxChange(event) {
+        setPublicCheckBox(event.target.checked)
     }
 
     function handleAddFieldsClick() {
-        let newField = { ingredient: '', measurement: '' }
+        let newField = { ingredient: '', amount: '', measurement: '' }
         setInputFields([...inputFields, newField])
     }
 
+    function handleRemoveFeildclick(event) {
+        const index = event.target.dataset.index
+        const values = [...inputFields];
+        values.splice(index, 1);
+        setInputFields(values);
+    }
+
     function handleFormSubmit(values, { setSubmitting }) {
-        values["ingredients"]=inputFields
-        values["public_private"]=publicCheckbox
-        console.log(values)
-        console.log(JSON.stringify(values))
+        values["ingredients"] = inputFields
+        values["public_private"] = publicCheckbox
         fetch(`/create_a_recipe`, {
             method: 'POST',
             headers: {
@@ -114,7 +125,7 @@ function RecipeForm() {
         }).then((user) => {
             console.log(user);
             // navigate("/recipes");
-         });
+        });
         setSubmitting(false);
     }
 
@@ -138,11 +149,6 @@ function RecipeForm() {
             }
         });
     }
-
-    //image
-    //toggle or check for public/private
-    //category dropdown select
-    //input for instructions, one large paragraph format : text area
 
     return (
         <div className="recipe-template-container" >
