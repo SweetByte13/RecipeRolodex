@@ -6,7 +6,7 @@ import Col from 'react-bootstrap/Col';
 
 
 function RecipeContainer({ recps }) {
-
+console.log(recps)
     const recipe = recps.map((recipe) => {
         return (
             <div key={recipe.idx}>
@@ -15,19 +15,26 @@ function RecipeContainer({ recps }) {
         )
     })
 
+    const recipe_rows = []
+    for (let index = 0; index < recipe.length; index += 3) {
+        recipe_rows.push(
+            <Row className="recipe-rows" key={index}>
+
+                <Col>
+                    {recipe[index]}
+                </Col>
+                <Col>
+                    {index + 1 < recipe.length ? recipe[index+1] : ""}
+                </Col>
+                <Col>
+                    {index + 2 < recipe.length ? recipe[index+2] : ""}
+                </Col>
+            </Row>)
+    }
+
     return (
         <Container>
-            <Row className="recipe-rows">
-                <Col>
-                    {recipe}
-                </Col>
-                <Col>
-                    {recipe}
-                </Col>
-                <Col>
-                    {recipe}
-                </Col>
-            </Row>
+            {recipe_rows}
         </Container>
     )
 }

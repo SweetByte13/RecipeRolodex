@@ -139,7 +139,7 @@ class UserById(Resource):
 class Recipes(Resource):
     def get(self):
         recipes = Recipe.query.all()
-        recipe_list = [recipe.to_dict(rules = ("-recipe_users", "-recipe_ingredients")) for recipe in recipes]
+        recipe_list = [recipe.to_dict(rules = ("-recipe_users.user", "-recipe_users.recipe", "-recipe_ingredients")) for recipe in recipes]
         return make_response(recipe_list, 200)
 
         
@@ -158,7 +158,7 @@ class RecipeById(Resource):
             for attr in params:
                 setattr(recipe , attr, params[attr])
             db.session.commit()
-            return make_response(recipe.to_dict(rules = ("-recipe_users", "-recipe_ingredients")))
+            return make_response(recipe.to_dict(rules = ("-recipe_users.user", "-recipe_users.recipe", "-recipe_ingredients")))
     
     def delete(self, id):
         recipe = db.session.get(Recipe, id)
@@ -172,7 +172,6 @@ class RecipeById(Resource):
 class CreateRecipes(Resource):
     def post(self):
         data = request.json
-        print(data)
         try:
             recipe_ingredients=data['ingredients']
             recipe = Recipe(
@@ -182,7 +181,6 @@ class CreateRecipes(Resource):
                 public=data['public_private']
             )
             db.session.add(recipe)
-            print(recipe)
             db.session.commit()
             if recipe:
                 for ri in recipe_ingredients:
@@ -206,7 +204,8 @@ class CreateRecipes(Resource):
                     db.session.commit()      
                 recipe_user = Recipe_User(
                     recipe_id=recipe.id,
-                    user_id=session['user_id']
+                    user_id=session['user_id'],
+                    creator=True
                 )
                 db.session.add(recipe_user)
                 db.session.commit()
@@ -215,25 +214,35 @@ class CreateRecipes(Resource):
             app.logger.error(f"Error creating recipe: {e}")
             return make_response({"error": "Could not create Recipe", "details": str(e)}, 400)
         
-        #create recipe
-            #save title, instructions, category, image
-        #for loop thru each ingredient:
-            #create a new recipe_ingredient
-                #save amout(weight type)
-class EditRecipe(Resource):
-    #only allowed when user.id === creator.id
-    def patch(self):
-        pass
+class LikedRecipe(Resource):
+    def post(self):
+        data = request.json
+        recipe_user = Recipe_User(
+                    recipe_id=data['recipe_id'],
+                    user_id=data['user_id'],
+                    creator=False
+                )
+        print(recipe_user)
+        db.session.add(recipe_user)
+        db.session.commit()
+        return make_response(recipe_user.to_dict(rules=('-recipe', '-user')),200)
     
-    def delete(self):
-        recipe = db.session.get(Recipe, id)
-        if recipe:
-            db.session.delete(recipe)
+class DeleteLikedRecipe(Resource):
+    def delete(self, id):
+        recipe_user = db.session.get(Recipe_User, id)
+        if recipe_user:
+            db.session.delete(recipe_user)
             db.session.commit()
-            return make_response({"message": "Recipe deleted successfully."}, 204)
+            return make_response({"message": "Recipe unliked successfully"}, 204)
         else:
             return make_response({"error": "Recipe not found"}, 404)
-
+        
+class MyRecipes(Resource):
+    def get(self, id):
+        recipes = Recipe_User.query.filter_by(user_id=id)
+        recipe_users = [recipe.to_dict(rules=("-recipe.recipe_users.recipe", "-recipe.recipe_users.user","-recipe.recipe_ingredients", "-user", )) for recipe in recipes]
+        return make_response([recipe_user['recipe'] for recipe_user in recipe_users])
+        
 
 api.add_resource(Home, '/')
 api.add_resource(CheckSession, '/check_session')
@@ -245,7 +254,9 @@ api.add_resource(UserById, '/user/<int:id>')
 api.add_resource(Recipes, '/recipes')
 api.add_resource(RecipeById, '/recipes/<int:id>')
 api.add_resource(CreateRecipes, '/create_a_recipe')
-api.add_resource(EditRecipe, '/recipes/<int:id>/edit')
+api.add_resource(LikedRecipe, '/liked_recipe')
+api.add_resource(DeleteLikedRecipe, '/delete_liked_recipe/<int:id>')
+api.add_resource(MyRecipes, '/my_recipes/<int:id>')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

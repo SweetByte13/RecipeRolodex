@@ -9,7 +9,7 @@ bcrypt = Bcrypt(app)
 class User(db.Model, SerializerMixin):
     __tablename__ = 'users'
     
-    serialize_rules = ('-_password_hash',)
+    serialize_rules= ('-_password_hash', '-recipe_users.user', '-recipe_users.user_id', '-dietary_nos.user')
     
     __table_args__ = (
         db.CheckConstraint('length(username)>5', name='username_length_over_five'), db.CheckConstraint('length(email)>8', name='email_length_over_eight'), db.CheckConstraint('length(_password_hash)>6', name='password_length_over_six')
@@ -127,6 +127,8 @@ class Recipe_User(db.Model, SerializerMixin):
 class Recipe(db.Model, SerializerMixin):
     __tablename__ = 'recipes'
     
+    serialize_rules = ('-recipe_users.recipe', '-recipe_ingredients.recipe')
+    
     __table_args__ = (
         db.CheckConstraint('length(instruction)<200', name='instruction_length_under_two_hundred'),
     )
@@ -207,6 +209,8 @@ class Recipe_Ingredient(db.Model, SerializerMixin):
 class Ingredient(db.Model, SerializerMixin):
     __tablename__ = 'ingredients'
  
+    serialize_rules = ('-recipe_ingredients.ingredient', '-dietary_nos.ingredient')
+  
     id=db.Column(db.Integer, primary_key=True)
     name=db.Column(db.String, nullable=False, unique=True)
     category=db.Column(db.String)
@@ -240,6 +244,7 @@ class Dietary_No(db.Model,SerializerMixin):
     id=db.Column(db.Integer, primary_key=True)
     ingredient_id=db.Column(db.Integer, db.ForeignKey('ingredients.id'), nullable=False)
     user_id=db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    category=db.Column(db.String)
     
     user=db.relationship('User', back_populates='dietary_nos')
     ingredient=db.relationship('Ingredient', back_populates='dietary_nos')

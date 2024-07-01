@@ -6,27 +6,55 @@ import RecipeContainer from "../components/RecipeContainer";
 import SearchBar from "../components/SearchBar";
 import CategoryFilter from "../components/CategoryFilter";
 import Row from 'react-bootstrap/Row';
-import RecipeForm from "../components/RecipeForm";
+import RecipeCard from "../components/RecipeCard";
 
-function MyRecipes({ recps }) {
-   
+function MyRecipes() {
+    const [recipes, setRecipes] = useState([]);
+    const [filter, setFilter] = useState([]);
+    const [search, setSearch] = useState("");
+
+    const useAppContext = () => useContext(AppContext);
+    const { user } = useAppContext();
+    
+    useEffect(() => {
+        console.log(user)
+        if(user) {
+           console.log(user)
+            fetch(`/my_recipes/${user.id}`)
+                .then((resp) => {
+                    if (resp.ok) {
+                        return resp.json();
+                    }
+                    throw Error("Network response failed")
+                })
+                .then((recipesData) => {
+                    console.log(recipesData)
+                    setRecipes(recipesData);
+                })
+            }
+        },[])
+
+        const filteredRecipes = recipes.filter((recipe) => {
+            return (recipe.title.toLowerCase().includes(search.toLowerCase()))
+        })
+        // if (filter === "all") {
+        //     return true;
+        // } else if (filter === "liked") {
+        //     return recipe.liked;
+        // } else if (filter === "created") {
+        //     return recipe.created;
+        // }
+    const likedRecipes = filteredRecipes.map(recipe => <RecipeCard key={recipe.id} recipe={recipe} />)
+    
     return (
         <div>
             <NavBar />
+            <SearchBar setSearch={setSearch} /> 
             <main>
-
+                <RecipeContainer recps={filteredRecipes} />
             </main>
         </div>
     )
-
 }
-export default MyRecipes;
 
-//fetch request
-//shows all recipe cards the user has liked or created
-//dropdown filter: all, liked, created
-//search bar
-//edit button on created recipe cards
-    //when clicked: takes to /recipes/:id/edit
-    //have patch and delete methods
-    //looks like recipeform with autofill previous values
+export default MyRecipes;
