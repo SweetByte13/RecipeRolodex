@@ -129,26 +129,26 @@ function RecipeForm() {
         setSubmitting(false);
     }
 
-    function handleRecipeDelete(values) {
-        if (!window.confirm("Are you sure you want to delete your recipe?")) {
-            return;
-        }
-        fetch(`/create_a_recipe`, {
-            method: 'DELETE',
-            headers: {
-                "Content-Type": 'application/json'
-            },
-            body: JSON.stringify(values)
-        }).then((resp) => {
-            if (resp.ok) {
-                alert('Your recipe has been deleted. We are so sorry to see it go!')
-                setUser(null)
-                navigate("/recipes")
-            } else {
-                alert('Invalid credentials')
-            }
-        });
-    }
+    // function handleRecipeDelete(values) {
+    //     if (!window.confirm("Are you sure you want to delete your recipe?")) {
+    //         return;
+    //     }
+    //     fetch(`/create_a_recipe`, {
+    //         method: 'DELETE',
+    //         headers: {
+    //             "Content-Type": 'application/json'
+    //         },
+    //         body: JSON.stringify(values)
+    //     }).then((resp) => {
+    //         if (resp.ok) {
+    //             alert('Your recipe has been deleted. We are so sorry to see it go!')
+    //             setUser(null)
+    //             navigate("/recipes")
+    //         } else {
+    //             alert('Invalid credentials')
+    //         }
+    //     });
+    // }
 
     return (
         <div className="recipe-template-container" >
@@ -228,9 +228,9 @@ function RecipeForm() {
                                     <Button className='recipe-form-button' type='submit' variant="success" size="lg" onSubmit={handleSubmit}>
                                         Submit Recipe
                                     </Button>
-                                    <Button className='recipe-form-delete-button' variant="outline-danger" size="lg" onClick={handleRecipeDelete}>
+                                    {/* <Button className='recipe-form-delete-button' variant="outline-danger" size="lg" onClick={handleRecipeDelete}>
                                         Delete Recipe
-                                    </Button>
+                                    </Button> */}
                                 </div>
                             </Form>
                         )}

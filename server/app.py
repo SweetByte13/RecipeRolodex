@@ -220,12 +220,19 @@ class CreateRecipes(Resource):
         #for loop thru each ingredient:
             #create a new recipe_ingredient
                 #save amout(weight type)
-        pass
+class EditRecipe(Resource):
+    #only allowed when user.id === creator.id
     def patch(self):
         pass
     
     def delete(self):
-        pass
+        recipe = db.session.get(Recipe, id)
+        if recipe:
+            db.session.delete(recipe)
+            db.session.commit()
+            return make_response({"message": "Recipe deleted successfully."}, 204)
+        else:
+            return make_response({"error": "Recipe not found"}, 404)
 
 
 api.add_resource(Home, '/')
@@ -238,6 +245,7 @@ api.add_resource(UserById, '/user/<int:id>')
 api.add_resource(Recipes, '/recipes')
 api.add_resource(RecipeById, '/recipes/<int:id>')
 api.add_resource(CreateRecipes, '/create_a_recipe')
+api.add_resource(EditRecipe, '/recipes/<int:id>/edit')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

@@ -27,7 +27,6 @@ class User(db.Model, SerializerMixin):
     dietary_nos=db.relationship('Dietary_No', back_populates='user', cascade='all, delete-orphan')
     recipes=association_proxy('recipe_users', 'recipe')
     ingredients=association_proxy('dietary_nos', 'ingredient')
-    # creator_recipes=db.relationship('Recipe', back_populates='user', foreign_keys="Recipe.creator")
     
     def __repr__(self):
         return f"<User {self.id}: {self.f_name} {self.l_name}, {self.username}, {self.email}, {self.zipcode}"
@@ -104,6 +103,7 @@ class Recipe_User(db.Model, SerializerMixin):
     id=db.Column(db.Integer, primary_key=True)
     recipe_id=db.Column(db.Integer, db.ForeignKey('recipes.id'), nullable=False)
     user_id=db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    creator=db.Column(db.Boolean)
     
     recipe=db.relationship('Recipe', back_populates='recipe_users')
     user=db.relationship('User', back_populates='recipe_users')
@@ -137,14 +137,11 @@ class Recipe(db.Model, SerializerMixin):
     image=db.Column(db.String)
     category=db.Column(db.String, nullable=False)
     public=db.Column(db.Boolean, nullable=False)
-    # creator=db.Column(db.Integer, db.ForeignKey('users.id'))
-    
-    
+       
     recipe_users=db.relationship('Recipe_User', back_populates='recipe', cascade='all, delete-orphan')
     recipe_ingredients=db.relationship('Recipe_Ingredient', back_populates='recipe', cascade='all, delete-orphan')
     user=association_proxy('recipe_users', 'user')
     ingredient=association_proxy('recipe_ingredients', 'ingredient')
-    # creator_user=db.relationship('User', back_populates='recipes')
     
     def __repr__(self):
         return f"<Recipe {self.id}: {self.title}, {self.instruction}, {self.image}, {self.category}, Public(1=true):{self.public}"
