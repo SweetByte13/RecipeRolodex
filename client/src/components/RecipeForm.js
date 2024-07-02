@@ -75,13 +75,13 @@ function RecipeForm() {
                             <option value="each">each</option>
                         </Form.Select>
                     </Col>
-                        <Col  md={1}>
-                            {inputFields.length > 1 && (
-                                <Button data-index={index} className="minus-ingredient-button" variant="outline-danger" size="sm" onClick={handleRemoveFeildclick}>
-                                    -
-                                </Button>
-                            )}
-                        </Col>
+                    <Col md={1}>
+                        {inputFields.length > 1 && (
+                            <Button data-index={index} className="minus-ingredient-button" variant="outline-danger" size="sm" onClick={handleRemoveFeildclick}>
+                                -
+                            </Button>
+                        )}
+                    </Col>
                 </Row>
             </div >)
     })
@@ -105,6 +105,11 @@ function RecipeForm() {
         const values = [...inputFields];
         values.splice(index, 1);
         setInputFields(values);
+    }
+
+    function handleFileChange(event) {
+        const fileList = this.files;
+        console.log(fileList)
     }
 
     function handleFormSubmit(values, { setSubmitting }) {
@@ -132,10 +137,17 @@ function RecipeForm() {
     return (
         <div className="recipe-template-container" >
             <main>
-                <h2 className="create-recipe-header"> Create your own Recipes:</h2>
+                <h2 className="create-recipe-header">Create your own Recipes:</h2>
                 <div className="create-recipe-subheader"><strong >You may keep your recipes private or share them with our other users!</strong></div>
                 <br></br>
                 <br></br>
+                <Container>
+                    IMAGE UPLOAD SPACE
+                    <Form.Group controlId="formFile" className="mb-3">
+                        <Form.Label>Default file input example</Form.Label>
+                        <Form.Control onChange={handleFileChange} type="file" accept=".png, .jpeg, .jpg"/>
+                    </Form.Group>
+                </Container>
                 <Container className="recipe-form-container" >
                     <Formik initialValues={initialValues}
                         validationSchema={validationSchema}

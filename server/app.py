@@ -4,17 +4,20 @@ from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
 from config import app, db, api
 from models import User, Recipe, Ingredient, Recipe_Ingredient, Recipe_User, Dietary_No
+from PIL import Image
+import pytesseract
 
-@app.before_request
-def check_log_status():
-    open_access_list = [
-        'signup',
-        'login',
-        'check_session',
-        'recipes'
-    ]
-    if request.endpoint not in open_access_list and (not session.get('user_id')):
-        return make_response({"error": "401 Unauthorized"}, 401)
+# @app.before_request
+# def check_log_status():
+#     open_access_list = [
+#         'signup',
+#         'login',
+#         'check_session',
+#         'recipes',
+#         'get_image_ocr'
+#     ]
+#     if request.endpoint not in open_access_list and (not session.get('user_id')):
+#         return make_response({"error": "401 Unauthorized"}, 401)
     
 class CheckSession(Resource):
     def get(self):
@@ -266,6 +269,11 @@ class MyRecipes(Resource):
         recipe_users = [recipe.to_dict(rules=("-recipe.recipe_users.recipe", "-recipe.recipe_users.user","-recipe.recipe_ingredients", "-user", )) for recipe in recipes]
         return make_response([recipe_user['recipe'] for recipe_user in recipe_users])
         
+class GetImageOcr(Resource):
+    def get(self):
+        test = (pytesseract.image_to_string(Image.open('test2.png')))
+        print(test)
+        return make_response(test)
 
 api.add_resource(Home, '/')
 api.add_resource(CheckSession, '/check_session')
@@ -280,6 +288,7 @@ api.add_resource(CreateRecipes, '/create_a_recipe')
 api.add_resource(LikedRecipe, '/liked_recipe')
 api.add_resource(DeleteLikedRecipe, '/delete_liked_recipe/<int:id>')
 api.add_resource(MyRecipes, '/my_recipes/<int:id>')
+api.add_resource(GetImageOcr, '/get_image_ocr')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
