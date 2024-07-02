@@ -33,7 +33,19 @@ def create_users():
 def create_recipes():
     print("Creating recipes...")
     recipes = []
-    categories = ['Appetizer', 'Entree', 'Snack', 'Dessert', 'Beverage', 'Lunch']
+    categories = [
+        'appetizers', 
+        'soups', 
+        'salads', 
+        'main dishes', 
+        'side dishes', 
+        'bread',
+        'desserts', 
+        'candies', 
+        'salads', 
+        'snacks', 
+        'beverages', 
+        'condiments' ]
     for _ in range(5):
         r = Recipe(
         title = fake.sentences(nb=1)[0],

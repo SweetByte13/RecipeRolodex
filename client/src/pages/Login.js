@@ -12,8 +12,11 @@ function Login() {
         <>
         <NavBar />
         <main>
+            <br></br>
+            <div>
             <h1 className="login-header">Welcome to RecipeRolodex</h1>
             <h3> Sign In</h3>
+            </div>
             <LoginForm/>
             <h4 className="signup-redirect-from-loginpage">
                 Don't have an account? &nbsp;

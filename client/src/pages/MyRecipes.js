@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { AppContext } from "../context/Context";
 import NavBar from "../components/NavBar";
 import RecipeContainer from "../components/RecipeContainer";
@@ -15,23 +15,21 @@ function MyRecipes() {
 
     const useAppContext = () => useContext(AppContext);
     const { user } = useAppContext();
+    let { id } = useParams();
     
     useEffect(() => {
         console.log(user)
-        if(user) {
-           console.log(user)
-            fetch(`/my_recipes/${user.id}`)
+            fetch(`/my_recipes/${id}`)
                 .then((resp) => {
                     if (resp.ok) {
+                        console.log(resp)
                         return resp.json();
                     }
                     throw Error("Network response failed")
                 })
                 .then((recipesData) => {
-                    console.log(recipesData)
                     setRecipes(recipesData);
                 })
-            }
         },[])
 
         const filteredRecipes = recipes.filter((recipe) => {

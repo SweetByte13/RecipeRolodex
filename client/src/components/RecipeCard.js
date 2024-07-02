@@ -69,13 +69,14 @@ function RecipeCard({ recipe }) {
     function handleSeeMoreButton() {
         if (user === null || user === undefined) {
             alert("User must be logged in.")
+            navigate('/login')
             return;
         }
         navigate(`/recipes/${recipe.id}`)
     }
 
     function handleEditClick() {
-        navigate(`/recipes/${recipe.id}`)
+        navigate(`/edit_recipe/${recipe.id}`)
     }
 
     const isCreator = recipe_users.some(x => x.user_id === user?.id && x.creator)
@@ -99,9 +100,10 @@ function RecipeCard({ recipe }) {
                             <HeartFill style={{ float: 'right' }} color="red" onClick={handleLikedClick}></HeartFill>))
                     )
                     :
-                    <Button variant="primary" onClick={handleSeeMoreButton}>
-                        Log in to like recipes
-                    </Button>
+                    // <Button variant="primary" onClick={handleSeeMoreButton}>
+                    //     Log in to like recipes
+                    // </Button>
+                    ""
                 }
             </Card.Body>
         </Card>

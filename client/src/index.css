@@ -20,28 +20,38 @@ main {
   object-fit: cover;
 }
 
-.sidebar-primary{
-float: right;
-width: 300px;
-margin-top: 7px;
+.home-section-banner {
+  background-color: #E8F1EA;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.spacing{
+  background: var(--color-brand-tertiary);
+}
+.sidebar-primary {
+  float: right;
+  width: 300px;
+  margin-top: 7px;
 }
 
 .conversion-header {
   width: 100%;
-  object-fit:cover;
+  object-fit: cover;
 }
 
 .intro_content {
-    font-family: 'Source Sans Pro', sans-serif;
-    font-weight: 300;
-    color: #333333;
-    letter-spacing: 2px;
-    line-height: 1.3;
-    margin: 7px 0 17px;
-    padding: 0;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-weight: 300;
+  color: #333333;
+  letter-spacing: 2px;
+  line-height: 1.3;
+  margin: 7px 0 17px;
+  padding: 0;
 }
 
-.create-recipe-header{
+.create-recipe-header {
   padding-top: 4%;
   place-items: center;
   text-align: center;
@@ -51,7 +61,7 @@ margin-top: 7px;
 }
 
 
-.create-recipe-subheader{
+.create-recipe-subheader {
   place-items: center;
   text-align: center;
   width: 800px;
@@ -59,7 +69,7 @@ margin-top: 7px;
   margin-right: auto;
 }
 
-.recipe-template-container{
+.recipe-template-container {
   place-items: center;
   text-align: center;
   width: 800px;
@@ -67,28 +77,28 @@ margin-top: 7px;
   margin-right: auto;
 }
 
-.instructions{
-  height:200px;
+.instructions {
+  height: 200px;
   width: 770px;
 }
 
-.public_private_toggle{
+.public_private_toggle {
   width: 280px;
   margin: 20px auto;
   margin-left: 220px auto;
 }
 
-.recipe-form-button{
+.recipe-form-button {
   width: 360px;
   margin: auto;
 }
 
-.recipe-form-delete-button{
+.recipe-form-delete-button {
   width: 360px;
   margin: auto;
 }
 
-.profile-title{
+.profile-title {
   padding-top: 4%;
   place-items: center;
   text-align: center;
@@ -97,7 +107,7 @@ margin-top: 7px;
   margin-right: auto;
 }
 
-.profile-sub-title{
+.profile-sub-title {
   padding-top: 1%;
   place-items: center;
   text-align: center;
@@ -106,11 +116,22 @@ margin-top: 7px;
   margin-right: auto;
 }
 
-.dropdown-containter{
+.dropdown-containter {
   padding-top: 1%;
   place-items: center;
   text-align: center;
   width: 800px;
   margin-left: auto;
   margin-right: auto;
+}
+
+.recipe-header {
+  --grid-gap: 1rem;
+  --grid-margin: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0px;
+  margin: 0px auto;
+  width: 100%;
+  max-width: none;
 }

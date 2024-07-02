@@ -11,6 +11,7 @@ def check_log_status():
         'signup',
         'login',
         'check_session',
+        'recipes'
     ]
     if request.endpoint not in open_access_list and (not session.get('user_id')):
         return make_response({"error": "401 Unauthorized"}, 401)
@@ -58,7 +59,7 @@ class Login(Resource):
         params = request.json
         user = User.query.filter(User.username == params.get('username')).first()
         if not user:
-            return make_response({"Error": "User not found."})
+            return make_response({"Error": "User not found."}, 401)
         if user.authenticate(params.get('password')):
             session['user_id'] = user.id
             return make_response(user.to_dict(rules=("-recipe_users","-dietary_nos")))
@@ -147,7 +148,7 @@ class RecipeById(Resource):
     def get(self, id):
         recipe = db.session.get(Recipe, id)
         if recipe:
-            return make_response(recipe.to_dict(rules = ("-recipe_users", "-recipe_ingredients")), 200)
+            return make_response(recipe.to_dict(rules = ("-recipe_users", "-recipe_ingredients.ingredient.recipe_ingredients", "-recipe_ingredients.ingredient.dietary_nos", "-recipe_ingredients.recipe")), 200)
         else:
             return make_response({'error': 'Recipe not found'}, 404)
         
@@ -155,10 +156,32 @@ class RecipeById(Resource):
         recipe = db.session.get(Recipe, id)
         if recipe:
             params = request.json
+            print(params)
             for attr in params:
                 setattr(recipe , attr, params[attr])
             db.session.commit()
-            return make_response(recipe.to_dict(rules = ("-recipe_users.user", "-recipe_users.recipe", "-recipe_ingredients")))
+            Recipe_Ingredient.query.filter_by(recipe_id = recipe.id).delete()
+            db.session.commit()
+            for ri in params["ingredients"]:
+                    ingredient=Ingredient.query.filter_by(name=ri['ingredient'].lower()).first()
+                    if not ingredient:
+                        ingredient=Ingredient(
+                            name=ri['ingredient'].lower(),
+                        )
+                        db.session.add(ingredient)
+                        db.session.commit()
+                    print(ri['measurement'])
+                    recipe_ingredient = Recipe_Ingredient(
+                        weight_of_ingr=ri['amount'],
+                        weight_type=ri['measurement'].strip(),
+                        recipe_id=recipe.id,
+                        ingredient_id = ingredient.id
+                        )
+                    print(recipe_ingredient)
+                    db.session.add(recipe_ingredient)
+                    print(recipe_ingredient)
+                    db.session.commit()      
+            return make_response(recipe.to_dict(rules = ("-recipe_users.user", "-recipe_users.recipe")))
     
     def delete(self, id):
         recipe = db.session.get(Recipe, id)

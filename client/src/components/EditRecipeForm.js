@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { AppContext } from "../context/Context";
 import { Formik, FieldArray } from 'formik';
 import * as yup from 'yup'
@@ -9,16 +9,48 @@ import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 
-function RecipeForm() {
+function EditRecipeForm() {
     const navigate = useNavigate();
     const useAppContext = () => useContext(AppContext);
     const { setUser } = useAppContext();
+    let { id } = useParams();
 
     const [inputFields, setInputFields] = useState([
         { ingredient: '', amount: '', measurement: '' }
     ])
-
+    
     const [publicCheckbox, setPublicCheckBox] = useState(false)
+    
+
+    const [recipe, setRecipe] = useState({
+        title: "",
+        instruction: "",
+        category: "",
+        public_private: "",
+        recipe_ingredients: []
+    })
+
+    useEffect(() => {
+        fetch(`/recipes/${id}`)
+            .then((resp) => {
+                if (resp.ok) {
+                    return resp.json();
+                }
+                throw Error('Network response was not ok.')
+            })
+            .then((recipeData) => {
+                setRecipe(recipeData)
+                const ingredients = recipeData.recipe_ingredients.map((ri) => {
+                    return {
+                        ingredient: ri.ingredient.name,
+                        amount: ri.weight_of_ingr,
+                        measurement: ri.weight_type 
+                    }
+                })
+                setInputFields(ingredients)
+            })
+    }, [])
+
 
     const validationSchema = yup.object().shape({
         r_image: yup.string(),
@@ -29,10 +61,12 @@ function RecipeForm() {
 
     const initialValues = {
         r_image: '',
-        title: '',
-        instructions: '',
-        category: ''
+        title: recipe.title,
+        instruction: recipe.instruction,
+        category: recipe.category,
+        public_private: recipe.public_private
     }
+
 
     let formFields = inputFields.map((input, index) => {
         return (
@@ -75,13 +109,13 @@ function RecipeForm() {
                             <option value="each">each</option>
                         </Form.Select>
                     </Col>
-                        <Col  md={1}>
-                            {inputFields.length > 1 && (
-                                <Button data-index={index} className="minus-ingredient-button" variant="outline-danger" size="sm" onClick={handleRemoveFeildclick}>
-                                    -
-                                </Button>
-                            )}
-                        </Col>
+                    <Col md={1}>
+                        {inputFields.length > 1 && (
+                            <Button data-index={index} className="minus-ingredient-button" variant="outline-danger" size="sm" onClick={handleRemoveFieldclick}>
+                                -
+                            </Button>
+                        )}
+                    </Col>
                 </Row>
             </div >)
     })
@@ -100,7 +134,7 @@ function RecipeForm() {
         setInputFields([...inputFields, newField])
     }
 
-    function handleRemoveFeildclick(event) {
+    function handleRemoveFieldclick(event) {
         const index = event.target.dataset.index
         const values = [...inputFields];
         values.splice(index, 1);
@@ -110,8 +144,8 @@ function RecipeForm() {
     function handleFormSubmit(values, { setSubmitting }) {
         values["ingredients"] = inputFields
         values["public_private"] = publicCheckbox
-        fetch(`/create_a_recipe`, {
-            method: 'POST',
+        fetch(`/recipes/${id}`, {
+            method: 'PATCH',
             headers: {
                 "Content-Type": 'application/json'
             },
@@ -122,13 +156,31 @@ function RecipeForm() {
             } else {
                 alert('Failed to submit Recipe')
             }
-        }).then((user) => {
-            console.log(user);
-            // navigate("/recipes");
+        }).then((recipe) => {
+            navigate(`/recipes/${id}`);
         });
         setSubmitting(false);
     }
 
+    function handleRecipeDelete() {
+        
+        if (!window.confirm("Are you sure you want to delete your recipe?")) {
+            return;
+        }
+        fetch(`/recipes/${id}`, {
+            method: 'DELETE',
+            headers: {
+                "Content-Type": 'application/json'
+            },
+        }).then((resp) => {
+            if (resp.ok) {
+                alert('Your recipe has been deleted. We are so sorry to see it go!')
+                navigate("/recipes")
+            } else {
+                alert('Invalid credentials')
+            }
+        });
+    }
     return (
         <div className="recipe-template-container" >
             <main>
@@ -137,15 +189,20 @@ function RecipeForm() {
                 <br></br>
                 <br></br>
                 <Container className="recipe-form-container" >
-                    <Formik initialValues={initialValues}
+                    <Formik enableReinitialize
+                        initialValues={initialValues}
                         validationSchema={validationSchema}
                         onSubmit={handleFormSubmit}
                     >
-                        {({ values, errors, touched, handleChange, handleBlur, handleSubmit, setFieldValue }) => (
+                        {({ newField, values, errors, touched, handleChange, handleBlur, handleSubmit, setFieldValue }) => (
                             <Form className="recipe-form" onSubmit={handleSubmit}>
                                 <Row >
                                     <Form.Label className="fw-bold">Category:</Form.Label>
-                                    <Form.Select name="category" aria-label="category" onChange={handleChange}>
+                                    <Form.Select 
+                                    name="category" 
+                                    aria-label="category" 
+                                    value={values.category} 
+                                    onChange={handleChange}>
                                         <option>Select a category:</option>
                                         <option value="appetizers">Appetizers</option>
                                         <option value="soups">Soups</option>
@@ -191,14 +248,19 @@ function RecipeForm() {
                                     name="ingredients"
                                     render={() => formFields} />
                                 <br></br>
-                                <textarea onChange={handleChange} className="instructions" name="instructions"></textarea>
+                                <textarea 
+                                onChange={handleChange} 
+                                className="instructions" 
+                                name="instructions"
+                                value={values.instruction}
+                                ></textarea>
                                 <Form.Switch className="public_private_toggle">
                                     <Form.Check
                                         type="switch"
                                         id="custom-switch"
-                                        name='public_check'
+                                        name='public_private'
                                         label="Keep your recipe private"
-                                        checked={values.public_check}
+                                        checked={values.public_private}
                                         onChange={handleCheckBoxChange}
                                     />
                                 </Form.Switch>
@@ -206,6 +268,9 @@ function RecipeForm() {
                                 <div className="d-grid gap-2">
                                     <Button className='recipe-form-button' type='submit' variant="success" size="lg" onSubmit={handleSubmit}>
                                         Submit Recipe
+                                    </Button>
+                                    <Button className='recipe-form-delete-button' variant="outline-danger" size="lg" onClick={handleRecipeDelete}>
+                                        Delete Recipe
                                     </Button>
                                 </div>
                             </Form>
@@ -216,5 +281,5 @@ function RecipeForm() {
         </div>
     );
 }
-export default RecipeForm;
 
+export default EditRecipeForm;
