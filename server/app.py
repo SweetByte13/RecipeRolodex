@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
-from flask import request, session, make_response
+import base64
+from flask import request, session, make_response, jsonify
 from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
 from config import app, db, api
 from models import User, Recipe, Ingredient, Recipe_Ingredient, Recipe_User, Dietary_No
 from PIL import Image
+import io
 import pytesseract
+import codecs
 
 # @app.before_request
 # def check_log_status():
@@ -272,8 +275,28 @@ class MyRecipes(Resource):
 class GetImageOcr(Resource):
     def get(self):
         test = (pytesseract.image_to_string(Image.open('test2.png')))
-        print(test)
         return make_response(test)
+    
+    def post(self):
+        data = request.json
+        fileName = data["fileName"]
+        fileData = data["imageData"]
+        tempFileName = ""
+        try:
+            if ".png" in fileName:
+                tempFileName = "temp.png"
+            elif ".jpeg" in fileName:
+                tempFileName = "temp.jpeg"
+            elif ".jpg" in fileName:
+                tempFileName = "temp.jpg"      
+            with open(tempFileName, "wb") as binary_file:
+                binary_file.write(base64.b64decode(fileData, validate=True))
+            ocr =(pytesseract.image_to_string(Image.open(tempFileName)))
+            return (jsonify(ocr))
+        except Exception as e:
+            print(e)
+            
+            
 
 api.add_resource(Home, '/')
 api.add_resource(CheckSession, '/check_session')

@@ -128,11 +128,7 @@ class Recipe(db.Model, SerializerMixin):
     __tablename__ = 'recipes'
     
     serialize_rules = ('-recipe_users.recipe', '-recipe_ingredients.recipe')
-    
-    __table_args__ = (
-        db.CheckConstraint('length(instruction)<200', name='instruction_length_under_two_hundred'),
-    )
-    
+ 
     id=db.Column(db.Integer, primary_key=True)
     title=db.Column(db.String, nullable=False)
     instruction=db.Column(db.String, nullable=False)
@@ -163,7 +159,7 @@ class Recipe(db.Model, SerializerMixin):
             raise AssertionError ("instructions are required")
         if len(new_instruction)<6:
             raise AssertionError ("Instrutions are not long enough")
-        if len(new_instruction)>200:
+        if len(new_instruction)>5000:
             raise AssertionError ("Instructions are too long")
         return new_instruction
         

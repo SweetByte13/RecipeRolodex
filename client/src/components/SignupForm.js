@@ -35,7 +35,6 @@ function SignupForm() {
     }
 
     function handleSignupFormSubmit(values, { setSubmitting }) {
-        console.log("!!!!!!!!!!!!!")
         fetch("/signup", {
             method: 'POST',
             headers: {
@@ -65,7 +64,7 @@ function SignupForm() {
             >
                 {({ values, errors, touched, handleChange, handleBlur, handleSubmit  }) => (
                     <Form className="signup-form" onSubmit={handleSubmit}>
-                        {/* <Form.Group className="mb-3" controlId="formImage">
+                        {/* <Form.Group className="mb-3" >
                             <Form.Label>Profile Picture:</Form.Label>
                             <Form.Control
                                 type='text'
@@ -80,7 +79,7 @@ function SignupForm() {
                                 {touched.p_image && errors.p_image}
                             </Form.Control.Feedback>
                         </Form.Group> */}
-                        <Form.Group className="mb-3" controlId="formFName">
+                        <Form.Group className="mb-3" >
                             <Form.Label>First Name:</Form.Label>
                             <Form.Control
                                 type='text'
@@ -95,7 +94,7 @@ function SignupForm() {
                                 {touched.f_name && errors.f_name}
                             </Form.Control.Feedback>
                         </Form.Group>
-                        <Form.Group className="mb-3" controlId="formLName">
+                        <Form.Group className="mb-3">
                             <Form.Label>Last Name:</Form.Label>
                             <Form.Control
                                 type='text'
@@ -110,7 +109,7 @@ function SignupForm() {
                                 {touched.l_name && errors.l_name}
                             </Form.Control.Feedback>
                         </Form.Group>
-                        <Form.Group className="mb-3" controlId="formUsername">
+                        <Form.Group className="mb-3">
                             <Form.Label>Username:</Form.Label>
                             <Form.Control
                                 type='text'
@@ -128,7 +127,7 @@ function SignupForm() {
                                 {errors.username}
                             </Form.Control.Feedback>
                         </Form.Group>
-                        <Form.Group className="mb-3" controlId="formPassword">
+                        <Form.Group className="mb-3">
                             <Form.Label>Password:</Form.Label>
                             <Form.Control
                                 type='password'
@@ -147,7 +146,7 @@ function SignupForm() {
                                 {errors.password}
                             </Form.Control.Feedback>
                         </Form.Group>
-                        <Form.Group className="mb-3" controlId="formPassword">
+                        <Form.Group className="mb-3">
                             <Form.Label>Confirm Password:</Form.Label>
                             <Form.Control
                                 type='password'
@@ -166,7 +165,7 @@ function SignupForm() {
                                 {errors.password}
                             </Form.Control.Feedback>
                         </Form.Group>
-                        <Form.Group className="mb-3" controlId="formEmail">
+                        <Form.Group className="mb-3">
                             <Form.Label>Email:</Form.Label>
                             <Form.Control
                                 type='text'
@@ -178,7 +177,7 @@ function SignupForm() {
                                 onBlur={handleBlur}
                             />
                         </Form.Group>
-                        <Form.Group className="mb-3" controlId="formZipcode">
+                        <Form.Group className="mb-3">
                             <Form.Label>Zipcode:</Form.Label>
                             <Form.Control
                                 type='text'

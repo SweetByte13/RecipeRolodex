@@ -18,6 +18,7 @@ function RecipeForm() {
         { ingredient: '', amount: '', measurement: '' }
     ])
 
+    const [instructions, setInstructions] = useState("")
     const [publicCheckbox, setPublicCheckBox] = useState(false)
 
     const validationSchema = yup.object().shape({
@@ -30,7 +31,7 @@ function RecipeForm() {
     const initialValues = {
         r_image: '',
         title: '',
-        instructions: '',
+        instructions: instructions,
         category: ''
     }
 
@@ -107,14 +108,57 @@ function RecipeForm() {
         setInputFields(values);
     }
 
-    function handleFileChange(event) {
-        const fileList = this.files;
-        console.log(fileList)
+
+    const handleFileChange = event => {
+        if(
+        !window.confirm("This will overwrite the current instructions. Are you sure you wish to continue?"))
+        {
+            return 
+        }
+        const reader = new FileReader();
+        const file = event.target.files[0];
+        if (file) {
+            reader.readAsDataURL(file)
+            reader.onload = readerEvent => {
+                const fileText = readerEvent.target.result
+                fetch('/get_image_ocr', {
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": 'application/json'
+                    },
+                    body: JSON.stringify({
+                        fileName: file.name,
+                        imageData: fileText.split(',')[1]
+                    })
+                }).then((resp) => {
+                    if (resp.ok) {
+                        return resp.json();
+                    }
+                    else {
+                        alert('Invalid credentials')
+                    }
+                }).then((resp) => {
+                    setInstructions(resp)
+                })
+            }
+        }
+        else {
+            console.log('THIS FILE IS INVALID');
+            const input = document.getElementsByTagName('input')[0];
+            input.value = null;
+        }
+       
     }
+
+    function handleTextareaChange(event) {
+        setInstructions(event.target.value)
+    }
+
 
     function handleFormSubmit(values, { setSubmitting }) {
         values["ingredients"] = inputFields
         values["public_private"] = publicCheckbox
+        values["instructions"] = instructions
         fetch(`/create_a_recipe`, {
             method: 'POST',
             headers: {
@@ -128,8 +172,7 @@ function RecipeForm() {
                 alert('Failed to submit Recipe')
             }
         }).then((user) => {
-            console.log(user);
-            // navigate("/recipes");
+            navigate("/recipes");
         });
         setSubmitting(false);
     }
@@ -140,12 +183,17 @@ function RecipeForm() {
                 <h2 className="create-recipe-header">Create your own Recipes:</h2>
                 <div className="create-recipe-subheader"><strong >You may keep your recipes private or share them with our other users!</strong></div>
                 <br></br>
-                <br></br>
                 <Container>
-                    IMAGE UPLOAD SPACE
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>Default file input example</Form.Label>
-                        <Form.Control onChange={handleFileChange} type="file" accept=".png, .jpeg, .jpg"/>
+                    <Form.Group className="mb-3">
+                        <Form.Label>Choose an image to recieve text from and populate the instructions:
+                        </Form.Label>
+                        <p>Please ensure the image is cropped and as clear as possible for the best results</p>
+                        <Form.Control
+                            onChange={handleFileChange}
+                            id="fileInput"
+                            type="file"
+                            name="file"
+                            accept=".png, .jpeg, .jpg" />
                     </Form.Group>
                 </Container>
                 <Container className="recipe-form-container" >
@@ -203,7 +251,12 @@ function RecipeForm() {
                                     name="ingredients"
                                     render={() => formFields} />
                                 <br></br>
-                                <textarea onChange={handleChange} className="instructions" name="instructions"></textarea>
+                                <textarea 
+                                onChange={handleTextareaChange}
+                                value={instructions}
+                                className="instructions" 
+                                name="instructions" 
+                                id="instruction-textarea"></textarea>
                                 <Form.Switch className="public_private_toggle">
                                     <Form.Check
                                         type="switch"
