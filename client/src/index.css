@@ -4,12 +4,20 @@
   --link: #61dafb;
   --text: hsla(0, 0%, 100%, 0.88);
 }
-
+/* 
 main {
-  margin-top: 70px;
   margin-bottom: 70px;
+} */
+
+.copywrite{
+  padding-bottom: 30px;
+  padding-top: 30px;
+  background-color:#8ec099;
+  background-size: cover;
 }
 
+
+/* HOME */
 .carousel-container {
   position: relative;
 }
@@ -25,15 +33,62 @@ main {
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
+  padding: 65px 0px 65px 0px;
+  margin-top: 50px;
+  margin-bottom: 800px;
+  transition: 0.3s, border 0.3s, border-radius 0.3s, box-shadow 0.3s;
+}
+
+.home-background-banner{
+  background-color: #E8F1EA;
+  
+}
+
+.left-p-on-home{
+  box-sizing: border-box;
+  text-align: left;
+  width: 800px; 
+  margin-top: 40px;
+  margin: 10px 0; 
+  font-size: 19px;
+  line-height: 29px;
+  letter-spacing: 0px;
+  padding-left: 400px;
+
+}
+
+.right-p-on-home{
+  box-sizing: border-box;
+  text-align: right;
+  margin-top: 40px;
+  margin: 10px 0; 
+  font-size: 19px;
+  line-height: 29px;
+  letter-spacing: 0px;
+  padding-right: 400px;
+}
+
+.title-on-home{
+  text-align: center;
+  padding-left: 20%;
+  padding-right: 10%;
+  padding-bottom: 10px;
+  padding-top: 20px;
 }
 
 .spacing{
   background: var(--color-brand-tertiary);
 }
-.sidebar-primary {
-  float: right;
+
+.home-images{
   width: 300px;
-  margin-top: 7px;
+  height: 200px;
+  box-sizing: border-box;
+  vertical-align: middle;
+  display: inline-block;
+  height: auto;
+  padding-top: 30px;
+  padding-bottom: 30px;
 }
 
 .conversion-header {
@@ -134,4 +189,31 @@ main {
   margin: 0px auto;
   width: 100%;
   max-width: none;
+}
+
+.intro_content{
+  place-items: center;
+  text-align: left;
+  width: 800px;
+  margin-top: 30px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.into_title{
+  place-items: center;
+  text-align: center;
+  width: 800px;
+  margin-top: 40px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.bold{
+  font-weight: bold;
+}
+
+.disclaimer {
+  margin-top: 60px;
+  margin-bottom: -40px;
 }
