@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AppContext } from "../context/Context";
 import NavBar from "../components/NavBar";
+import Footer from "../components/Footer";
 import ConversionContainer from "../components/ConversionContainer";
 
 function ConversionTable() {
@@ -16,6 +17,7 @@ function ConversionTable() {
             <main>
                 <ConversionContainer />
             </main>
+            <Footer />
         </>
     );
 }

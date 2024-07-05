@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import NavBar from "../components/NavBar";
+import Footer from "../components/Footer";
 import Button from 'react-bootstrap/Button';
 import LoginForm from "../components/LoginForm";
 
@@ -25,6 +26,7 @@ function Login() {
                 </Button>
             </h4>
         </main>
+        <Footer />
         </>
     )
 }

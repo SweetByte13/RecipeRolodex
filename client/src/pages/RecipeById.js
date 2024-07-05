@@ -3,6 +3,7 @@ import { AppContext } from "../context/Context";
 import { useNavigate, useParams } from "react-router-dom";
 import { HeartFill, Heart } from 'react-bootstrap-icons';
 import NavBar from "../components/NavBar";
+import Footer from "../components/Footer";
 import Container from 'react-bootstrap/Container';
 import Image from 'react-bootstrap/Image';
 import Button from 'react-bootstrap/Button';
@@ -144,6 +145,7 @@ function RecipeById() {
                     </div>
                 </Container>
             </main>
+            <Footer />
         </div >
 
     );

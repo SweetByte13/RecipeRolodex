@@ -1,5 +1,6 @@
 import React from "react";
 import NavBar from "../components/NavBar";
+import Footer from "../components/Footer";
 import SignUpForm from "../components/SignupForm";
 
 function SignUp() {
@@ -12,6 +13,7 @@ function SignUp() {
                 <h4 className="signup-title">Please use the form below to sign up!</h4>
                 <SignUpForm />
             </main>
+            <Footer />
         </div>
     )
 }

@@ -152,7 +152,8 @@ function ProfileForm() {
                         </Form.Group>
                         <br></br>
                         <div className="d-grid gap-2">
-                            <Button className='profile-form-button' type='submit' variant="success" size="lg">
+                          <br></br>
+                            <Button className='profile-form-button' type='submit' variant="success" size="lg" style={{marginBottom: '8px'}}>
                                 Submit Changes
                             </Button>
                             <Button className='profile-form-delete-button' variant="outline-danger" size="lg" onClick={() => handleAccountDelete()}>

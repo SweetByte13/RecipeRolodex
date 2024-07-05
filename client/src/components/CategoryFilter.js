@@ -18,7 +18,7 @@ function CategoryFilter({ setRecipes, recipes, setFilteredRecipes }) {
 
     return (
         <div className="dropdown">
-            <label className="filter" htmlFor="filter">Category:</label>
+            <label className="filter" htmlFor="filter">Category:&nbsp;</label>
             <select className="select" name="filter" onChange={handleChangeFilter}>
                 <option value="">Select a category:</option>
                 <option value="appetizers">Appetizers</option>
