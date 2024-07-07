@@ -107,23 +107,16 @@
   padding: 0;
 }
 
-.create-recipe-header {
-  padding-top: 4%;
+.create-recipe {
+  padding-top: 10%;
   place-items: center;
   text-align: center;
   width: 800px;
   margin-left: auto;
   margin-right: auto;
+  padding-bottom: 10%;
 }
 
-
-.create-recipe-subheader {
-  place-items: center;
-  text-align: center;
-  width: 800px;
-  margin-left: auto;
-  margin-right: auto;
-}
 
 .recipe-template-container {
   place-items: center;
@@ -217,4 +210,14 @@
 .disclaimer {
   margin-top: 60px;
   margin-bottom: -40px;
+}
+
+.grocery-list {
+  padding-top: 10%;
+  place-items: center;
+  text-align: center;
+  width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 10%;
 }

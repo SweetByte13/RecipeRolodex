@@ -13,10 +13,12 @@ function RecipeCard({ recipe }) {
     const { user } = useAppContext();
     const navigate = useNavigate();
 
-    const { title, instructions, image, category, recipe_users } = recipe
+    const { title, instructions, image, category, recipe_users, recipe_ingredients } = recipe
 
     const [liked, setLiked] = useState(
         recipe_users.some(x => x.user_id === user?.id));
+
+    const [groceryList, setGroceryList] = useState([])
 
     function handleLikedClick() {
         setLiked(!liked);
@@ -81,6 +83,13 @@ function RecipeCard({ recipe }) {
 
     const isCreator = recipe_users.some(x => x.user_id === user?.id && x.creator)
 
+
+    function handleGroceryClick() {
+        console.log("click")
+        // setGroceryList(groceryList)
+        // localStorage.setItem(JSON.stringify(recipe.recipe_ingredients.ingredients), groceryList)
+    }
+
     return (
         <Card className="recipe-card" style={{ width: '22rem', marginBottom: '2.5rem' }}>
             <Card.Img className="card-image" variant="top" src={Sourdough} alt="Image" style={{ height: '15rem', width: '21.9rem' }} />
@@ -89,6 +98,8 @@ function RecipeCard({ recipe }) {
                 <Card.Text className="recipe-instructions">{instructions}</Card.Text>
                 <Card.Text className="recipe-category">Category: {category}</Card.Text>
                 <Button className="see-more-button" variant="success" onClick={() => handleSeeMoreButton()}>See More...</Button>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <Button className="grocery-button" variant="success" onClick={handleGroceryClick}>Add to Grocery List</Button>
                 <br></br>
                 {user !== null && user !== undefined ?
                     (isCreator ?
@@ -100,9 +111,6 @@ function RecipeCard({ recipe }) {
                             <HeartFill style={{ float: 'right' }} color="red" onClick={handleLikedClick}></HeartFill>))
                     )
                     :
-                    // <Button variant="primary" onClick={handleSeeMoreButton}>
-                    //     Log in to like recipes
-                    // </Button>
                     ""
                 }
             </Card.Body>

@@ -1,15 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { AppContext } from "../context/Context";
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
-import RecipeContainer from "../components/RecipeContainer";
-import SearchBar from "../components/SearchBar";
-import RecipeFilter from "../components/RecipeFilter";
-import Row from 'react-bootstrap/Row';
-import RecipeCard from "../components/RecipeCard";
+import GroceryList from "../components/GroceryList";
 
-function MyRecipes() {
+
+
+function GroceryCompiler() {
     const navigate = useNavigate();
     const useAppContext = () => useContext(AppContext);
     const { setUser } = useAppContext();
@@ -29,11 +27,10 @@ function MyRecipes() {
             .then((recipesData) => {
                 console.log(recipesData)
                 setRecipes(recipesData)
-                setFilteredRecipes(recipesData)
-            })
+                setFilteredRecipes(recipesData)})
     }, []);
 
-    const filteredRecipes2 = filteredRecipes.filter((recipe) => {
+    const filteredRecipes2= filteredRecipes.filter((recipe) => {
         return (recipe.title.toLowerCase().includes(searchTerm.toLowerCase()))
     })
 
@@ -41,19 +38,12 @@ function MyRecipes() {
         <div>
             <NavBar />
             <main>
-                <br></br>
-                <div className="search-filter">
-                    <Row style={{ marginLeft: '50px' }}>&nbsp;&nbsp;&nbsp;&nbsp;
-                        <SearchBar setSearchRecipe={setSearchTerm} />
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <RecipeFilter recipes={recipes} setRecipes={setRecipes} setFilteredRecipes={setFilteredRecipes} />
-                    </Row>
+                <div className="grocery-list">
+                <GroceryList recipes={filteredRecipes2}/>
                 </div>
-                <RecipeContainer recps={filteredRecipes2} />
             </main>
             <Footer />
         </div>
     );
 }
-
-export default MyRecipes;
+export default GroceryCompiler;

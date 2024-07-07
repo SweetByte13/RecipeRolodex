@@ -1,25 +1,27 @@
 import React, { useState, useEffect } from "react";
 
 
-function RecipeFilter({ recipes = {}}) {
+function RecipeFilter({ setRecipes, recipes, setFilteredRecipes }) {
 
     const [filter, setFilter] = useState("");
 
     function handleChangeFilter(event) {
-        const value = event.currentTarget.value
-        console.log(value)
-        console.log(recipes)
-        setFilter(value);
-        if (recipes && recipes.recipe_users) {
-            if (value === "all") {
-                return true;
-            } else if (value === "liked") {
-                return recipes.recipe_users.creator[false];
-            } else if (value === "created") {
-                return recipes.recipe_users.creator[true];
-            }
-        }
+        const value = event.currentTarget.value;
+        console.log(value);
+        // setFilter(value);
+        // if (value === "" || value === "all") {
+        //     setFilteredRecipes(recipes);
+        // } else if (value === "liked") {
+        //     const filteredRecipes = recipes.filter(recipe => recipe.recipe_user && recipe.recipe_user.creator === false);
+        //     console.log(filteredRecipes);
+        //     setFilteredRecipes(filteredRecipes);
+        // } else if (value === "created") {
+        //     const filteredRecipes = recipes.filter(recipe => recipe.recipe_user && recipe.recipe_user.creator === true);
+        //     console.log(filteredRecipes);
+        //     setFilteredRecipes(filteredRecipes);
+        // }
     }
+
     return (
         <div className="dropdown">
             <label className="filter" htmlFor="filter">Category:&nbsp;</label>

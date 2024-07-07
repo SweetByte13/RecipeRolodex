@@ -11,6 +11,7 @@ import CreateARecipe from "../pages/CreateARecipe";
 import MyRecipes from "../pages/MyRecipes";
 import RecipeById from "../pages/RecipeById";
 import EditRecipe from "../pages/EditRecipe";
+import GroceryCompiler from "../pages/GroceryCompiler";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -43,7 +44,7 @@ function App() {
             <Route path="/conversion_tables" element={<ConversionTable />}/>
             <Route path="/create_a_recipe" element={<CreateARecipe />}/>
             <Route path="/edit_recipe/:id" element={<EditRecipe />} />
-            {/* <Route path="/conversion_tables#Top" element={<a name="Top"></a>}/> */}
+            <Route path="/grocery_compiler" element={<GroceryCompiler />} />
           </Routes>
         </>
       </AppContext.Provider>

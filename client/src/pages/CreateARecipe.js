@@ -10,14 +10,16 @@ function CreateARecipe() {
     const useAppContext = () => useContext(AppContext);
     const { setUser } = useAppContext();
 
-    return(
-        <div className="create-recipe">
-            <NavBar />
-            <br></br>
-            <main>
-                <RecipeForm />
-            </main>
-            <Footer />
+    return (
+        <div>
+            <div className="create-recipe">
+                <NavBar />
+                <br></br>
+                <main>
+                    <RecipeForm />
+                </main>
+            </div>
+                <Footer />
         </div>
     )
 }
