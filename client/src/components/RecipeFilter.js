@@ -1,25 +1,28 @@
 import React, { useState, useEffect } from "react";
+import { ChevronDoubleLeft } from "react-bootstrap-icons";
 
 
-function RecipeFilter({ setRecipes, recipes, setFilteredRecipes }) {
+function RecipeFilter({ setRecipes, recipes, setFilteredRecipes, id }) {
 
     const [filter, setFilter] = useState("");
 
     function handleChangeFilter(event) {
         const value = event.currentTarget.value;
         console.log(value);
-        // setFilter(value);
-        // if (value === "" || value === "all") {
-        //     setFilteredRecipes(recipes);
-        // } else if (value === "liked") {
-        //     const filteredRecipes = recipes.filter(recipe => recipe.recipe_user && recipe.recipe_user.creator === false);
-        //     console.log(filteredRecipes);
-        //     setFilteredRecipes(filteredRecipes);
-        // } else if (value === "created") {
-        //     const filteredRecipes = recipes.filter(recipe => recipe.recipe_user && recipe.recipe_user.creator === true);
-        //     console.log(filteredRecipes);
-        //     setFilteredRecipes(filteredRecipes);
-        // }
+        console.log(recipes)
+        console.log(id)
+        setFilter(value);
+        if (value === "" || value === "all") {
+            setFilteredRecipes(recipes);
+        } else if (value === "liked") {
+            const filteredRecipes = recipes.filter(recipe => {
+                return recipe.recipe_users.some((ru) => parseInt(ru.user_id) === parseInt(id) && ru.creator === false)});
+            setFilteredRecipes(filteredRecipes);
+        } else if (value === "created") {
+            const filteredRecipes = recipes.filter(recipe => {
+                return recipe.recipe_users.some((ru) => parseInt(ru.user_id) === parseInt(id) && ru.creator === true)});
+            setFilteredRecipes(filteredRecipes);
+        }
     }
 
     return (

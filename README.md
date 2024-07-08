@@ -9,7 +9,9 @@ Welcome to Recipe Rolodex, a recipe application aimed at helping you find and cr
 ## Setup
 
 ### Fork and clone this repository:
+```console
 git clone git@github.com:<username>/RecipeRolodex.git
+```
 
 ### `server/`
 

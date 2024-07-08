@@ -257,6 +257,6 @@ class Dietary_No(db.Model,SerializerMixin):
         
     @validates('user_id')
     def validates_user_id(self, key, new_user_id):
-        assert new_user_id is not None, "Must have a user ID"
-        assert User.query.get(new_user_id) is not None, "User does not exist"
+        assert new_user_id is None or 'undefined', "Must have a user ID"
+        assert User.query.get(new_user_id) is None or 'undefined', "User does not exist"
         return new_user_id

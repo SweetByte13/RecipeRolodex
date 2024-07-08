@@ -221,3 +221,9 @@
   margin-right: auto;
   padding-bottom: 10%;
 }
+
+/* recipe card */
+.card-image {
+  height: 50%;
+  width:50%
+}

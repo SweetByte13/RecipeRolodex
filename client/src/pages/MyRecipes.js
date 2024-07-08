@@ -12,14 +12,15 @@ import RecipeCard from "../components/RecipeCard";
 function MyRecipes() {
     const navigate = useNavigate();
     const useAppContext = () => useContext(AppContext);
-    const { setUser } = useAppContext();
+    const { user, setUser } = useAppContext();
+    let { id } = useParams();
 
     const [recipes, setRecipes] = useState([])
     const [searchTerm, setSearchTerm] = useState('')
     const [filteredRecipes, setFilteredRecipes] = useState([])
 
     useEffect(() => {
-        fetch("/recipes")
+        fetch(`/my_recipes/${id}`)
             .then((resp) => {
                 if (resp.ok) {
                     return resp.json();
@@ -46,7 +47,7 @@ function MyRecipes() {
                     <Row style={{ marginLeft: '50px' }}>&nbsp;&nbsp;&nbsp;&nbsp;
                         <SearchBar setSearchRecipe={setSearchTerm} />
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <RecipeFilter recipes={recipes} setRecipes={setRecipes} setFilteredRecipes={setFilteredRecipes} />
+                        <RecipeFilter id={id} recipes={recipes} setRecipes={setRecipes} setFilteredRecipes={setFilteredRecipes} />
                     </Row>
                 </div>
                 <RecipeContainer recps={filteredRecipes2} />

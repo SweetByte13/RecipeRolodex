@@ -92,7 +92,7 @@ function RecipeCard({ recipe }) {
 
     return (
         <Card className="recipe-card" style={{ width: '22rem', marginBottom: '2.5rem' }}>
-            <Card.Img className="card-image" variant="top" src={Sourdough} alt="Image" style={{ height: '15rem', width: '21.9rem' }} />
+            <Card.Img className="card-image" variant="top" src={image} alt="Image" style={{ height: '25rem', width: '21.9rem' }} />
             <Card.Body>
                 <Card.Title>{title}</Card.Title>
                 <Card.Text className="recipe-instructions">{instructions}</Card.Text>
