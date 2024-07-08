@@ -6,7 +6,6 @@ import Col from 'react-bootstrap/Col';
 
 
 function RecipeContainer({ recps }) {
-console.log(recps)
     const recipe = recps.map((recipe) => {
         return (
             <div key={recipe.idx}>

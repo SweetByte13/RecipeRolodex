@@ -146,7 +146,7 @@ class UserById(Resource):
 class Recipes(Resource):
     def get(self):
         recipes = Recipe.query.all()
-        recipe_list = [recipe.to_dict(rules = ("-recipe_users.user", "-recipe_users.recipe", "-recipe_ingredients")) for recipe in recipes]
+        recipe_list = [recipe.to_dict(rules = ("-recipe_users.user", "-recipe_users.recipe","-recipe_ingredients.ingredient.recipe_ingredients", "-recipe_ingredients.ingredient.dietary_nos", "-recipe_ingredients.recipe")) for recipe in recipes]
         return make_response(recipe_list, 200)
 
         

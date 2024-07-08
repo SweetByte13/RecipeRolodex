@@ -209,21 +209,85 @@
 
 .disclaimer {
   margin-top: 60px;
-  margin-bottom: -40px;
-}
-
-.grocery-list {
-  padding-top: 10%;
-  place-items: center;
-  text-align: center;
-  width: 800px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-bottom: 10%;
+  margin-bottom: 40px;
 }
 
 /* recipe card */
 .card-image {
   height: 50%;
   width:50%
+}
+
+/* login */
+.login-header{
+  padding-top: 8%;
+  place-items: center;
+  text-align: center;
+  width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.login-header2{
+  padding-top: 5%;
+  place-items: center;
+  text-align: center;
+  width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.signup-redirect-from-loginpage{
+  place-items: center;
+  text-align: center;
+  width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 20%;
+}
+
+
+.grocery-header{
+  padding-top: 15%;
+  place-items: center;
+  text-align: center;
+  width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.grocery-list{
+  place-items: center;
+  padding-bottom: 38%;
+  text-align: left;
+  margin-left: 45%;
+}
+
+/* sign up */
+.signup-header {
+  padding-top: 10%;
+  place-items: center;
+  text-align: center;
+  width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.signup-title{
+  padding-top: 1%;
+  place-items: center;
+  text-align: center;
+  width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 3%;
+}
+
+.login-redirect-from-signup{
+  place-items: center;
+  text-align: center;
+  width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 7%;
 }

@@ -1,35 +1,28 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
 import { AppContext } from "../context/Context";
 import { useNavigate } from "react-router-dom";
 import { HeartFill, Heart, PencilFill } from 'react-bootstrap-icons';
-import Sourdough from '../images/Sourdough.jpg';
 
 function RecipeCard({ recipe }) {
     const useAppContext = () => useContext(AppContext);
     const { user } = useAppContext();
     const navigate = useNavigate();
-
-    const { title, instructions, image, category, recipe_users, recipe_ingredients } = recipe
-
-    const [liked, setLiked] = useState(
-        recipe_users.some(x => x.user_id === user?.id));
-
-    const [groceryList, setGroceryList] = useState([])
+    
+    const { title, instructions, image, category, recipe_users } = recipe
+    const [liked, setLiked] = useState(recipe_users.some(x => x.user_id === user?.id));
+    const [inGroceryList, setInGroceryList] = useState(false)
+    const isCreator = recipe_users.some(x => x.user_id === user?.id && x.creator)
 
     function handleLikedClick() {
         setLiked(!liked);
-
         const values = {
             recipe_id: recipe.id,
             user_id: user.id
         }
 
         if (!liked) {
-
             fetch("/liked_recipe", {
                 method: 'POST',
                 headers: {
@@ -81,13 +74,23 @@ function RecipeCard({ recipe }) {
         navigate(`/edit_recipe/${recipe.id}`)
     }
 
-    const isCreator = recipe_users.some(x => x.user_id === user?.id && x.creator)
-
+    useEffect(() => {
+        let groceryList = JSON.parse(localStorage.getItem("groceryList")) || []
+        setInGroceryList(groceryList.some((r) => r.id === recipe.id))
+    })
 
     function handleGroceryClick() {
-        console.log("click")
-        // setGroceryList(groceryList)
-        // localStorage.setItem(JSON.stringify(recipe.recipe_ingredients.ingredients), groceryList)
+        let groceryList = JSON.parse(localStorage.getItem("groceryList")) || []
+        if (!inGroceryList) {
+            const recipeCard = recipe
+            groceryList.push(recipeCard)
+            localStorage.setItem("groceryList", JSON.stringify(groceryList))
+        } else {
+            let indexOfRecipe = groceryList.findIndex((r) => r.id === recipe.id )
+            groceryList.splice(indexOfRecipe, 1)
+            localStorage.setItem("groceryList", JSON.stringify(groceryList))
+        }
+        setInGroceryList(!inGroceryList)
     }
 
     return (
@@ -99,7 +102,9 @@ function RecipeCard({ recipe }) {
                 <Card.Text className="recipe-category">Category: {category}</Card.Text>
                 <Button className="see-more-button" variant="success" onClick={() => handleSeeMoreButton()}>See More...</Button>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <Button className="grocery-button" variant="success" onClick={handleGroceryClick}>Add to Grocery List</Button>
+                {inGroceryList ? <Button className="grocery-button" variant="outline-danger" onClick={handleGroceryClick}>Remove from List</Button>
+                    :
+                    <Button className="grocery-button" variant="success" onClick={handleGroceryClick}>Add to Grocery List</Button>}
                 <br></br>
                 {user !== null && user !== undefined ?
                     (isCreator ?

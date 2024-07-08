@@ -16,7 +16,7 @@ function Login() {
             <br></br>
             <div>
             <h1 className="login-header">Welcome to RecipeRolodex</h1>
-            <h3> Sign In</h3>
+            <h3 className="login-header2"> Sign In</h3>
             </div>
             <LoginForm/>
             <h4 className="signup-redirect-from-loginpage">

@@ -78,6 +78,7 @@ function LoginForm() {
                         <Form.Control.Feedback type="invalid">
                             {errors.password}
                         </Form.Control.Feedback>
+                        <br></br>
                         <Button className="login-button" type='submit' variant="success">
                             Log In
                         </Button>

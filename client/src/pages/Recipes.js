@@ -27,7 +27,6 @@ function Recipes() {
                 throw Error("Network responce failed")
             })
             .then((recipesData) => {
-                console.log(recipesData)
                 setRecipes(recipesData)
                 setFilteredRecipes(recipesData)})
     }, []);

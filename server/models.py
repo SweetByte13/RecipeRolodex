@@ -22,6 +22,7 @@ class User(db.Model, SerializerMixin):
     _password_hash=db.Column(db.String, nullable=False)
     email=db.Column(db.String, nullable=False)
     zipcode=db.Column(db.String, nullable=False)
+    # image_id=db.Column(db.Integer, ForeignKey=True)
     
     recipe_users=db.relationship('Recipe_User', back_populates='user', cascade='all, delete-orphan')
     dietary_nos=db.relationship('Dietary_No', back_populates='user', cascade='all, delete-orphan')
@@ -123,6 +124,11 @@ class Recipe_User(db.Model, SerializerMixin):
             raise AssertionError ("Must have a user ID")
         return new_user_id
         
+# class Image(db.Model, SerializerMixin):
+#     __tablename__ = 'images'
+    
+#     id=db.Column(db.Interger, primary_key = True)
+#     image=db.Column(db.Integer)
     
 class Recipe(db.Model, SerializerMixin):
     __tablename__ = 'recipes'
@@ -135,7 +141,9 @@ class Recipe(db.Model, SerializerMixin):
     image=db.Column(db.String)
     category=db.Column(db.String, nullable=False)
     public=db.Column(db.Boolean, nullable=False)
-       
+    # image_id=db.Column(db.Integer, ForeignKey=True)
+    
+    # images=db.relationship('Image', back_populates='recipe')   
     recipe_users=db.relationship('Recipe_User', back_populates='recipe', cascade='all, delete-orphan')
     recipe_ingredients=db.relationship('Recipe_Ingredient', back_populates='recipe', cascade='all, delete-orphan')
     user=association_proxy('recipe_users', 'user')
