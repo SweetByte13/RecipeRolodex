@@ -6,8 +6,10 @@
 Welcome to Recipe Rolodex, a recipe application aimed at helping you find and create new recipes! 
 
 ---
-
 ## Setup
+
+### Fork and clone this repository:
+git clone git@github.com:<username>/RecipeRolodex.git
 
 ### `server/`
 
@@ -31,6 +33,19 @@ python server/app.py
 Check that your server serves the default route `http://localhost:5555`. You
 should see a web page with the heading "Project Server".
 
+Ensure the database is up to date by running:
+```console
+flask db upgrade
+```
+
+Then seed the database by running:
+```console
+python seed.py
+```
+
+There can sometimes be errors when seeding the database as Faker is used and sometimes fails to give unique data. If this happens, run the command again. Continue to run the command until you successfully seed the database. 
+
+
 ### `client/`
 
 The `client/` directory contains all of your frontend code. The file
@@ -51,7 +66,9 @@ running:
 npm start --prefix client
 ```
 
-# Recipe Rolodex
+Recipe Rolodex should now be running in your web browser. Begin interacting with the application and have fun!
+
+### 
 
 ## Overview
 Recipe Rolodex is a user-friendly application designed to help you manage your recipes. 
@@ -80,3 +97,9 @@ Add your own recipes and save your favorites to your personal library. Enjoy the
 I'd love to hear your feedback! If you have any suggestions or run into any issues, please let me know.
 
 Happy cooking!
+
+## Project Notes
+This project was created as part of Flatiron, for the final project of Tova Hillman. This project is not considered 100% complete, although the current features are all functional. I have many ideas of how to continue to improve the users experience, and hopes to have more features avaliable soon.
+
+## Contributions
+This project is not looking for contributions, as it is to continue to increase my skills. 
