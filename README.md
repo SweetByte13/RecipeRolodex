@@ -51,19 +51,32 @@ running:
 npm start --prefix client
 ```
 
-### What Goes into a README?
+# Recipe Rolodex
 
-This README should serve as a template for your own- go through the important
-files in your project and describe what they do. Each file that you edit (you
-can ignore your migration files) should get at least a paragraph. Each function
-should get a small blurb.
+## Overview
+Recipe Rolodex is a user-friendly application designed to help you manage your recipes. 
+With Recipe Rolodex, you can view all recipes, add your own, and save your favorites to your personal library. 
+The application also allows you to upload recipe files and converts them into an editable digital format.
 
-You should descibe your application first, and with a good level of detail. The
-rest should be ordered by importance to the user. (Probably routes next, then
-models.)
+## Features
 
-Screenshots and links to resources that you used throughout are also useful to
-users and collaborators, but a little more syntactically complicated. Only add
-these in if you're feeling comfortable with Markdown.
+### User Authentication
+- **Sign Up**: Create a new account to start adding and saving recipes.
+- **Log In**: Log in to your account to access your personal recipe library.
 
----
+### Recipe Management
+- **View All Recipes**: Browse through a vast collection of recipes added by users from around the world.
+- **Add Recipes**: Add your own recipes to the application. You can include ingredients, instructions, and even photos. You have the choice to make your recipes public or keep them a family secret.
+- **Save Recipes**: Save any recipe that you like to your personal library for easy access in the future.
+
+### Recipe File Upload
+- **Upload Recipe Files**: Have a recipe in a file? No problem! Upload the file and our application will convert it into an editable digital format. This works for image files as well. The OCR softwear used, Tesseract, allows for image files ( such as .png, .jpeg, .jpg) to be uploaded. The text from the image is then grabbed and dropped into the instrruction filed in the "create a recipe" form. To ensure the best results on the picked up text, a clear and cropped image is best.   
+
+## Getting Started
+To get started with Recipe Rolodex, sign up for an account and start exploring recipes from around the world. 
+Add your own recipes and save your favorites to your personal library. Enjoy the convenience of having all your recipes in one place with Recipe Rolodex.
+
+## Feedback
+I'd love to hear your feedback! If you have any suggestions or run into any issues, please let me know.
+
+Happy cooking!
