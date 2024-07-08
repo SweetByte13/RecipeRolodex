@@ -65,7 +65,7 @@ function RecipeById() {
                     <tbody>
                         <tr>
                             <td style={{ width: "50%", textAlign: "right" }}>
-                                <Image className="recipe-image" src={Sourdough} style={{ height: 500 }} />
+                                <Image className="recipe-image" src={recipe.image} style={{ height: 500 }} />
                             </td>
                             <td style={{ width: "50%" }}>
                                 <h3 style={{ textAlign: "center" }}>
@@ -78,9 +78,9 @@ function RecipeById() {
                                     {recipe.category}
                                 </h5>
                                 <br></br>
-                                <h6 style={{ textAlign: "center" }}>
+                                {/* <h6 style={{ textAlign: "center" }}>
                                     Date of Recipe Creation?
-                                </h6>
+                                </h6> */}
                             </td>
                         </tr>
                     </tbody>

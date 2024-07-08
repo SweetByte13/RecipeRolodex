@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import base64
-from flask import request, session, make_response, jsonify
+from flask import redirect, render_template, request, session, make_response, jsonify, abort, send_from_directory, url_for
 from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
 from config import app, db, api
@@ -9,6 +9,18 @@ from PIL import Image
 import io
 import pytesseract
 import codecs
+import os
+import imghdr
+import uuid
+from werkzeug.utils import secure_filename
+
+def validate_image(stream):
+    header = stream.read(512)
+    stream.seek(0)
+    format = imghdr.what(None, header)
+    if not format:
+        return None
+    return '.' + (format if format != 'jpeg' else 'jpg')
 
 # @app.before_request
 # def check_log_status():
@@ -296,6 +308,48 @@ class GetImageOcr(Resource):
         except Exception as e:
             print(e)
             
+class Images(Resource):
+    def post(self):
+        if 'image' in request.files:
+            image = request.files['image']
+            filename = secure_filename(image.filename)
+            print(image)
+            print(filename)
+            if filename != '':
+                file_ext = os.path.splitext(filename)[1]
+                if file_ext not in app.config['UPLOAD_EXTENSIONS'] or \
+                        file_ext != validate_image(image.stream):
+                    abort(400)
+                image.save(os.path.join(app.config['UPLOAD_PATH'], filename))
+                return {'message': 'Image uploaded successfully'}, 200
+        else:
+            return {'message': 'No image found in the request'}, 400
+    # def get(self, id):
+    #     img = Image.query.filter(Image.id == id).first()
+    #     path = img.file_path
+    #     return send_from_directory(app.config["UPLOAD_PATH"], path)
+    
+    # def post(self):
+    #     info = request.form.get("info")
+    #     name = request.form.get("name")
+    #     image = request.files.get("image")
+        
+    #     if secure_filename(image.filename) in [
+    #         img.file_path for img in Image.query.all()
+    #     ]:
+    #         unique_str = str(uuid.uuid4())[:8]
+    #         image.filename = f"{unique_str}_{image.filename}"
+            
+    #         filename = secure_filename(image.filename)
+    #         if filename:
+    #             file_ext = os.path.splitext(filename)[1]
+    #             if file_ext not in app.config["UPLOAD EXTENSIONS"] or file_ext != validate_image(image.stream):
+    #                 return make_response({"Error": "File type not supported"}, 400)
+    #             image.save(os.path.join(app.config["UPLOAD_PATH"], filename))
+    #             img = Image(name=name, file_path=filename)
+    #             db.session.add(img)
+    #             db.session.commit()
+    
             
 
 api.add_resource(Home, '/')
@@ -312,6 +366,7 @@ api.add_resource(LikedRecipe, '/liked_recipe')
 api.add_resource(DeleteLikedRecipe, '/delete_liked_recipe/<int:id>')
 api.add_resource(MyRecipes, '/my_recipes/<int:id>')
 api.add_resource(GetImageOcr, '/get_image_ocr')
+api.add_resource(Images, '/upload')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

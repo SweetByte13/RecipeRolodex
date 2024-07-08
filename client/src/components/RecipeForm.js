@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { AppContext } from "../context/Context";
 import { Formik, FieldArray } from 'formik';
 import * as yup from 'yup'
@@ -8,11 +8,13 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
+import ImageUpload from './ImageUpload'
 
 function RecipeForm() {
     const navigate = useNavigate();
     const useAppContext = () => useContext(AppContext);
     const { setUser } = useAppContext();
+    let { id } = useParams();
 
     const [inputFields, setInputFields] = useState([
         { ingredient: '', amount: '', measurement: '' }
@@ -110,10 +112,9 @@ function RecipeForm() {
 
 
     const handleFileChange = event => {
-        if(
-        !window.confirm("This will overwrite the current instructions. Are you sure you wish to continue?"))
-        {
-            return 
+        if (
+            !window.confirm("This will overwrite the current instructions. Are you sure you wish to continue?")) {
+            return
         }
         const reader = new FileReader();
         const file = event.target.files[0];
@@ -147,7 +148,7 @@ function RecipeForm() {
             const input = document.getElementsByTagName('input')[0];
             input.value = null;
         }
-       
+
     }
 
     function handleTextareaChange(event) {
@@ -162,7 +163,7 @@ function RecipeForm() {
         fetch(`/create_a_recipe`, {
             method: 'POST',
             headers: {
-                "Content-Type": 'application/json'
+                "Content-Type": 'multipart/form-data'
             },
             body: JSON.stringify(values)
         }).then((resp) => {
@@ -196,6 +197,10 @@ function RecipeForm() {
                             accept=".png, .jpeg, .jpg" />
                     </Form.Group>
                 </Container>
+                <div>
+                    {<ImageUpload />}
+                </div>
+                <br></br>
                 <Container className="recipe-form-container" >
                     <Formik initialValues={initialValues}
                         validationSchema={validationSchema}
@@ -207,17 +212,17 @@ function RecipeForm() {
                                     <Form.Label className="fw-bold">Category:</Form.Label>
                                     <Form.Select name="category" aria-label="category" onChange={handleChange}>
                                         <option>Select a category:</option>
-                                        <option value="appetizers">Appetizers</option>
-                                        <option value="soups">Soups</option>
+                                        <option value="Appetizers">Appetizers</option>
+                                        <option value="Soups">Soups</option>
                                         <option value="salads">Salads</option>
-                                        <option value="main dishes">Main Dishes</option>
-                                        <option value="side dishes">Side Dishes</option>
-                                        <option value="bread">Breads</option>
-                                        <option value="desserts">Desserts</option>
-                                        <option value="candies">Candies</option>
-                                        <option value="snacks">Snacks</option>
-                                        <option value="beverages">Beverages</option>
-                                        <option value="condiments">Condiments</option>
+                                        <option value="Main Dishes">Main Dishes</option>
+                                        <option value="Side Dishes">Side Dishes</option>
+                                        <option value="Breads">Breads</option>
+                                        <option value="Desserts">Desserts</option>
+                                        <option value="Candies">Candies</option>
+                                        <option value="Snacks">Snacks</option>
+                                        <option value="Beverages">Beverages</option>
+                                        <option value="Condiments">Condiments</option>
                                     </Form.Select>
                                 </Row>
                                 <br></br>
@@ -251,12 +256,12 @@ function RecipeForm() {
                                     name="ingredients"
                                     render={() => formFields} />
                                 <br></br>
-                                <textarea 
-                                onChange={handleTextareaChange}
-                                value={instructions}
-                                className="instructions" 
-                                name="instructions" 
-                                id="instruction-textarea"></textarea>
+                                <textarea
+                                    onChange={handleTextareaChange}
+                                    value={instructions}
+                                    className="instructions"
+                                    name="instructions"
+                                    id="instruction-textarea"></textarea>
                                 <Form.Switch className="public_private_toggle">
                                     <Form.Check
                                         type="switch"
