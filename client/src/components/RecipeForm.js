@@ -110,6 +110,14 @@ function RecipeForm() {
         setInputFields(values);
     }
 
+    const handleImageFileChange = event => {
+        const reader = new FileReader();
+        const file = event.target.files[0];
+        if (file) {
+            reader.readAsDataURL(file)
+            console.log(file)
+        }
+    }
 
     const handleFileChange = event => {
         if (
@@ -173,7 +181,7 @@ function RecipeForm() {
                 alert('Failed to submit Recipe')
             }
         }).then((user) => {
-            navigate("/recipes");
+            // navigate("/recipes");
         });
         setSubmitting(false);
     }
@@ -182,13 +190,15 @@ function RecipeForm() {
         <div className="recipe-template-container" >
             <main>
                 <h2 className="create-recipe-header">Create your own Recipes:</h2>
-                <div className="create-recipe-subheader"><strong >You may keep your recipes private or share them with our other users!</strong></div>
+                <div className="create-recipe-subheader"><h5>You may keep your recipes private or share them with our other users!</h5></div>
                 <br></br>
                 <Container>
                     <Form.Group className="mb-3">
-                        <Form.Label>Choose an image to recieve text from and populate the instructions:
+                        <Form.Label className="fw-bold">Choose an image to recieve text from and populate the instructions: 
+                            <br></br>
+                        Please ensure the image is cropped and as clear as possible for the best results
                         </Form.Label>
-                        <p>Please ensure the image is cropped and as clear as possible for the best results</p>
+                        <p></p>
                         <Form.Control
                             onChange={handleFileChange}
                             id="fileInput"
@@ -197,9 +207,18 @@ function RecipeForm() {
                             accept=".png, .jpeg, .jpg" />
                     </Form.Group>
                 </Container>
-                <div>
-                    {<ImageUpload />}
-                </div>
+                <Container>
+                    <Form.Group className="mb-3">
+                        <Form.Label className="fw-bold">Upload Image:</Form.Label>
+                        <Form.Control
+                            id="fileImageInput"
+                            name="fileImage"
+                            accept=".png, .jpeg, .jpg"
+                            type="file"
+                            onChange={handleImageFileChange}
+                        />
+                    </Form.Group>
+                </Container>
                 <br></br>
                 <Container className="recipe-form-container" >
                     <Formik initialValues={initialValues}
@@ -283,7 +302,7 @@ function RecipeForm() {
                     </Formik>
                 </Container>
             </main>
-        </div>
+        </div >
     );
 }
 export default RecipeForm;

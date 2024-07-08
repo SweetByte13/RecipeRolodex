@@ -213,10 +213,12 @@ class RecipeById(Resource):
 class CreateRecipes(Resource):
     def post(self):
         data = request.json
+        imageFilePath = SaveImage(data[''])
         try:
             recipe_ingredients=data['ingredients']
             recipe = Recipe(
                 title=data['title'],
+                image=imageFilePath,
                 instruction=data['instructions'],
                 category=data['category'],
                 public=data['public_private']
@@ -308,22 +310,23 @@ class GetImageOcr(Resource):
         except Exception as e:
             print(e)
             
-class Images(Resource):
-    def post(self):
-        if 'image' in request.files:
-            image = request.files['image']
-            filename = secure_filename(image.filename)
-            print(image)
-            print(filename)
-            if filename != '':
-                file_ext = os.path.splitext(filename)[1]
-                if file_ext not in app.config['UPLOAD_EXTENSIONS'] or \
-                        file_ext != validate_image(image.stream):
-                    abort(400)
-                image.save(os.path.join(app.config['UPLOAD_PATH'], filename))
-                return {'message': 'Image uploaded successfully'}, 200
-        else:
-            return {'message': 'No image found in the request'}, 400
+
+def SaveImage(image):
+    if 'image' in request.files:
+        image = request.files['image']
+        filename = secure_filename(image.filename)
+        print(image)
+        print(filename)
+        if filename != '':
+            file_ext = os.path.splitext(filename)[1]
+            if file_ext not in app.config['UPLOAD_EXTENSIONS'] or \
+                    file_ext != validate_image(image.stream):
+                abort(400)
+            image.save(os.path.join(app.config['UPLOAD_PATH'], filename))
+            return os.path.join(app.config['UPLOAD_PATH']+filename)
+            # return {'message': 'Image uploaded successfully'}, 200
+    else:
+        return {'message': 'No image found in the request'}, 400
     # def get(self, id):
     #     img = Image.query.filter(Image.id == id).first()
     #     path = img.file_path
@@ -366,7 +369,6 @@ api.add_resource(LikedRecipe, '/liked_recipe')
 api.add_resource(DeleteLikedRecipe, '/delete_liked_recipe/<int:id>')
 api.add_resource(MyRecipes, '/my_recipes/<int:id>')
 api.add_resource(GetImageOcr, '/get_image_ocr')
-api.add_resource(Images, '/upload')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

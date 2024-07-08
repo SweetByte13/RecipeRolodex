@@ -35,10 +35,10 @@ class ImageUpload extends React.Component {
             <Form onSubmit={this.handleSubmit}>
                 <Form.Group>
                     <Form.Label>Upload Image</Form.Label>
-                    <Form.Control type="file" accept="image/*" value={values.image} onChange={this.handleFileChange} />
+                    <Form.Control type="file" accept="image/*"  onChange={this.handleFileChange} />
                 </Form.Group>
                 <br></br>
-                <Button variant="success" type="submit">Upload</Button>
+                {/* <Button variant="success" type="submit">Upload</Button> */}
             </Form>
         );
     }
