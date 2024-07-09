@@ -119,6 +119,7 @@
 
 
 .recipe-template-container {
+  padding-top: 10%;
   place-items: center;
   text-align: center;
   width: 800px;

@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { AppContext } from "../context/Context";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Formik, FieldArray } from 'formik';
 import * as yup from 'yup'
 import Container from 'react-bootstrap/Container';
@@ -8,33 +7,30 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import ImageUpload from './ImageUpload'
 
 function RecipeForm() {
     const navigate = useNavigate();
-    const useAppContext = () => useContext(AppContext);
-    const { setUser } = useAppContext();
-    let { id } = useParams();
 
+    const [publicCheckbox, setPublicCheckBox] = useState(false)
+    const [selectedFile, setSelectedFile] = useState(null);
+    const [instructions, setInstructions] = useState("")
     const [inputFields, setInputFields] = useState([
         { ingredient: '', amount: '', measurement: '' }
     ])
 
-    const [instructions, setInstructions] = useState("")
-    const [publicCheckbox, setPublicCheckBox] = useState(false)
-
     const validationSchema = yup.object().shape({
-        r_image: yup.string(),
+        image: yup.string(),
         title: yup.string(),
-        instructions: yup.string(),
+        instruction: yup.string(),
         category: yup.string()
     })
 
     const initialValues = {
-        r_image: '',
+        image: '',
         title: '',
-        instructions: instructions,
-        category: ''
+        instruction: instructions,
+        category: '',
+        public_private: false
     }
 
     let formFields = inputFields.map((input, index) => {
@@ -109,13 +105,19 @@ function RecipeForm() {
         values.splice(index, 1);
         setInputFields(values);
     }
+    
+    function handleTextareaChange(event) {
+        setInstructions(event.target.value)
+    }
 
     const handleImageFileChange = event => {
-        const reader = new FileReader();
-        const file = event.target.files[0];
-        if (file) {
-            reader.readAsDataURL(file)
-            console.log(file)
+        const image = event.target.files[0];
+        if (image) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setSelectedFile(reader.result);
+            };
+            reader.readAsDataURL(image);
         }
     }
 
@@ -137,7 +139,7 @@ function RecipeForm() {
                     },
                     body: JSON.stringify({
                         fileName: file.name,
-                        imageData: fileText.split(',')[1]
+                        imageData: fileText.split(',')[1],
                     })
                 }).then((resp) => {
                     if (resp.ok) {
@@ -159,29 +161,28 @@ function RecipeForm() {
 
     }
 
-    function handleTextareaChange(event) {
-        setInstructions(event.target.value)
-    }
-
 
     function handleFormSubmit(values, { setSubmitting }) {
-        values["ingredients"] = inputFields
-        values["public_private"] = publicCheckbox
-        values["instructions"] = instructions
+        values["ingredients"] = inputFields;
+        values["public_private"] = publicCheckbox;
+        values["instructions"] = instructions;
+        values["image"] = selectedFile
         fetch(`/create_a_recipe`, {
             method: 'POST',
             headers: {
-                "Content-Type": 'multipart/form-data'
+                "Content-Type": 'application/json'
             },
             body: JSON.stringify(values)
-        }).then((resp) => {
+        })
+        .then((resp) => {
             if (resp.ok) {
-                return resp.json()
+                return resp.json();
             } else {
-                alert('Failed to submit Recipe')
+                alert('Failed to submit Recipe');
             }
-        }).then((user) => {
-            // navigate("/recipes");
+        })
+        .then((user) => {
+            navigate("/recipes");
         });
         setSubmitting(false);
     }
@@ -194,9 +195,9 @@ function RecipeForm() {
                 <br></br>
                 <Container>
                     <Form.Group className="mb-3">
-                        <Form.Label className="fw-bold">Choose an image to recieve text from and populate the instructions: 
+                        <Form.Label className="fw-bold">Choose an image to recieve text from and populate the instructions:
                             <br></br>
-                        Please ensure the image is cropped and as clear as possible for the best results
+                            Please ensure the image is cropped and as clear as possible for the best results
                         </Form.Label>
                         <p></p>
                         <Form.Control
@@ -207,27 +208,27 @@ function RecipeForm() {
                             accept=".png, .jpeg, .jpg" />
                     </Form.Group>
                 </Container>
-                <Container>
-                    <Form.Group className="mb-3">
-                        <Form.Label className="fw-bold">Upload Image:</Form.Label>
-                        <Form.Control
-                            id="fileImageInput"
-                            name="fileImage"
-                            accept=".png, .jpeg, .jpg"
-                            type="file"
-                            onChange={handleImageFileChange}
-                        />
-                    </Form.Group>
-                </Container>
-                <br></br>
                 <Container className="recipe-form-container" >
                     <Formik initialValues={initialValues}
                         validationSchema={validationSchema}
                         onSubmit={handleFormSubmit}
                     >
-                        {({ values, errors, touched, handleChange, handleBlur, handleSubmit, setFieldValue }) => (
+                        {({ values, handleChange, handleBlur, handleSubmit }) => (
                             <Form className="recipe-form" onSubmit={handleSubmit}>
                                 <Row >
+                                    <Container>
+                                        <Form.Group className="mb-3">
+                                            <Form.Label className="fw-bold">Upload Image:</Form.Label>
+                                            <Form.Control
+                                                id="upload-image"
+                                                name="upload-image"
+                                                accept=".png, .jpeg, .jpg"
+                                                type="file"
+                                                onChange={handleImageFileChange}
+                                            />
+                                        </Form.Group>
+                                    </Container>
+                                    <br></br>
                                     <Form.Label className="fw-bold">Category:</Form.Label>
                                     <Form.Select name="category" aria-label="category" onChange={handleChange}>
                                         <option>Select a category:</option>
@@ -277,7 +278,7 @@ function RecipeForm() {
                                 <br></br>
                                 <textarea
                                     onChange={handleTextareaChange}
-                                    value={instructions}
+                                    value={values.instruction}
                                     className="instructions"
                                     name="instructions"
                                     id="instruction-textarea"></textarea>

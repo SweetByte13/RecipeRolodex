@@ -123,13 +123,6 @@ class Recipe_User(db.Model, SerializerMixin):
             raise AssertionError ("Must have a user ID")
         return new_user_id
         
-class Image(db.Model, SerializerMixin):
-    __tablename__ = 'images'
-    
-    id=db.Column(db.Integer, primary_key=True)
-    name=db.Column(db.String)
-    file_path=db.Column(db.String)
-    
 class Recipe(db.Model, SerializerMixin):
     __tablename__ = 'recipes'
     

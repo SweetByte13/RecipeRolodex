@@ -14,18 +14,18 @@ function EditRecipeForm() {
     const useAppContext = () => useContext(AppContext);
     const { setUser } = useAppContext();
     let { id } = useParams();
-
+    
+    const [publicCheckbox, setPublicCheckBox] = useState(false)
+    const [selectedFile, setSelectedFile] = useState(null);
+    const [instructions, setInstructions] = useState("")
     const [inputFields, setInputFields] = useState([
         { ingredient: '', amount: '', measurement: '' }
     ])
-    
-    const [publicCheckbox, setPublicCheckBox] = useState(false)
-    
-
     const [recipe, setRecipe] = useState({
         title: "",
-        instruction: "",
+        instruction: instructions,
         category: "",
+        image:"",
         public_private: "",
         recipe_ingredients: []
     })
@@ -40,11 +40,12 @@ function EditRecipeForm() {
             })
             .then((recipeData) => {
                 setRecipe(recipeData)
+                setInstructions(recipeData.instruction)
                 const ingredients = recipeData.recipe_ingredients.map((ri) => {
                     return {
                         ingredient: ri.ingredient.name,
                         amount: ri.weight_of_ingr,
-                        measurement: ri.weight_type 
+                        measurement: ri.weight_type
                     }
                 })
                 setInputFields(ingredients)
@@ -53,16 +54,15 @@ function EditRecipeForm() {
 
 
     const validationSchema = yup.object().shape({
-        r_image: yup.string(),
+        // image: yup.string(),
         title: yup.string(),
-        instructions: yup.string(),
         category: yup.string()
     })
 
     const initialValues = {
-        r_image: '',
+        image: recipe.image,
         title: recipe.title,
-        instruction: recipe.instruction,
+        instruction: instructions,
         category: recipe.category,
         public_private: recipe.public_private
     }
@@ -126,6 +126,7 @@ function EditRecipeForm() {
     }
 
     function handleCheckBoxChange(event) {
+        console.log(event.target.checked)
         setPublicCheckBox(event.target.checked)
     }
 
@@ -141,29 +142,49 @@ function EditRecipeForm() {
         setInputFields(values);
     }
 
+    function handleTextareaChange(event) {
+        console.log(event.target.vajlue)
+        setInstructions(event.target.value)
+    }
+    const handleImageFileChange = event => {
+        const image = event.target.files[0];
+        if (image) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setSelectedFile(reader.result);
+            };
+            reader.readAsDataURL(image);
+        }
+    }
+
     function handleFormSubmit(values, { setSubmitting }) {
         values["ingredients"] = inputFields
         values["public_private"] = publicCheckbox
+        values["instructions"] = instructions;
+        values["image"] = selectedFile
+        console.log(values)
         fetch(`/recipes/${id}`, {
             method: 'PATCH',
             headers: {
                 "Content-Type": 'application/json'
             },
             body: JSON.stringify(values)
-        }).then((resp) => {
+        })
+        .then((resp) => {
             if (resp.ok) {
                 return resp.json()
             } else {
                 alert('Failed to submit Recipe')
             }
-        }).then((recipe) => {
+        })
+        .then((recipe) => {
             navigate(`/recipes/${id}`);
         });
         setSubmitting(false);
     }
 
     function handleRecipeDelete() {
-        
+
         if (!window.confirm("Are you sure you want to delete your recipe?")) {
             return;
         }
@@ -197,24 +218,37 @@ function EditRecipeForm() {
                         {({ newField, values, errors, touched, handleChange, handleBlur, handleSubmit, setFieldValue }) => (
                             <Form className="recipe-form" onSubmit={handleSubmit}>
                                 <Row >
+                                    <Container>
+                                        <Form.Group className="mb-3">
+                                            <Form.Label className="fw-bold">Upload Image:</Form.Label>
+                                            <Form.Control
+                                                id="upload-image"
+                                                name="upload-image"
+                                                accept=".png, .jpeg, .jpg"
+                                                type="file"
+                                                onChange={handleImageFileChange}
+                                            />
+                                        </Form.Group>
+                                    </Container>
+                                    <br></br>
                                     <Form.Label className="fw-bold">Category:</Form.Label>
-                                    <Form.Select 
-                                    name="category" 
-                                    aria-label="category" 
-                                    value={values.category} 
-                                    onChange={handleChange}>
+                                    <Form.Select
+                                        name="category"
+                                        aria-label="category"
+                                        value={values.category}
+                                        onChange={handleChange}>
                                         <option>Select a category:</option>
-                                        <option value="appetizers">Appetizers</option>
-                                        <option value="soups">Soups</option>
-                                        <option value="salads">Salads</option>
-                                        <option value="main dishes">Main Dishes</option>
-                                        <option value="side dishes">Side Dishes</option>
-                                        <option value="bread">Breads</option>
-                                        <option value="desserts">Desserts</option>
-                                        <option value="candies">Candies</option>
-                                        <option value="snacks">Snacks</option>
-                                        <option value="beverages">Beverages</option>
-                                        <option value="condiments">Condiments</option>
+                                        <option value="Appetizers">Appetizers</option>
+                                        <option value="Soups">Soups</option>
+                                        <option value="Salads">Salads</option>
+                                        <option value="Main Dishes">Main Dishes</option>
+                                        <option value="Side Dishes">Side Dishes</option>
+                                        <option value="Breads">Breads</option>
+                                        <option value="Desserts">Desserts</option>
+                                        <option value="Candies">Candies</option>
+                                        <option value="Snacks">Snacks</option>
+                                        <option value="Beverages">Beverages</option>
+                                        <option value="Condiments">Condiments</option>
                                     </Form.Select>
                                 </Row>
                                 <br></br>
@@ -248,12 +282,12 @@ function EditRecipeForm() {
                                     name="ingredients"
                                     render={() => formFields} />
                                 <br></br>
-                                <textarea 
-                                onChange={handleChange} 
-                                className="instructions" 
-                                name="instructions"
-                                value={values.instruction}
-                                ></textarea>
+                                <textarea
+                                    onChange={handleTextareaChange}
+                                    value={values.instruction}
+                                    className="instructions"
+                                    name="instructions"
+                                    id="instruction-textarea"></textarea>
                                 <Form.Switch className="public_private_toggle">
                                     <Form.Check
                                         type="switch"
@@ -272,6 +306,9 @@ function EditRecipeForm() {
                                     <Button className='recipe-form-delete-button' variant="outline-danger" size="lg" onClick={handleRecipeDelete}>
                                         Delete Recipe
                                     </Button>
+                                    <br></br>
+                                    <br></br>
+                                    <br></br>
                                 </div>
                             </Form>
                         )}

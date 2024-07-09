@@ -80,7 +80,7 @@ function ProfileForm() {
             >
                 {({ values, errors, touched, handleChange, handleBlur, handleSubmit }) => (
                     <Form className="profile-form" onSubmit={handleSubmit}>
-                        {/* <Form.Group className="mb-3" controlId="formImage">
+                        {/* <Form.Group className="mb-3">
                             <Form.Label>Profile Picture:</Form.Label>
                             <Form.Control
                                 type='text'
@@ -95,7 +95,7 @@ function ProfileForm() {
                                 {touched.p_image && errors.p_image}
                             </Form.Control.Feedback>
                         </Form.Group> */}
-                        <Form.Group className="mb-3" controlId="formFName">
+                        <Form.Group className="mb-3">
                             <Form.Label>First Name:</Form.Label>
                             <Form.Control
                                 type='text'
@@ -111,7 +111,7 @@ function ProfileForm() {
                                 {touched.f_name && errors.f_name}
                             </Form.Control.Feedback>
                         </Form.Group>
-                        <Form.Group className="mb-3" controlId="formLName">
+                        <Form.Group className="mb-3">
                             <Form.Label>Last Name:</Form.Label>
                             <Form.Control
                                 type='text'
@@ -126,7 +126,7 @@ function ProfileForm() {
                                 {touched.l_name && errors.l_name}
                             </Form.Control.Feedback>
                         </Form.Group>
-                        <Form.Group className="mb-3" controlId="formEmail">
+                        <Form.Group className="mb-3">
                             <Form.Label>Email:</Form.Label>
                             <Form.Control
                                 type='text'
@@ -138,7 +138,7 @@ function ProfileForm() {
                                 onBlur={handleBlur}
                             />
                         </Form.Group>
-                        <Form.Group className="mb-3" controlId="formZipcode">
+                        <Form.Group className="mb-3">
                             <Form.Label>Zipcode:</Form.Label>
                             <Form.Control
                                 type='text'

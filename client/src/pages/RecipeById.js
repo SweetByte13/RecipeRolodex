@@ -69,18 +69,12 @@ function RecipeById() {
                             </td>
                             <td style={{ width: "50%" }}>
                                 <h3 style={{ textAlign: "center" }}>
-                                    {/* Sourdough Boule */}
                                     {recipe.title}
                                 </h3>
                                 <br></br>
                                 <h5 style={{ textAlign: "center" }}>
-                                    {/* Author? */}
                                     {recipe.category}
                                 </h5>
-                                <br></br>
-                                {/* <h6 style={{ textAlign: "center" }}>
-                                    Date of Recipe Creation?
-                                </h6> */}
                             </td>
                         </tr>
                     </tbody>
@@ -107,41 +101,11 @@ function RecipeById() {
                             Happy baking!
                         </p>
                     </div> */}
-                    <div>
+                    <div className="ingredients">
                         {ingredient}
-                        {/* <br></br>
-                        <h3>
-                            Ingredients:
-                        </h3>
-                        - 1 cup sourdough starter
-                        <br></br>
-                        - 1.5 cups warm water
-                        <br></br>
-                        - 2 teaspoons salt
-                        <br></br>
-                        - 5 cups bread flour
-                        <br></br> */}
                     </div>
-                    <div>
+                    <div className="instructions">
                         {recipe.instruction}
-                        {/* <h3>
-                            Instructions:
-                        </h3>
-                        1. In a large bowl, combine the sourdough starter and warm water.
-                        <br></br>
-                        2. Add the salt and bread flour to the bowl and mix until a dough forms.
-                        <br></br>
-                        3. Knead the dough on a floured surface for about 10 minutes.
-                        <br></br>
-                        4. Place the dough in a greased bowl, cover, and let it rise for 12-15 hours.
-                        <br></br>
-                        5. Preheat your oven to 450°F (232°C). If you have a Dutch oven, place it in the oven as it preheats.
-                        <br></br>
-                        6. Shape the dough into a ball and place it in the preheated Dutch oven. If you don't have a Dutch oven, place the dough on a baking sheet.
-                        <br></br>
-                        7. Bake for 30 minutes with the lid on (or covered with aluminum foil), then remove the lid (or foil) and bake for another 10-15 minutes until the bread is golden brown.
-                        <br></br>
-                        8. Let the bread cool before slicing and serving. Enjoy! */}
                     </div>
                 </Container>
             </main>

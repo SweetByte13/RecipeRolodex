@@ -1,26 +1,12 @@
 #!/usr/bin/env python3
-import base64
-from flask import redirect, render_template, request, session, make_response, jsonify, abort, send_from_directory, url_for
+from flask import request, session, make_response, jsonify
 from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
 from config import app, db, api
-from models import User, Recipe, Ingredient, Recipe_Ingredient, Recipe_User, Dietary_No
+from models import User, Recipe, Ingredient, Recipe_Ingredient, Recipe_User
 from PIL import Image
-import io
 import pytesseract
-import codecs
-import os
-import imghdr
-import uuid
-from werkzeug.utils import secure_filename
-
-def validate_image(stream):
-    header = stream.read(512)
-    stream.seek(0)
-    format = imghdr.what(None, header)
-    if not format:
-        return None
-    return '.' + (format if format != 'jpeg' else 'jpg')
+import base64
 
 # @app.before_request
 # def check_log_status():
@@ -108,7 +94,6 @@ class Users(Resource):
         f_name = params.get('f_name')
         l_name= params.get('l_name')
         email = params.get('email')
-        # phone_number = params.get('phone_number')
         zipcode = params.get('zipcode')
         
         user = User(
@@ -116,7 +101,6 @@ class Users(Resource):
             f_name = f_name,
             l_name = l_name,
             email = email,
-            # phone_number = phone_number,
             zipcode = zipcode
         )
         user.password_hash = password
@@ -212,14 +196,13 @@ class RecipeById(Resource):
 
 class CreateRecipes(Resource):
     def post(self):
-        data = request.json
-        imageFilePath = SaveImage(data[''])
         try:
+            data = request.json
             recipe_ingredients=data['ingredients']
             recipe = Recipe(
                 title=data['title'],
-                image=imageFilePath,
                 instruction=data['instructions'],
+                image=data['image'],
                 category=data['category'],
                 public=data['public_private']
             )
@@ -234,16 +217,13 @@ class CreateRecipes(Resource):
                         )
                         db.session.add(ingredient)
                         db.session.commit()
-                    print(ri['measurement'])
                     recipe_ingredient = Recipe_Ingredient(
                         weight_of_ingr=ri['amount'],
                         weight_type=ri['measurement'].strip(),
                         recipe_id=recipe.id,
                         ingredient_id = ingredient.id
                         )
-                    print(recipe_ingredient)
                     db.session.add(recipe_ingredient)
-                    print(recipe_ingredient)
                     db.session.commit()      
                 recipe_user = Recipe_User(
                     recipe_id=recipe.id,
@@ -265,7 +245,6 @@ class LikedRecipe(Resource):
                     user_id=data['user_id'],
                     creator=False
                 )
-        print(recipe_user)
         db.session.add(recipe_user)
         db.session.commit()
         return make_response(recipe_user.to_dict(rules=('-recipe', '-user')),200)
@@ -308,52 +287,8 @@ class GetImageOcr(Resource):
             ocr =(pytesseract.image_to_string(Image.open(tempFileName)))
             return (jsonify(ocr))
         except Exception as e:
-            print(e)
-            
-
-def SaveImage(image):
-    if 'image' in request.files:
-        image = request.files['image']
-        filename = secure_filename(image.filename)
-        print(image)
-        print(filename)
-        if filename != '':
-            file_ext = os.path.splitext(filename)[1]
-            if file_ext not in app.config['UPLOAD_EXTENSIONS'] or \
-                    file_ext != validate_image(image.stream):
-                abort(400)
-            image.save(os.path.join(app.config['UPLOAD_PATH'], filename))
-            return os.path.join(app.config['UPLOAD_PATH']+filename)
-            # return {'message': 'Image uploaded successfully'}, 200
-    else:
-        return {'message': 'No image found in the request'}, 400
-    # def get(self, id):
-    #     img = Image.query.filter(Image.id == id).first()
-    #     path = img.file_path
-    #     return send_from_directory(app.config["UPLOAD_PATH"], path)
-    
-    # def post(self):
-    #     info = request.form.get("info")
-    #     name = request.form.get("name")
-    #     image = request.files.get("image")
-        
-    #     if secure_filename(image.filename) in [
-    #         img.file_path for img in Image.query.all()
-    #     ]:
-    #         unique_str = str(uuid.uuid4())[:8]
-    #         image.filename = f"{unique_str}_{image.filename}"
-            
-    #         filename = secure_filename(image.filename)
-    #         if filename:
-    #             file_ext = os.path.splitext(filename)[1]
-    #             if file_ext not in app.config["UPLOAD EXTENSIONS"] or file_ext != validate_image(image.stream):
-    #                 return make_response({"Error": "File type not supported"}, 400)
-    #             image.save(os.path.join(app.config["UPLOAD_PATH"], filename))
-    #             img = Image(name=name, file_path=filename)
-    #             db.session.add(img)
-    #             db.session.commit()
-    
-            
+            app.logger.error(f"Error creating recipe: {e}")
+            return make_response({"error": "Could not create Recipe", "details": str(e)}, 400)
 
 api.add_resource(Home, '/')
 api.add_resource(CheckSession, '/check_session')
