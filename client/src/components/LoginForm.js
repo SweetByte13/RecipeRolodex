@@ -65,6 +65,7 @@ function LoginForm() {
                         <Form.Control.Feedback type="invalid">
                             {errors.username}
                         </Form.Control.Feedback>
+                        <br></br>
                         <Form.Label>Password:</Form.Label>
                         <Form.Control
                             type='password'

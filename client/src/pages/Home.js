@@ -5,7 +5,7 @@ import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import cauli_salad from "../images/cauli_salad.png";
-import roasted_plums from "../images/roasted_plums.png";
+import peaches from "../images/peaches.jpg";
 import smothered_fries from "../images/smothered_fries.jpg";
 import curry from "../images/curry.png";
 import cherry_cake from "../images/cherry_cake.png";
@@ -37,7 +37,7 @@ function Home() {
                 <Container>
                     <Row>
                         <Col style={{ paddingLeft: '300px' }} >
-                            <img className="home-images" src={roasted_plums} />
+                            <img className="home-images" src={peaches} />
                         </Col>
                         <Col style={{ paddingRight: '200px' }} className="right-p-on-home">
                             <h2 className="title-on-home">What makes us different?</h2>

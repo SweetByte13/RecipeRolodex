@@ -17,6 +17,13 @@
   background-size: cover;
 }
 
+.nav-brand{
+  padding-right: 40px;
+}
+
+.home{
+  margin-left: 300px;
+}
 
 /* HOME */
 .carousel-container {
@@ -108,7 +115,7 @@
 }
 
 .create-recipe {
-  padding-top: 10%;
+  padding-top: 7%;
   place-items: center;
   text-align: center;
   width: 800px;
@@ -119,7 +126,6 @@
 
 
 .recipe-template-container {
-  padding-top: 10%;
   place-items: center;
   text-align: center;
   width: 800px;
@@ -238,13 +244,22 @@
   margin-right: auto;
 }
 
+.login-form-container{
+  place-items: center;
+  width: 500px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+
 .signup-redirect-from-loginpage{
   place-items: center;
   text-align: center;
   width: 800px;
   margin-left: auto;
   margin-right: auto;
-  padding-bottom: 20%;
+  padding-bottom: 7%;
+  padding-top: 2%;
 }
 
 
