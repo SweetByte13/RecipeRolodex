@@ -3,9 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { AppContext } from "../context/Context";
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
-import GroceryList from "../components/GroceryList";
+import ListedGroceries from "../components/ListedGroceries";
 
-function GroceryCompiler() {
+function GroceryList() {
     const navigate = useNavigate();
     const useAppContext = () => useContext(AppContext);
     const { user, setUser } = useAppContext();
@@ -13,20 +13,19 @@ function GroceryCompiler() {
     return (
         <div>
             <NavBar />
-            <main>
+            <main className="grocery-container">
                 <div className="grocery-header">
                     <u >
                         <strong>Grocery List: </strong>
                     </u>
                 </div>
                 <br></br>
-                <br></br>
                 <p className="grocery-list">
-                    <GroceryList />
+                    <ListedGroceries />
                 </p>
             </main>
             <Footer />
         </div>
     );
 }
-export default GroceryCompiler;
+export default GroceryList;

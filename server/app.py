@@ -200,8 +200,8 @@ class CreateRecipes(Resource):
             data = request.json
             recipe_ingredients=data['ingredients']
             recipe = Recipe(
-                title=data['title'],
-                instruction=data['instructions'],
+                title=data['title'].lower(),
+                instruction=data['instructions'].lower(),
                 image=data['image'],
                 category=data['category'],
                 public=data['public_private']
@@ -262,7 +262,7 @@ class DeleteLikedRecipe(Resource):
 class MyRecipes(Resource):
     def get(self, id):
         recipes = Recipe_User.query.filter_by(user_id=id)
-        recipe_users = [recipe.to_dict(rules=("-recipe.recipe_users.recipe", "-recipe.recipe_users.user","-recipe.recipe_ingredients", "-user", )) for recipe in recipes]
+        recipe_users = [recipe.to_dict(rules=("-recipe.recipe_users.recipe", "-recipe.recipe_users.user","-recipe.recipe_ingredients.recipe","-recipe_ingredients.ingredient.recipe_ingredients", "-recipe_ingredients.ingredient.dietary_nos", "-recipe_ingredients.recipe", "-user", )) for recipe in recipes]
         return make_response([recipe_user['recipe'] for recipe_user in recipe_users])
         
 class GetImageOcr(Resource):

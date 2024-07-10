@@ -54,7 +54,6 @@ function EditRecipeForm() {
 
 
     const validationSchema = yup.object().shape({
-        // image: yup.string(),
         title: yup.string(),
         category: yup.string()
     })
@@ -143,7 +142,7 @@ function EditRecipeForm() {
     }
 
     function handleTextareaChange(event) {
-        console.log(event.target.vajlue)
+        console.log(event.target.value)
         setInstructions(event.target.value)
     }
     const handleImageFileChange = event => {
@@ -285,7 +284,7 @@ function EditRecipeForm() {
                                 <textarea
                                     onChange={handleTextareaChange}
                                     value={values.instruction}
-                                    className="instructions"
+                                    className="instruction-area"
                                     name="instructions"
                                     id="instruction-textarea"></textarea>
                                 <Form.Switch className="public_private_toggle">

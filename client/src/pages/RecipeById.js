@@ -60,8 +60,8 @@ function RecipeById() {
             <NavBar />
             <br></br>
             <br></br>
-            <main>
-                <table style={{ width: "100%" }}>
+            <main style={{ paddingTop: '5%'}}>
+                <table style={{ width: "100%"}}>
                     <tbody>
                         <tr>
                             <td style={{ width: "50%", textAlign: "right" }}>
@@ -101,10 +101,26 @@ function RecipeById() {
                             Happy baking!
                         </p>
                     </div> */}
+                    <br></br>
+                    <Container className="header-container">
+                        <Row>
+                            <Col>
+                                <u>Ingredients</u>
+                            </Col>
+                            <Col xs={5}>
+                                <u>Amount</u>
+                            </Col>
+                            <Col xs={5}>
+                                <u>Weight</u>
+                            </Col>
+                        </Row>
                     <div className="ingredients">
                         {ingredient}
                     </div>
+                    <br></br>
+                    </Container>
                     <div className="instructions">
+                        <u>Instructions:</u>&nbsp;&nbsp;
                         {recipe.instruction}
                     </div>
                 </Container>

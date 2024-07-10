@@ -19,9 +19,9 @@ function RecipeForm() {
     ])
 
     const validationSchema = yup.object().shape({
-        image: yup.string(),
+        // image: yup.string(),
         title: yup.string(),
-        instruction: yup.string(),
+        // instruction: yup.string(),
         category: yup.string()
     })
 
@@ -107,6 +107,7 @@ function RecipeForm() {
     }
     
     function handleTextareaChange(event) {
+        console.log(event.target.value)
         setInstructions(event.target.value)
     }
 
@@ -209,7 +210,8 @@ function RecipeForm() {
                     </Form.Group>
                 </Container>
                 <Container className="recipe-form-container" >
-                    <Formik initialValues={initialValues}
+                    <Formik enableReinitialize
+                     initialValues={initialValues}
                         validationSchema={validationSchema}
                         onSubmit={handleFormSubmit}
                     >
@@ -279,7 +281,7 @@ function RecipeForm() {
                                 <textarea
                                     onChange={handleTextareaChange}
                                     value={values.instruction}
-                                    className="instructions"
+                                    className="instruction-area"
                                     name="instructions"
                                     id="instruction-textarea"></textarea>
                                 <Form.Switch className="public_private_toggle">

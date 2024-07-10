@@ -15,7 +15,7 @@ function GroceryList() {
         setGroceryItems(groceryList)
         console.log(groceryList)
     }, [])
-    
+
     const item = groceryItems.map((gi) => (
         gi.recipe_ingredients.map((ri) => (
                 <li>{ri.ingredient?.name} : {ri.weight_of_ingr}{ri.weight_type}</li>

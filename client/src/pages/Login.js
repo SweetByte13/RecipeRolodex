@@ -14,7 +14,7 @@ function Login() {
         <NavBar />
         <main>
             <br></br>
-            <div>
+            <div className="login-container">
             <h1 className="login-header">Welcome to RecipeRolodex</h1>
             <h3 className="login-header2"> Sign In</h3>
             </div>

@@ -9,13 +9,14 @@ function RecipeCard({ recipe }) {
     const useAppContext = () => useContext(AppContext);
     const { user } = useAppContext();
     const navigate = useNavigate();
-    
-    const { title, instructions, image, category, recipe_users } = recipe
+
+    const { title, instructions, image, category, recipe_users, recipe_ingredients } = recipe
     const [liked, setLiked] = useState(recipe_users.some(x => x.user_id === user?.id));
     const [inGroceryList, setInGroceryList] = useState(false)
     const isCreator = recipe_users.some(x => x.user_id === user?.id && x.creator)
 
-    function handleLikedClick() {
+    function handleLikedClick(event) {
+        console.log(event.target)
         setLiked(!liked);
         const values = {
             recipe_id: recipe.id,
@@ -82,11 +83,15 @@ function RecipeCard({ recipe }) {
     function handleGroceryClick() {
         let groceryList = JSON.parse(localStorage.getItem("groceryList")) || []
         if (!inGroceryList) {
-            const recipeCard = recipe
-            groceryList.push(recipeCard)
+            const recipeCard = {
+                id: recipe.id,
+                recipe_ingredients: recipe.recipe_ingredients
+            };
+            console.log(recipeCard)
+            groceryList.push(recipeCard);
             localStorage.setItem("groceryList", JSON.stringify(groceryList))
         } else {
-            let indexOfRecipe = groceryList.findIndex((r) => r.id === recipe.id )
+            let indexOfRecipe = groceryList.findIndex((r) => r.id === recipe.id)
             groceryList.splice(indexOfRecipe, 1)
             localStorage.setItem("groceryList", JSON.stringify(groceryList))
         }

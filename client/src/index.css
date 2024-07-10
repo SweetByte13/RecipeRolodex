@@ -5,27 +5,24 @@
   --text: hsla(0, 0%, 100%, 0.88);
 }
 
-.search-filter {
-  margin-top: 100px;
-  margin-bottom: 50px;
-}
-
-.copywrite{
+.copywrite {
+  margin-top: 5%;
   padding-bottom: 30px;
   padding-top: 30px;
-  background-color:#8ec099;
+  background-color: #8ec099;
   background-size: cover;
 }
 
-.nav-brand{
+.nav-brand {
   padding-right: 40px;
 }
 
-.home{
+
+/* HOME */
+.home {
   margin-left: 300px;
 }
 
-/* HOME */
 .carousel-container {
   position: relative;
 }
@@ -47,17 +44,19 @@
   transition: 0.3s, border 0.3s, border-radius 0.3s, box-shadow 0.3s;
 }
 
-.home-background-banner{
+.home-background-banner {
   background-color: #E8F1EA;
-  
+
 }
 
-.left-p-on-home{
+.left-p-on-home {
   box-sizing: border-box;
   text-align: left;
-  width: 800px; 
+  /* width: 800px; */
+  max-width: 100%;
+  max-height: 100%;
   margin-top: 40px;
-  margin: 10px 0; 
+  margin: 10px 0;
   font-size: 19px;
   line-height: 29px;
   letter-spacing: 0px;
@@ -65,32 +64,36 @@
 
 }
 
-.right-p-on-home{
+.right-p-on-home {
   box-sizing: border-box;
   text-align: right;
+  max-width: 100%;
+  max-height: 100%;
   margin-top: 40px;
-  margin: 10px 0; 
+  margin: 10px 0;
   font-size: 19px;
   line-height: 29px;
   letter-spacing: 0px;
   padding-right: 400px;
 }
 
-.title-on-home{
+.title-on-home {
   text-align: center;
   padding-left: 20%;
   padding-right: 10%;
   padding-bottom: 10px;
-  padding-top: 20px;
+  padding-top: 80px;
 }
 
-.spacing{
+.spacing {
   background: var(--color-brand-tertiary);
 }
 
-.home-images{
-  width: 300px;
-  height: 200px;
+.home-images {
+  max-width: 100%;
+  max-height: 100%;
+  /* width: 300px;
+  height: 200px; */
   box-sizing: border-box;
   vertical-align: middle;
   display: inline-block;
@@ -121,11 +124,12 @@
   width: 800px;
   margin-left: auto;
   margin-right: auto;
-  padding-bottom: 10%;
+  padding-bottom: 5%;
 }
 
 
 .recipe-template-container {
+  margin-top: 8%;
   place-items: center;
   text-align: center;
   width: 800px;
@@ -133,7 +137,7 @@
   margin-right: auto;
 }
 
-.instructions {
+.instruction-area {
   height: 200px;
   width: 770px;
 }
@@ -181,6 +185,11 @@
   margin-right: auto;
 }
 
+.search-filter {
+  margin-top: 100px;
+  margin-bottom: 50px;
+}
+
 .recipe-header {
   --grid-gap: 1rem;
   --grid-margin: 1.5rem;
@@ -192,7 +201,7 @@
   max-width: none;
 }
 
-.intro_content{
+.intro_content {
   place-items: center;
   text-align: left;
   width: 800px;
@@ -201,7 +210,7 @@
   margin-right: auto;
 }
 
-.into_title{
+.into_title {
   place-items: center;
   text-align: center;
   width: 800px;
@@ -210,7 +219,7 @@
   margin-right: auto;
 }
 
-.bold{
+.bold {
   font-weight: bold;
 }
 
@@ -222,11 +231,31 @@
 /* recipe card */
 .card-image {
   height: 50%;
-  width:50%
+  width: 50%
+}
+
+/* RecipeById */
+.header-container{
+  place-items: center;
+  text-align: center;
+}
+
+.ingredients{
+  place-items: center;
+  text-align: center;
+}
+
+.instructions{
+  padding-top: 2%;
+  place-items: center;
+  text-align: left;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
 }
 
 /* login */
-.login-header{
+.login-header {
   padding-top: 8%;
   place-items: center;
   text-align: center;
@@ -235,7 +264,7 @@
   margin-right: auto;
 }
 
-.login-header2{
+.login-header2 {
   padding-top: 5%;
   place-items: center;
   text-align: center;
@@ -244,15 +273,16 @@
   margin-right: auto;
 }
 
-.login-form-container{
+.login-form-container {
   place-items: center;
   width: 500px;
+  max-width: 1500px;
+  /* width: 40%; */
   margin-right: auto;
   margin-left: auto;
 }
 
-
-.signup-redirect-from-loginpage{
+.signup-redirect-from-loginpage {
   place-items: center;
   text-align: center;
   width: 800px;
@@ -262,21 +292,51 @@
   padding-top: 2%;
 }
 
+.grocery-container {
+  border-top-left-radius: 18px 140px;
+  border-top-right-radius: 11px 65px;
+  border-bottom-left-radius: 55px 8px;
+  border-bottom-right-radius: 120px 12px;
 
-.grocery-header{
-  padding-top: 15%;
-  place-items: center;
-  text-align: center;
-  width: 800px;
-  margin-left: auto;
-  margin-right: auto;
+  display: block;
+  position: relative;
+  border: solid 3px #6e7491;
+  padding: 40px 60px;
+  max-width: 800px;
+  width: 70%;
+  margin: 100px auto 0;
+  margin-top: 9%;
+  font-size: 17px;
+  line-height: 28px;
+  transform: rotate(-1deg);
+  box-shadow: 40px 35px 8px -10px rgba(0, 0, 0, 0.3);
+  transition: all 0.13s ease-in;
+  background-color: rgb(245, 239, 165);
 }
 
-.grocery-list{
+.grocery-container:hover {
+  transform: translateY(-10px) rotate(1deg);
+  box-shadow: 3px 15px 8px -10px rgba(0, 0, 0, 0.3);
+}
+
+.grocery-container:hover .border {
+  transform: translateY(4px) rotate(-5deg);
+}
+
+
+.grocery-header {
+  padding-top: 8%;
+  text-align: center;
+  margin-right: 3%;
+}
+
+.grocery-list {
   place-items: center;
-  padding-bottom: 38%;
+  padding-bottom: 8%;
   text-align: left;
-  margin-left: 45%;
+  margin-left: auto;
+  margin-right: auto;
+  width: 35%;
 }
 
 /* sign up */
@@ -289,7 +349,7 @@
   margin-right: auto;
 }
 
-.signup-title{
+.signup-title {
   padding-top: 1%;
   place-items: center;
   text-align: center;
@@ -299,7 +359,7 @@
   padding-bottom: 3%;
 }
 
-.login-redirect-from-signup{
+.login-redirect-from-signup {
   place-items: center;
   text-align: center;
   width: 800px;
