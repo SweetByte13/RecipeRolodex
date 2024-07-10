@@ -1,6 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { AppContext } from "../context/Context";
+import React, { useEffect, useState } from "react";
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
 import RecipeContainer from "../components/RecipeContainer";
@@ -10,10 +8,6 @@ import Row from 'react-bootstrap/Row';
 
 
 function Recipes() {
-    const navigate = useNavigate();
-    const useAppContext = () => useContext(AppContext);
-    const { setUser } = useAppContext();
-
     const [recipes, setRecipes] = useState([])
     const [searchTerm, setSearchTerm] = useState('')
     const [filteredRecipes, setFilteredRecipes] = useState([])

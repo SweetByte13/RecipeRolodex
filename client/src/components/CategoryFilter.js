@@ -21,17 +21,17 @@ function CategoryFilter({ setRecipes, recipes, setFilteredRecipes }) {
             <label className="filter" htmlFor="filter">Category:&nbsp;</label>
             <select className="select" name="filter" onChange={handleChangeFilter}>
                 <option value="">Select a category:</option>
-                <option value="appetizers">Appetizers</option>
-                <option value="soups">Soups</option>
-                <option value="salads">Salads</option>
-                <option value="main dishes">Main Dishes</option>
-                <option value="side dishes">Side Dishes</option>
-                <option value="bread">Breads</option>
-                <option value="desserts">Desserts</option>
-                <option value="candies">Candies</option>
-                <option value="snacks">Snacks</option>
-                <option value="beverages">Beverages</option>
-                <option value="condiments">Condiments</option>
+                <option value="Appetizers">Appetizers</option>
+                <option value="Soups">Soups</option>
+                <option value="Salads">Salads</option>
+                <option value="Main Dishes">Main Dishes</option>
+                <option value="Side Dishes">Side Dishes</option>
+                <option value="Breads">Breads</option>
+                <option value="Desserts">Desserts</option>
+                <option value="Candies">Candies</option>
+                <option value="Snacks">Snacks</option>
+                <option value="Beverages">Beverages</option>
+                <option value="Condiments">Condiments</option>
             </select>
         </div>
     )

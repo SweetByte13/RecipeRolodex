@@ -101,7 +101,7 @@ function ConversionContainer() {
                     <a href="#Details-Almond Flour" id="Almond Flour"> Almond Flour</a> //
                     <a href="#Details-Pistachio Flour" id="Pistachio Flour"> Pistachio Flour</a> //
                     <a href="#Details-Nut Slices" is="Nut Slices"> Almond Slices</a> //
-                    <a href="#Details-Walnut" id="Walnut"> Walnut Halves</a> //
+                    <a href="#Details-Halves" id="Halves"> Walnut Halves</a> //
                     <a href="#Details-Hazelnut" id="Hazelnut"> Hazelnut</a> //
                     <a href="#Details-Pistachio" id="Pistachio"> Pistachio</a> //
                     <a href="#Details-Coconut" id="Coconut"> Shredded Coconut</a> //

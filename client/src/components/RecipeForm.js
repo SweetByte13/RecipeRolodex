@@ -14,23 +14,23 @@ function RecipeForm() {
     const [publicCheckbox, setPublicCheckBox] = useState(false)
     const [selectedFile, setSelectedFile] = useState(null);
     const [instructions, setInstructions] = useState("")
+    const [title, setTitle] = useState("")
+    const [category, setCategory] = useState("")
     const [inputFields, setInputFields] = useState([
         { ingredient: '', amount: '', measurement: '' }
     ])
 
     const validationSchema = yup.object().shape({
-        // image: yup.string(),
         title: yup.string(),
-        // instruction: yup.string(),
         category: yup.string()
     })
 
     const initialValues = {
         image: '',
-        title: '',
+        title: title,
         instruction: instructions,
-        category: '',
-        public_private: false
+        category: category,
+        public_private: publicCheckbox
     }
 
     let formFields = inputFields.map((input, index) => {
@@ -51,7 +51,7 @@ function RecipeForm() {
                     </Col>
                     <Col md={3}>
                         <Form.Control
-                            type='text'
+                            type='number'
                             id='amount'
                             name='amount'
                             placeholder="Amount..."
@@ -76,7 +76,7 @@ function RecipeForm() {
                     </Col>
                     <Col md={1}>
                         {inputFields.length > 1 && (
-                            <Button data-index={index} className="minus-ingredient-button" variant="outline-danger" size="sm" onClick={handleRemoveFeildclick}>
+                            <Button data-index={index} className="minus-ingredient-button" variant="outline-danger" size="sm" onClick={handleRemoveFieldclick}>
                                 -
                             </Button>
                         )}
@@ -99,16 +99,23 @@ function RecipeForm() {
         setInputFields([...inputFields, newField])
     }
 
-    function handleRemoveFeildclick(event) {
+    function handleRemoveFieldclick(event) {
         const index = event.target.dataset.index
         const values = [...inputFields];
         values.splice(index, 1);
         setInputFields(values);
     }
-    
+
     function handleTextareaChange(event) {
-        console.log(event.target.value)
         setInstructions(event.target.value)
+    }
+
+    function handleTitleChange(event) {
+        setTitle(event.target.value)
+    }
+
+    function handleCategoryChange(event) {
+        setCategory(event.target.value)
     }
 
     const handleImageFileChange = event => {
@@ -168,6 +175,8 @@ function RecipeForm() {
         values["public_private"] = publicCheckbox;
         values["instructions"] = instructions;
         values["image"] = selectedFile
+        console.log(values.title)
+        console.log(values.category)
         fetch(`/create_a_recipe`, {
             method: 'POST',
             headers: {
@@ -175,16 +184,16 @@ function RecipeForm() {
             },
             body: JSON.stringify(values)
         })
-        .then((resp) => {
-            if (resp.ok) {
-                return resp.json();
-            } else {
-                alert('Failed to submit Recipe');
-            }
-        })
-        .then((user) => {
-            navigate("/recipes");
-        });
+            .then((resp) => {
+                if (resp.ok) {
+                    return resp.json();
+                } else {
+                    alert('Failed to submit Recipe');
+                }
+            })
+        // .then(() => {
+        //     navigate("/recipes");
+        // });
         setSubmitting(false);
     }
 
@@ -211,7 +220,7 @@ function RecipeForm() {
                 </Container>
                 <Container className="recipe-form-container" >
                     <Formik enableReinitialize
-                     initialValues={initialValues}
+                        initialValues={initialValues}
                         validationSchema={validationSchema}
                         onSubmit={handleFormSubmit}
                     >
@@ -232,7 +241,7 @@ function RecipeForm() {
                                     </Container>
                                     <br></br>
                                     <Form.Label className="fw-bold">Category:</Form.Label>
-                                    <Form.Select name="category" aria-label="category" onChange={handleChange}>
+                                    <Form.Select name="category" aria-label="category" onChange={handleCategoryChange}>
                                         <option>Select a category:</option>
                                         <option value="Appetizers">Appetizers</option>
                                         <option value="Soups">Soups</option>
@@ -257,7 +266,7 @@ function RecipeForm() {
                                             name='title'
                                             placeholder="Recipe title..."
                                             value={values.title}
-                                            onChange={handleChange}
+                                            onChange={handleTitleChange}
                                             onBlur={handleBlur}
                                         />
                                     </Form.Group>

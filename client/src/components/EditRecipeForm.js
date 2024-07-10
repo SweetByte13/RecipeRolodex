@@ -18,15 +18,17 @@ function EditRecipeForm() {
     const [publicCheckbox, setPublicCheckBox] = useState(false)
     const [selectedFile, setSelectedFile] = useState(null);
     const [instructions, setInstructions] = useState("")
+    const [title, setTitle] = useState("")
+    const [category, setCategory] = useState("")
     const [inputFields, setInputFields] = useState([
         { ingredient: '', amount: '', measurement: '' }
     ])
     const [recipe, setRecipe] = useState({
-        title: "",
+        title: title,
         instruction: instructions,
-        category: "",
+        category: category,
         image:"",
-        public_private: "",
+        public_private: publicCheckbox,
         recipe_ingredients: []
     })
 
@@ -142,8 +144,15 @@ function EditRecipeForm() {
     }
 
     function handleTextareaChange(event) {
-        console.log(event.target.value)
         setInstructions(event.target.value)
+    }
+
+    function handleTitleChange(event) {
+        setTitle(event.target.value)
+    }
+
+    function handleCategoryChange(event) {
+        setCategory(event.target.value)
     }
     const handleImageFileChange = event => {
         const image = event.target.files[0];
@@ -235,7 +244,7 @@ function EditRecipeForm() {
                                         name="category"
                                         aria-label="category"
                                         value={values.category}
-                                        onChange={handleChange}>
+                                        onChange={handleCategoryChange}>
                                         <option>Select a category:</option>
                                         <option value="Appetizers">Appetizers</option>
                                         <option value="Soups">Soups</option>
@@ -260,7 +269,7 @@ function EditRecipeForm() {
                                             name='title'
                                             placeholder="Recipe title..."
                                             value={values.title}
-                                            onChange={handleChange}
+                                            onChange={handleTitleChange}
                                             onBlur={handleBlur}
                                         />
                                     </Form.Group>

@@ -200,8 +200,8 @@ class CreateRecipes(Resource):
             data = request.json
             recipe_ingredients=data['ingredients']
             recipe = Recipe(
-                title=data['title'].lower(),
-                instruction=data['instructions'].lower(),
+                title=data['title'],
+                instruction=data['instructions'],
                 image=data['image'],
                 category=data['category'],
                 public=data['public_private']

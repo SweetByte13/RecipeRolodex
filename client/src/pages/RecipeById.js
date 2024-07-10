@@ -34,6 +34,7 @@ function RecipeById() {
             })
             .then((recipeData) => {
                 setRecipe(recipeData)
+                document.body.scrollTop = document.documentElement.scrollTop = 0;
             })
     }, [])
 
@@ -60,7 +61,7 @@ function RecipeById() {
             <NavBar />
             <br></br>
             <br></br>
-            <main style={{ paddingTop: '5%'}}>
+            <main style={{ paddingTop: '10%'}}>
                 <table style={{ width: "100%"}}>
                     <tbody>
                         <tr>
@@ -80,27 +81,6 @@ function RecipeById() {
                     </tbody>
                 </table>
                 <Container >
-                    {/* <div style={{ textAlign: "center"}}>
-                        <br></br>
-                        <h5>
-                            The Story Behind Sourdough Bread
-                        </h5>
-                        <p style={{ textAlign: "center"}}>
-
-                            Sourdough bread has a rich history that dates back to ancient times.
-                            It’s believed to have originated in Ancient Egypt around 1500 BC and was likely the first form of leavening available to bakers.
-                            The process of making sourdough involves fermenting dough using naturally occurring lactobacilli and yeast.
-                            The result is a bread with a slightly sour taste, hence the name “sourdough”.
-
-                            In the 19th century, during the California Gold Rush, sourdough was the main bread made in Northern California and is still a part of the culture in San Francisco today.
-                            The nickname “sourdough” is a term often associated with miners in these regions, as they were known to carry a pouch of starter with them to make their bread.
-
-                            Today, sourdough bread is loved by many for its unique flavor and texture.
-                            It’s also appreciated for its natural and traditional baking method, which contrasts with the commercial yeast products that are commonly used in bread production today.
-                            Making sourdough bread is a labor of love, but the end result is always worth the effort.
-                            Happy baking!
-                        </p>
-                    </div> */}
                     <br></br>
                     <Container className="header-container">
                         <Row>
