@@ -110,6 +110,6 @@ function Home() {
                 <Footer/>
             </main >
         </div >
-    )
+    );
 }
 export default Home;

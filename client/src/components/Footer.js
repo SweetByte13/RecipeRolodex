@@ -25,7 +25,6 @@ function Footer() {
                             </Col>
                             <Col>
                                 <Stack gap={3}>
-                                  
                                     <br></br>
                                     <br></br>
                                     <div className="socials">FOLLOW US ON SOCIAL MEDIA</div>

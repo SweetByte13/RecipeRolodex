@@ -8,7 +8,6 @@ import LoginForm from "../components/LoginForm";
 function Login() {
     const navigate = useNavigate();
 
-
     return(
         <>
         <NavBar />

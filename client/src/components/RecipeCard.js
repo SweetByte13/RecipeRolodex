@@ -10,7 +10,7 @@ function RecipeCard({ recipe }) {
     const { user } = useAppContext();
     const navigate = useNavigate();
 
-    const { title, instructions, image, category, recipe_users, recipe_ingredients } = recipe
+    const { title, instructions, image, category, recipe_users } = recipe
     const [liked, setLiked] = useState(recipe_users.some(x => x.user_id === user?.id));
     const [inGroceryList, setInGroceryList] = useState(false)
     const isCreator = recipe_users.some(x => x.user_id === user?.id && x.creator)
@@ -18,10 +18,13 @@ function RecipeCard({ recipe }) {
     function handleLikedClick(event) {
         console.log(event.target)
         setLiked(!liked);
+        console.log(liked)
         const values = {
             recipe_id: recipe.id,
             user_id: user.id
         }
+        console.log(values)
+        console.log(recipe)
 
         if (!liked) {
             fetch("/liked_recipe", {
@@ -47,6 +50,7 @@ function RecipeCard({ recipe }) {
         else {
             const recipe_user = recipe_users.find(x => x.user_id === user.id)
             recipe_users.splice(recipe_users.indexOf(recipe_user), 1)
+            
             fetch(`/delete_liked_recipe/${recipe_user.id}`, {
                 method: 'DELETE',
                 headers: {

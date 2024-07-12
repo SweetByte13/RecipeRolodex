@@ -191,9 +191,9 @@ function RecipeForm() {
                     alert('Failed to submit Recipe');
                 }
             })
-        // .then(() => {
-        //     navigate("/recipes");
-        // });
+        .then(() => {
+            navigate("/recipes");
+        });
         setSubmitting(false);
     }
 

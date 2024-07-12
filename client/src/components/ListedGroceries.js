@@ -1,13 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { AppContext } from "../context/Context";
-
+import React, { useEffect, useState } from "react";
 
 function GroceryList() {
-    const navigate = useNavigate();
-    const useAppContext = () => useContext(AppContext);
-    const { user, setUser } = useAppContext();
-
     const [groceryItems, setGroceryItems] = useState([])
 
     useEffect(() => {

@@ -1,15 +1,9 @@
-import React, { useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import React from "react";
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
-import { AppContext } from "../context/Context";
 import ProfileForm from "../components/ProfileForm";
 
-
 function Profile() {
-    const useAppContext = () => useContext(AppContext);
-    const { setUser } = useAppContext();
-
     return (
         <>
             <NavBar />

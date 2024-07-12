@@ -3,62 +3,13 @@
 from random import randint, choice as rc
 from faker import Faker
 from config import db, app
-from flask import request, make_response
 from models import User, Recipe, Ingredient, Recipe_User, Recipe_Ingredient, Dietary_No
 
 fake = Faker()
 
-# a=""
-# b=""
-# c=""
-# d=""
-# e=""
-# f=""
-# g=""
-# h=""
-# i=""
-# j=""
-# k=""
-# l=""
-# r=""
-# s=""
-# t=""
-# u=""
-# v=""
-# w=""
-# aa=""
-# bb=""
-# cc=""
-# dd=""
-# ee=""
-# ff=""
-# gg=""
-# hh=""
-# ii=""
-# jj=""
-# kk=""
-# ll=""
-# mm=""
-# nn=""
-# oo=""
-# pp=""
-# qq=""
-# rr=""
-# ss=""
-# tt=""
-# uu=""
-# vv=""
-# ww=""
-# xx=""
-# yy=""
-# zz=""
-# xxa=""
-# xxb=""
-
 def create_users():
     print("Creating users...")
     users = []
-
     a=User(
     f_name="John",
     l_name="Doe",
@@ -148,7 +99,6 @@ def create_users():
     _password_hash="password345!",
     zipcode="66778"
     )
-    
     users.append(a)
     users.append(b)
     users.append(c)
@@ -161,7 +111,6 @@ def create_users():
     users.append(l)
     return users
 
-   
 def create_recipes():
     print("Creating recipes...")
     recipes = []
@@ -224,68 +173,12 @@ def create_recipes():
         category = "Desserts",
         public = False,
     )
-
-    # x = Recipe(
-    #     title = "Homemade Lemonade",
-    #     instruction = "Squeeze lemons to get the juice. Mix lemon juice, sugar, and water. Serve chilled.",
-    #     image = "https://media.istockphoto.com/id/1401150816/photo/two-glasses-of-lemonade-with-mint-and-lemons.jpg?s=612x612&w=0&k=20&c=LuuInHwGO11q3aBbAmyMy4JvZ3njV4R0IRE10klTLew=",
-    #     category = "Beverages",
-    #     public = True,
-    # )
-
-    # y = Recipe(
-    #     title = "BBQ Sauce",
-    #     instruction = "Combine ketchup, brown sugar, vinegar, and spices. Simmer for 15 minutes.",
-    #     image = "https://www.kitchensanctuary.com/wp-content/uploads/2020/05/BBQ-Sauce-square-FS-33.jpg",
-    #     category = "Condiments",
-    #     public = False,
-    # )
-    # z = Recipe(
-    # title = "Cheesy Garlic Bread",
-    # instruction = "Spread garlic butter on bread slices, sprinkle with cheese, and bake until cheese is melted and bread is crispy.",
-    # image = "https://www.gritsandpinecones.com/wp-content/uploads/2022/01/texas-toast-garlic-bread-featured-1200x1200-copy.jpg",
-    # category = "Bread",
-    # public = True,
-    # )
-
-    # q = Recipe(
-    #     title = "Vanilla Cupcakes",
-    #     instruction = "Mix flour, sugar, baking powder, salt, butter, milk, and vanilla extract. Pour into cupcake liners and bake until golden brown. Frost with your favorite icing.",
-    #     image = "https://www.cookingclassy.com/wp-content/uploads/2021/09/vanilla-cupcakes-3.jpg",
-    #     category = "Desserts",
-    #     public = False,
-    # )
-
-    # m = Recipe(
-    #     title = "Homemade Iced Tea",
-    #     instruction = "Brew tea and let it cool. Mix in sugar and lemon juice, and serve over ice.",
-    #     image = "https://www.simplejoy.com/wp-content/uploads/2021/04/long-island-iced-tea.jpg",
-    #     category = "Beverages",
-    #     public = True,
-    # )
-
-    # n = Recipe(
-    #     title = "Homemade Ketchup",
-    #     instruction = "Blend tomatoes, vinegar, sugar, and spices. Simmer until thickened.",
-    #     image = "https://4sonrus.com/wp-content/uploads/2023/05/Homemade-Ketchup-Slow-Cooker-Recipe-11.jpg",
-    #     category = "Condiments",
-    #     public = False,
-    # )
-
-    # o = Recipe(
-    #     title = "Spicy Popcorn",
-    #     instruction = "Pop popcorn kernels. Toss with melted butter and spicy seasoning.",
-    #     image = "https://i2.wp.com/highlandsranchfoodie.com/wp-content/uploads/2012/03/stove-top-spicy-popcorn-img.jpg",
-    #     category = "Snacks",
-    #     public = True,
-    # )
     recipes.append(r)
     recipes.append(s)
     recipes.append(t)
     recipes.append(u)
     recipes.append(v)
     recipes.append(w)
-    #x,y,z,q,m,n,o,)
     return recipes
 
 def create_ingredients():
@@ -686,7 +579,6 @@ def create_recipe_ingredients(r, s,t,u,v,w,aa,bb,cc,dd,ee,ff,gg,hh,ii,jj,kk,ll,m
             recipe_id=w.id,
             ingredient_id=xxb.id
             )
-    
     recipe_ingredients.append(aaa)
     recipe_ingredients.append(bbb)
     recipe_ingredients.append(ccc)
@@ -750,7 +642,6 @@ def create_recipe_users(a,b,c,f,i, r,s,t,u,v,w):
             recipe_id=v.id,
             user_id=a.id
             )
-
     recipe_users.append(qqq)
     recipe_users.append(rrr)
     recipe_users.append(sss)
@@ -813,7 +704,6 @@ def seed_database():
         Dietary_No.query.delete()
         
         print("Seeding Users...")
-        # users = create_users()
         print("Creating users...")
         users = []
 
@@ -861,7 +751,7 @@ def seed_database():
         _password_hash="password654!",
         zipcode="77889"
         )
-
+        
         h=User(
         f_name="David",
         l_name="Davis",
@@ -906,7 +796,6 @@ def seed_database():
         _password_hash="password345!",
         zipcode="66778"
         )
-        
         users.append(a)
         users.append(b)
         users.append(c)
@@ -921,23 +810,8 @@ def seed_database():
         db.session.commit()
         
         print("Seeding recipes...")
-        # recipes = create_recipes()
         print("Creating recipes...")
         recipes = []
-        categories = [ 
-            'Appetizers', 
-            'Soups', 
-            'Salads', 
-            'Main Dishes', 
-            'Side Dishes', 
-            'Breads',
-            'Desserts', 
-            'Candies', 
-            'salads', 
-            'Snacks', 
-            'Beverages', 
-            'Condiments' ]
-    
         r = Recipe(
         title = "Delicious Chicken Alfredo",
         instruction = "First, cook the chicken in a pan with some olive oil. Then, prepare the Alfredo sauce by melting butter and adding cream and Parmesan cheese. Combine the chicken and sauce, and serve over cooked pasta.",
@@ -983,7 +857,6 @@ def seed_database():
             category = "Desserts",
             public = False,
         )
-
         recipes.append(r)
         recipes.append(s)
         recipes.append(t)
@@ -994,11 +867,8 @@ def seed_database():
         db.session.commit()
         
         print("Seeding ingredients...")
-        # ingredients = create_ingredients()
         print("Creating ingredients...")
         ingredients = []
-        categories= ['dairy', 'fruit', 'vegetable', 'fish', 'meat', 'poultry', 'bread', 'pantry']
-        
         aa = Ingredient(
             name = "chicken",
             category = "poultry",

@@ -15,7 +15,7 @@ import GroceryList from "../pages/GroceryList";
 
 function App() {
   const [user, setUser] = useState(null);
-
+  
   useEffect(() => {
     fetch("/check_session")
       .then((resp) => {
@@ -27,7 +27,6 @@ function App() {
         setUser(user)
       });
   }, []);
-
 
   return (
     <>
@@ -49,7 +48,6 @@ function App() {
         </>
       </AppContext.Provider>
     </>
-  )
+  );
 }
-
 export default App;

@@ -1,5 +1,4 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import Carousel from 'react-bootstrap/Carousel';
 import bundt_cake from '../images/bundt_cake.jpg';
 import chicken_sandwich from '../images/chicken_sandwich.jpg';
@@ -7,7 +6,6 @@ import fondue_board from '../images/fondue_board.jpg';
 import Sourdough from '../images/Sourdough.jpg';
 import stuffed_avo from '../images/stuffed_avo.jpg';
 import white_fish from '../images/white_fish.jpg';
-
 
 function ImageCarousel() {
     return (

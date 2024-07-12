@@ -14,5 +14,4 @@ function Search({setSearchRecipe}) {
         </div>
     );
 }
-
 export default Search;

@@ -14,7 +14,7 @@ function EditRecipeForm() {
     const useAppContext = () => useContext(AppContext);
     const { setUser } = useAppContext();
     let { id } = useParams();
-    
+
     const [publicCheckbox, setPublicCheckBox] = useState(false)
     const [selectedFile, setSelectedFile] = useState(null);
     const [instructions, setInstructions] = useState("")
@@ -27,7 +27,7 @@ function EditRecipeForm() {
         title: title,
         instruction: instructions,
         category: category,
-        image:"",
+        image: "",
         public_private: publicCheckbox,
         recipe_ingredients: []
     })
@@ -54,7 +54,6 @@ function EditRecipeForm() {
             })
     }, [])
 
-
     const validationSchema = yup.object().shape({
         title: yup.string(),
         category: yup.string()
@@ -67,7 +66,6 @@ function EditRecipeForm() {
         category: recipe.category,
         public_private: recipe.public_private
     }
-
 
     let formFields = inputFields.map((input, index) => {
         return (
@@ -120,6 +118,7 @@ function EditRecipeForm() {
                 </Row>
             </div >)
     })
+
     function handleFormChange(index, event) {
         let data = [...inputFields];
         data[index][event.target.name] = event.target.value;
@@ -178,16 +177,16 @@ function EditRecipeForm() {
             },
             body: JSON.stringify(values)
         })
-        .then((resp) => {
-            if (resp.ok) {
-                return resp.json()
-            } else {
-                alert('Failed to submit Recipe')
-            }
-        })
-        .then((recipe) => {
-            navigate(`/recipes/${id}`);
-        });
+            .then((resp) => {
+                if (resp.ok) {
+                    return resp.json()
+                } else {
+                    alert('Failed to submit Recipe')
+                }
+            })
+            .then((recipe) => {
+                navigate(`/recipes/${id}`);
+            });
         setSubmitting(false);
     }
 
@@ -210,6 +209,7 @@ function EditRecipeForm() {
             }
         });
     }
+
     return (
         <div className="recipe-template-container" >
             <main>
@@ -223,7 +223,7 @@ function EditRecipeForm() {
                         validationSchema={validationSchema}
                         onSubmit={handleFormSubmit}
                     >
-                        {({ newField, values, errors, touched, handleChange, handleBlur, handleSubmit, setFieldValue }) => (
+                        {({ values, handleBlur, handleSubmit }) => (
                             <Form className="recipe-form" onSubmit={handleSubmit}>
                                 <Row >
                                     <Container>
@@ -285,7 +285,6 @@ function EditRecipeForm() {
                                     </Col>
                                 </Row>
                                 <br></br>
-
                                 <FieldArray
                                     name="ingredients"
                                     render={() => formFields} />
@@ -306,7 +305,6 @@ function EditRecipeForm() {
                                         onChange={handleCheckBoxChange}
                                     />
                                 </Form.Switch>
-
                                 <div className="d-grid gap-2">
                                     <Button className='recipe-form-button' type='submit' variant="success" size="lg" onSubmit={handleSubmit}>
                                         Submit Recipe

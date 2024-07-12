@@ -4,7 +4,6 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-
 function RecipeContainer({ recps }) {
     const recipe = recps.map((recipe) => {
         return (
@@ -38,5 +37,3 @@ function RecipeContainer({ recps }) {
     )
 }
 export default RecipeContainer;
-
-//add OCR file upload area

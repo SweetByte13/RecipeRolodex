@@ -8,18 +8,6 @@ from PIL import Image
 import pytesseract
 import base64
 
-# @app.before_request
-# def check_log_status():
-#     open_access_list = [
-#         'signup',
-#         'login',
-#         'check_session',
-#         'recipes',
-#         'get_image_ocr'
-#     ]
-#     if request.endpoint not in open_access_list and (not session.get('user_id')):
-#         return make_response({"error": "401 Unauthorized"}, 401)
-    
 class CheckSession(Resource):
     def get(self):
         if 'user_id' in session:
@@ -262,7 +250,7 @@ class DeleteLikedRecipe(Resource):
 class MyRecipes(Resource):
     def get(self, id):
         recipes = Recipe_User.query.filter_by(user_id=id)
-        recipe_users = [recipe.to_dict(rules=("-recipe.recipe_users.recipe", "-recipe.recipe_users.user","-recipe.recipe_ingredients.recipe","-recipe_ingredients.ingredient.recipe_ingredients", "-recipe_ingredients.ingredient.dietary_nos", "-recipe_ingredients.recipe", "-user", )) for recipe in recipes]
+        recipe_users = [recipe.to_dict(rules=("-recipe.recipe_users.recipe", "-recipe.recipe_users.user","-recipe.recipe_ingredients.recipe","-recipe.recipe_ingredients.ingredient.recipe_ingredients", "-recipe.recipe_ingredients.ingredient.dietary_nos", "-recipe.recipe_ingredients.recipe", "-user", )) for recipe in recipes]
         return make_response([recipe_user['recipe'] for recipe_user in recipe_users])
         
 class GetImageOcr(Resource):

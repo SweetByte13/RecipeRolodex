@@ -1,20 +1,14 @@
-import React, { useContext, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { AppContext } from "../context/Context";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
 import RecipeContainer from "../components/RecipeContainer";
 import SearchBar from "../components/SearchBar";
 import RecipeFilter from "../components/RecipeFilter";
 import Row from 'react-bootstrap/Row';
-import RecipeCard from "../components/RecipeCard";
 
 function MyRecipes() {
-    const navigate = useNavigate();
-    const useAppContext = () => useContext(AppContext);
-    const { user, setUser } = useAppContext();
     let { id } = useParams();
-
     const [recipes, setRecipes] = useState([])
     const [searchTerm, setSearchTerm] = useState('')
     const [filteredRecipes, setFilteredRecipes] = useState([])

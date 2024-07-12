@@ -13,7 +13,6 @@ function ProfileForm() {
     const { user, setUser } = useAppContext();
 
     const validationSchema = yup.object().shape({
-        // p_image: yup.string(),
         f_name: yup.string(),
         l_name: yup.string(),
         email: yup.string().email("Invalid email address").min(8, "Must be a valid email address"),
@@ -21,7 +20,6 @@ function ProfileForm() {
     })
 
     const initialValues = {
-        // p_image: user === null || user === undefined ? '' : user.p_image,
         f_name: user === null || user === undefined ? '' : user.f_name,
         l_name: user === null || user === undefined ? '' : user.l_name,
         email: user === null || user === undefined ? '' : user.email,
@@ -80,21 +78,6 @@ function ProfileForm() {
             >
                 {({ values, errors, touched, handleChange, handleBlur, handleSubmit }) => (
                     <Form className="profile-form" onSubmit={handleSubmit}>
-                        {/* <Form.Group className="mb-3">
-                            <Form.Label>Profile Picture:</Form.Label>
-                            <Form.Control
-                                type='text'
-                                id='p_image'
-                                name='p_image'
-                                placeholder="Profile Picture..."
-                                required value={values.p_image}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                            />
-                            <Form.Control.Feedback type="invalid">
-                                {touched.p_image && errors.p_image}
-                            </Form.Control.Feedback>
-                        </Form.Group> */}
                         <Form.Group className="mb-3">
                             <Form.Label>First Name:</Form.Label>
                             <Form.Control

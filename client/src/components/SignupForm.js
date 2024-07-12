@@ -13,7 +13,6 @@ function SignupForm() {
     const { setUser } = useAppContext();
    
     const validationSchema = yup.object().shape({
-        // p_image: yup.string(),
         f_name: yup.string(),
         l_name: yup.string(),
         username: yup.string().min(5, "Username must be five characters or longer.").max(20, "Username can not be more than twenty characters."),
@@ -24,7 +23,6 @@ function SignupForm() {
     })
 
     const initialValues = {
-        // p_image:'',
         f_name: '',
         l_name: '',
         username: '',
@@ -64,21 +62,6 @@ function SignupForm() {
             >
                 {({ values, errors, touched, handleChange, handleBlur, handleSubmit  }) => (
                     <Form className="signup-form" onSubmit={handleSubmit}>
-                        {/* <Form.Group className="mb-3" >
-                            <Form.Label>Profile Picture:</Form.Label>
-                            <Form.Control
-                                type='text'
-                                id='p_image'
-                                name='p_image'
-                                placeholder="Profile Picture..."
-                                required values={values.p_image}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                            />
-                            <Form.Control.Feedback type="invalid">
-                                {touched.p_image && errors.p_image}
-                            </Form.Control.Feedback>
-                        </Form.Group> */}
                         <Form.Group className="mb-3" >
                             <Form.Label>First Name:</Form.Label>
                             <Form.Control
@@ -203,6 +186,6 @@ function SignupForm() {
                 </Button>
             </div>
         </Container>
-    )
+    );
 }
 export default SignupForm;

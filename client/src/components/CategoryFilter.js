@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
-function CategoryFilter({ setRecipes, recipes, setFilteredRecipes }) {
+function CategoryFilter({ recipes, setFilteredRecipes }) {
     const [filter, setFilter] = useState("");
 
     function handleChangeFilter(event) {
@@ -34,6 +34,6 @@ function CategoryFilter({ setRecipes, recipes, setFilteredRecipes }) {
                 <option value="Condiments">Condiments</option>
             </select>
         </div>
-    )
+    );
 }
 export default CategoryFilter;

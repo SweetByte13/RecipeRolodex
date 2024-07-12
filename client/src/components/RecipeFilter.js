@@ -1,9 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { ChevronDoubleLeft } from "react-bootstrap-icons";
+import React, { useState } from "react";
 
-
-function RecipeFilter({ setRecipes, recipes, setFilteredRecipes, id }) {
-
+function RecipeFilter({ recipes, setFilteredRecipes, id }) {
     const [filter, setFilter] = useState("");
 
     function handleChangeFilter(event) {
