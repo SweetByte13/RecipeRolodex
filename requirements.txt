@@ -31,6 +31,7 @@ pexpect==4.9.0; sys_platform != 'win32'
 pickleshare==0.7.5
 pillow==10.4.0
 prompt-toolkit==3.0.47; python_full_version >= '3.7.0'
+pytesseract==0.3.10
 psycopg2-binary==2.9.9; python_version >= '3.7'
 ptyprocess==0.7.0
 pure-eval==0.2.2
