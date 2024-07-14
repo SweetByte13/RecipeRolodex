@@ -27,7 +27,7 @@ function RecipeCard({ recipe }) {
         console.log(recipe)
 
         if (!liked) {
-            fetch("/liked_recipe", {
+            fetch("/api/liked_recipe", {
                 method: 'POST',
                 headers: {
                     "Content-Type": 'application/json'
@@ -51,7 +51,7 @@ function RecipeCard({ recipe }) {
             const recipe_user = recipe_users.find(x => x.user_id === user.id)
             recipe_users.splice(recipe_users.indexOf(recipe_user), 1)
             
-            fetch(`/delete_liked_recipe/${recipe_user.id}`, {
+            fetch(`/api/delete_liked_recipe/${recipe_user.id}`, {
                 method: 'DELETE',
                 headers: {
                     "Content-Type": 'application/json'

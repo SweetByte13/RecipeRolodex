@@ -23,7 +23,7 @@ function LoginForm() {
     }
 
     function handleLoginSubmit(values, { setSubmitting }) {
-        fetch("/login", {
+        fetch("/api/login", {
             method: 'POST',
             headers: {
                 "Content-Type": 'application/json'

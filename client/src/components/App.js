@@ -17,7 +17,7 @@ function App() {
   const [user, setUser] = useState(null);
   
   useEffect(() => {
-    fetch("/check_session")
+    fetch("/api/check_session")
       .then((resp) => {
         if (resp.ok) {
           return resp.json()

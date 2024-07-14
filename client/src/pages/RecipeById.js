@@ -25,7 +25,7 @@ function RecipeById() {
     })
 
     useEffect(() => {
-        fetch(`/recipes/${id}`)
+        fetch(`/api/recipes/${id}`)
             .then((resp) => {
                 if (resp.ok) {
                     return resp.json();

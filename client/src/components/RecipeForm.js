@@ -140,7 +140,7 @@ function RecipeForm() {
             reader.readAsDataURL(file)
             reader.onload = readerEvent => {
                 const fileText = readerEvent.target.result
-                fetch('/get_image_ocr', {
+                fetch('/api/get_image_ocr', {
                     method: 'POST',
                     headers: {
                         "Content-Type": 'application/json'
@@ -177,7 +177,7 @@ function RecipeForm() {
         values["image"] = selectedFile
         console.log(values.title)
         console.log(values.category)
-        fetch(`/create_a_recipe`, {
+        fetch(`/api/create_a_recipe`, {
             method: 'POST',
             headers: {
                 "Content-Type": 'application/json'

@@ -27,7 +27,7 @@ function ProfileForm() {
     }
 
     const handleFormSubmit = (values, { setSubmitting }) => {
-        const endpoint = `/user/${user.id}`
+        const endpoint = `/api/user/${user.id}`
         fetch(endpoint, {
             method: 'PATCH',
             headers: {
@@ -52,7 +52,7 @@ function ProfileForm() {
         if (!window.confirm("Are you sure you want to delete your account?")) {
             return;
         }
-        const endpoint = `/user/${user.id}`
+        const endpoint = `/api/user/${user.id}`
         fetch(endpoint, {
             method: 'DELETE',
             headers: {

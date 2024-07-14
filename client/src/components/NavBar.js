@@ -17,7 +17,7 @@ function NavBar() {
     }
 
     function handleLogoutClick() {
-        fetch("/logout",
+        fetch("/api/logout",
             {
                 method: "DELETE",
                 headers: {

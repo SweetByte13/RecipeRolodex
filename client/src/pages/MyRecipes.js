@@ -14,7 +14,7 @@ function MyRecipes() {
     const [filteredRecipes, setFilteredRecipes] = useState([])
 
     useEffect(() => {
-        fetch(`/my_recipes/${id}`)
+        fetch(`/api/my_recipes/${id}`)
             .then((resp) => {
                 if (resp.ok) {
                     return resp.json();

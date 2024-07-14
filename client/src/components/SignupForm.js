@@ -33,7 +33,7 @@ function SignupForm() {
     }
 
     function handleSignupFormSubmit(values, { setSubmitting }) {
-        fetch("/signup", {
+        fetch("/api/signup", {
             method: 'POST',
             headers: {
                 "content-Type": 'application/json'

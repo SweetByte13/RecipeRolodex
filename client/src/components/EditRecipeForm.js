@@ -33,7 +33,7 @@ function EditRecipeForm() {
     })
 
     useEffect(() => {
-        fetch(`/recipes/${id}`)
+        fetch(`/api/recipes/${id}`)
             .then((resp) => {
                 if (resp.ok) {
                     return resp.json();
@@ -170,7 +170,7 @@ function EditRecipeForm() {
         values["instructions"] = instructions;
         values["image"] = selectedFile
         console.log(values)
-        fetch(`/recipes/${id}`, {
+        fetch(`/api/recipes/${id}`, {
             method: 'PATCH',
             headers: {
                 "Content-Type": 'application/json'
@@ -195,7 +195,7 @@ function EditRecipeForm() {
         if (!window.confirm("Are you sure you want to delete your recipe?")) {
             return;
         }
-        fetch(`/recipes/${id}`, {
+        fetch(`/api/recipes/${id}`, {
             method: 'DELETE',
             headers: {
                 "Content-Type": 'application/json'
