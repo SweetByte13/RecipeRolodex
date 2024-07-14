@@ -47,7 +47,6 @@ function SignupForm() {
             }
         }).then((user) => {
             setUser(user);
-            console.log(user);
             navigate("/");
         })
         setSubmitting(false);

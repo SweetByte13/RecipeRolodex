@@ -16,14 +16,12 @@ function Recipes() {
         console.log("fetch")
         fetch("/api/recipes")
             .then((resp) => {
-                console.log(resp)
                 if (resp.ok) {
                     return resp.json();
                 }
                 throw Error("Network responce failed")
             })
             .then((recipesData) => {
-                console.log(recipesData)
                 setRecipes(recipesData)
                 setFilteredRecipes(recipesData)})
     }, []);

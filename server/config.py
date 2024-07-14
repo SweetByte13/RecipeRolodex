@@ -13,15 +13,10 @@ app = Flask(__name__,
     static_folder='../client/build',
     template_folder='../client/build')
 try:
-  word = os.environ.get('SECRET_KEY')
-  # print(os.environ)
-  # app.secret_key = os.environ.get('SECRET_KEY')
-  # print(os.environ)
+  app.secret_key = os.environ.get('SECRET_KEY')
 except Exception:
-  print("secretc key not found")
-  # os.environ['SECRET_KEY'] = ''.encode('utf8')
+  print("secret key not found")
   
-# os.getenv('SECRET_KEY')
 app.config['MAX_CONTENT_LENGTH'] = 1024 * 1024
 app.config['UPLOAD_EXTENSIONS'] = ['.jpg', '.png', '.jpeg']
 app.config['UPLOAD_PATH'] = 'uploads'
