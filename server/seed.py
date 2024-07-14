@@ -696,12 +696,13 @@ def clear_database():
 def seed_database():
     with app.app_context():
         print("Clearing DB...")
-        User.query.delete()
-        Recipe.query.delete()
-        Ingredient.query.delete()
         Recipe_Ingredient.query.delete()
         Recipe_User.query.delete()
         Dietary_No.query.delete()
+        User.query.delete()
+        Recipe.query.delete()
+        Ingredient.query.delete()
+        
         
         print("Seeding Users...")
         print("Creating users...")
