@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from flask import request, session, make_response, jsonify
+from flask import render_template, request, session, make_response, jsonify
 from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
 from config import app, db, api
@@ -7,6 +7,12 @@ from models import User, Recipe, Ingredient, Recipe_Ingredient, Recipe_User
 from PIL import Image
 import pytesseract
 import base64
+from dotenv import load_dotenv
+load_dotenv()
+
+@app.errorhandler(404)
+def not_found(e):
+    return render_template("index.html")
 
 class CheckSession(Resource):
     def get(self):
@@ -16,7 +22,7 @@ class CheckSession(Resource):
                 user=db.session.get(User, user_id)
                 if user:
                     return make_response(user.to_dict(rules=("-recipe_users","-dietary_nos")), 200)
-        return make_response({"error": "Unauthorized: Must login"}, 401)
+        return make_response({"error": "Unauthorized Must login"}, 401)
 
 class Signup(Resource):
     def post(self):
@@ -278,20 +284,20 @@ class GetImageOcr(Resource):
             app.logger.error(f"Error creating recipe: {e}")
             return make_response({"error": "Could not create Recipe", "details": str(e)}, 400)
 
-api.add_resource(Home, '/')
-api.add_resource(CheckSession, '/check_session')
-api.add_resource(Signup, '/signup')
-api.add_resource(Login, '/login')
-api.add_resource(Logout, '/logout')
-api.add_resource(Users, '/user')
-api.add_resource(UserById, '/user/<int:id>')
-api.add_resource(Recipes, '/recipes')
-api.add_resource(RecipeById, '/recipes/<int:id>')
-api.add_resource(CreateRecipes, '/create_a_recipe')
-api.add_resource(LikedRecipe, '/liked_recipe')
-api.add_resource(DeleteLikedRecipe, '/delete_liked_recipe/<int:id>')
-api.add_resource(MyRecipes, '/my_recipes/<int:id>')
-api.add_resource(GetImageOcr, '/get_image_ocr')
+api.add_resource(Home, '/api/')
+api.add_resource(CheckSession, '/api/check_session')
+api.add_resource(Signup, '/api/signup')
+api.add_resource(Login, '/api/login')
+api.add_resource(Logout, '/api/logout')
+api.add_resource(Users, '/api/user')
+api.add_resource(UserById, '/api/user/<int:id>')
+api.add_resource(Recipes, '/api/recipes')
+api.add_resource(RecipeById, '/api/recipes/<int:id>')
+api.add_resource(CreateRecipes, '/api/create_a_recipe')
+api.add_resource(LikedRecipe, '/api/liked_recipe')
+api.add_resource(DeleteLikedRecipe, '/api/delete_liked_recipe/<int:id>')
+api.add_resource(MyRecipes, '/api/my_recipes/<int:id>')
+api.add_resource(GetImageOcr, '/api/get_image_ocr')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
