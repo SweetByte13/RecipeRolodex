@@ -131,7 +131,9 @@ function RecipeForm() {
 
     const handleFileChange = event => {
         if (
-            !window.confirm("This will overwrite the current instructions. Are you sure you wish to continue?")) {
+            !window.confirm("OCR functionality currently disabled")
+            // !window.confirm("This will overwrite the current instructions. Are you sure you wish to continue?")
+            ) {
             return
         }
         const reader = new FileReader();
@@ -154,7 +156,7 @@ function RecipeForm() {
                         return resp.json();
                     }
                     else {
-                        alert('Invalid credentials')
+                        alert('Error with PyTesseract OCR')
                     }
                 }).then((resp) => {
                     setInstructions(resp)
