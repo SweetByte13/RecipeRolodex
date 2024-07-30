@@ -16,15 +16,11 @@ function RecipeCard({ recipe }) {
     const isCreator = recipe_users.some(x => x.user_id === user?.id && x.creator)
 
     function handleLikedClick(event) {
-        console.log(event.target)
         setLiked(!liked);
-        console.log(liked)
         const values = {
             recipe_id: recipe.id,
             user_id: user.id
         }
-        console.log(values)
-        console.log(recipe)
 
         if (!liked) {
             fetch("/api/liked_recipe", {
@@ -91,7 +87,6 @@ function RecipeCard({ recipe }) {
                 id: recipe.id,
                 recipe_ingredients: recipe.recipe_ingredients
             };
-            console.log(recipeCard)
             groceryList.push(recipeCard);
             localStorage.setItem("groceryList", JSON.stringify(groceryList))
         } else {
