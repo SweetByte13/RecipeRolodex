@@ -56,7 +56,7 @@ function ImageCarousel() {
                     src={stuffed_avo}
                 />
                 <Carousel.Caption>
-                    <h3>Vegetarian Stuffed Avacado</h3>
+                    <h3>Vegetarian Stuffed Avocado</h3>
                     <p></p>
                 </Carousel.Caption>
             </Carousel.Item>
@@ -66,7 +66,7 @@ function ImageCarousel() {
                     src={white_fish}
                 />
                 <Carousel.Caption>
-                    <h3>White Fish and Avacado Ceviche</h3>
+                    <h3>White Fish and Avocado Ceviche</h3>
                     <p></p>
                 </Carousel.Caption>
             </Carousel.Item>

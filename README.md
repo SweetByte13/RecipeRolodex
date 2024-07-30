@@ -18,34 +18,37 @@ git clone git@github.com:<username>/RecipeRolodex.git
 The `server/` directory contains all of your backend code.
 `app.py` is your Flask application.
 
+
 To download the dependencies for the backend server, run:
 
 ```console
 pipenv install
 pipenv shell
 ```
-
-You can run your Flask API on [`localhost:5555`](http://localhost:5555) by
-running:
-
+Manually install dotenv, pytesseract, Pillow, and flask-bcrypt using this code:
 ```console
-python server/app.py
+pip install python-dotenv
+pip install pytesseract
+pip install pillow
+pip install flask-bcrypt
 ```
-
-Check that your server serves the default route `http://localhost:5555`. You
-should see a web page with the heading "Project Server".
-
 Ensure the database is up to date by running:
 ```console
-flask db upgrade
+flask db init
+flask db upgrade head
 ```
-
 Then seed the database by running:
 ```console
 python seed.py
 ```
 
-There can sometimes be errors when seeding the database as Faker is used and sometimes fails to give unique data. If this happens, run the command again. Continue to run the command until you successfully seed the database. 
+You can run your Flask API on [`localhost:5555`](http://localhost:5555) by
+running:
+```console
+python server/app.py
+```
+Check that your server serves the default route `http://localhost:5555`. You
+should see a web page with the heading "Project Server".
 
 
 ### `client/`
@@ -63,8 +66,7 @@ npm install --prefix client
 
 You can run your React app on [`localhost:3000`](http://localhost:3000) by
 running:
-
-```
+```console
 npm start --prefix client
 ```
 
@@ -94,14 +96,59 @@ The application also allows you to upload recipe files and converts them into an
 ## Getting Started
 To get started with Recipe Rolodex, sign up for an account and start exploring recipes from around the world. 
 Add your own recipes and save your favorites to your personal library. Enjoy the convenience of having all your recipes in one place with Recipe Rolodex.
+Happy cooking!
+
+# Future Improvements
+
+## Grocery API Integration
+One of the key enhancements planned for the future is the integration of a grocery API. This will allow the application to provide real-time cost estimates for the ingredients required in the user's compiled grocery list. This feature aims to make meal planning more budget-friendly and efficient.
+
+## Measurement System Toggle
+To cater to a global user base, a toggle feature is planned to switch between the Imperial and Metric measurement systems. This will allow users to view ingredient quantities in the units they are most comfortable with.
+
+## Dietary Restrictions
+In the interest of personalization and health consciousness, a feature is planned that allows users to add their dietary restrictions to their profiles. The application will then filter out or suggest substitute ingredients for recipes that contain items the user is restricted from.
+
+## Nutrition API Integration
+To further enhance the health-conscious aspect of the application, there are plans to integrate a nutrition API. This will allow users to view comprehensive nutritional facts for each recipe, helping them make informed dietary choices.
+
+These improvements aim to make the application more user-friendly, personalized, and health-oriented, ultimately enhancing the overall user experience. Stay tuned for these exciting updates!
+
+
+# Technology Used
+
+This application was created with a variety of technologies to ensure a smooth, efficient, and user-friendly experience. Here's a list of the main technologies used:
+
+- **Frontend:**
+  - React JS: A JavaScript library for building user interfaces.
+  - React-Bootstrap: The most popular front-end framework rebuilt for React.
+  - HTML: The standard markup language for documents designed to be displayed in a web browser.
+  - CSS: A stylesheet language used for describing the look and formatting of a document written in HTML.
+  - React-router-dom: The standard routing library for React.
+  - Formik: A small library that helps with the 3 most annoying parts of form management in React.
+  - Yup: A JavaScript schema builder for value parsing and validation.
+
+- **Backend:**
+  - Python: A high-level, interpreted programming language.
+  - Flask: A micro web framework written in Python.
+  - SQLite3: A C library that provides a lightweight disk-based database.
+  - PostgreSQL: A powerful, open-source object-relational database system.
+  - RESTful API: An architectural style for an application program interface (API) that uses HTTP requests to access and use data.
+
+- **Libraries and Packages:**
+  - Pillow: The friendly PIL (Python Imaging Library) fork.
+  - bcrypt: A robust, safe password-hashing library.
+  - python-dotenv: A Python module that allows you to specify environment variables in traditional UNIX-like “.env” (dot-env) file.
+
 
 ## Feedback
 I'd love to hear your feedback! If you have any suggestions or run into any issues, please let me know.
-
-Happy cooking!
 
 ## Project Notes
 This project was created as part of Flatiron, for the final project of Tova Hillman. This project is not considered 100% complete, although the current features are all functional. I have many ideas of how to continue to improve the users experience, and hopes to have more features avaliable soon.
 
 ## Contributions
 This project is not looking for contributions, as it is to continue to increase my skills. 
+
+## Contact Information
+LinkedIn: www.linkedin.com/in/tova-hillman
