@@ -131,7 +131,7 @@ function RecipeForm() {
 
     const handleFileChange = event => {
         if (
-            !window.confirm("OCR functionality currently disabled")
+            !window.confirm("OCR functionality currently disabled. Please use the next input to upload an image for your recipe and continue. The Tesseract software is not turned on at the moment.")
             // !window.confirm("This will overwrite the current instructions. Are you sure you wish to continue?")
             ) {
             return
@@ -156,7 +156,7 @@ function RecipeForm() {
                         return resp.json();
                     }
                     else {
-                        alert('Error with PyTesseract OCR')
+                        alert('PyTesseract OCR not supported at this time.')
                     }
                 }).then((resp) => {
                     setInstructions(resp)
@@ -205,7 +205,7 @@ function RecipeForm() {
                 <h2 className="create-recipe-header">Create your own Recipes:</h2>
                 <div className="create-recipe-subheader"><h5>You may keep your recipes private or share them with our other users!</h5></div>
                 <br></br>
-                <Container>
+                {/* <Container>
                     <Form.Group className="mb-3">
                         <Form.Label className="fw-bold">Choose an image to recieve text from and populate the instructions:
                             <br></br>
@@ -219,7 +219,7 @@ function RecipeForm() {
                             name="file"
                             accept=".png, .jpeg, .jpg" />
                     </Form.Group>
-                </Container>
+                </Container> */}
                 <Container className="recipe-form-container" >
                     <Formik enableReinitialize
                         initialValues={initialValues}
