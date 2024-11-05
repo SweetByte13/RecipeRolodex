@@ -171,11 +171,6 @@
   margin: 60px 0 40px;
 }
 
-.card-image {
-  height: 50%;
-  width: 50%;
-}
-
 .header-container,
 .ingredients {
   text-align: center;
@@ -203,6 +198,47 @@
   margin: 0 auto;
   padding: 2% 0 7%;
 }
+
+.recipe-card {
+  margin-bottom: 2.5rem;
+  width: 100%;
+  max-width: 22rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-image {
+  height: 25rem;
+  width: 100%;
+  object-fit: cover;
+}
+
+.recipe-instructions {
+  margin-bottom: 1rem;
+}
+
+.recipe-category {
+  margin-bottom: 1rem;
+}
+
+.see-more-button {
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
+.grocery-button {
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
+button + button {
+  margin-left: 0.5rem;
+}
+
+button:last-child {
+  margin-right: 0;
+}
+
 
 .grocery-container {
   border-radius: 18px;
