@@ -102,22 +102,24 @@ function RecipeCard({ recipe }) {
                 <Card.Text className="recipe-instructions">{instructions}</Card.Text>
                 <Card.Text className="recipe-category">Category: {category}</Card.Text>
                 <Button className="see-more-button" variant="success" onClick={() => handleSeeMoreButton()}>See More...</Button>
-                {user !== null && user !== undefined ?(inGroceryList ? <Button className="grocery-button" variant="outline-danger" onClick={handleGroceryClick}>Remove from List</Button>
+                {user !== null && user !== undefined ? (inGroceryList ? <Button className="grocery-button" variant="outline-danger" onClick={handleGroceryClick}>Remove from List</Button>
                     :
-                    <Button className="grocery-button" variant="success" onClick={handleGroceryClick}>Add to Grocery List</Button>):""}
+                    <Button className="grocery-button" variant="success" onClick={handleGroceryClick}>Add to Grocery List</Button>) : ""}
                 <br></br>
-                {user !== null && user !== undefined ?
-                    (isCreator ?
-                        <PencilFill style={{ float: 'right' }} variant="success" onClick={handleEditClick}></PencilFill>
+                <div className="marginTop: 15px">
+                    {user !== null && user !== undefined ?
+                        (isCreator ?
+                            <PencilFill style={{ float: 'right'}} variant="success" onClick={handleEditClick}></PencilFill>
+                            :
+                            (!liked ? (
+                                <Heart style={{ float: 'right'}} color="grey" onClick={handleLikedClick}></Heart>
+                            ) : (
+                                <HeartFill style={{ float: 'right'}} color="red" onClick={handleLikedClick}></HeartFill>))
+                        )
                         :
-                        (!liked ? (
-                            <Heart style={{ float: 'right' }} color="grey" onClick={handleLikedClick}></Heart>
-                        ) : (
-                            <HeartFill style={{ float: 'right' }} color="red" onClick={handleLikedClick}></HeartFill>))
-                    )
-                    :
-                    ""
-                }
+                        ""
+                    }
+                </div>
             </Card.Body>
         </Card>
     );

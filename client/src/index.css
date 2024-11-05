@@ -230,10 +230,6 @@
   width: 100%;
 }
 
-button + button {
-  margin-left: 0.5rem;
-}
-
 button:last-child {
   margin-right: 0;
 }
