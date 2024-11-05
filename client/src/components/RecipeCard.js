@@ -106,7 +106,7 @@ function RecipeCard({ recipe }) {
                     :
                     <Button className="grocery-button" variant="success" onClick={handleGroceryClick}>Add to Grocery List</Button>) : ""}
                 <br></br>
-                <div className="marginTop: 15px">
+                <div stlye={{marginTop: "15px"}}>
                     {user !== null && user !== undefined ?
                         (isCreator ?
                             <PencilFill style={{ float: 'right'}} variant="success" onClick={handleEditClick}></PencilFill>
