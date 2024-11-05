@@ -101,9 +101,7 @@ function RecipeCard({ recipe }) {
                 <Card.Title>{title}</Card.Title>
                 <Card.Text className="recipe-instructions">{instructions}</Card.Text>
                 <Card.Text className="recipe-category">Category: {category}</Card.Text>
-
                 <Button className="see-more-button" variant="success" onClick={() => handleSeeMoreButton()}>See More...</Button>
-                &nbsp;&nbsp;&nbsp;&nbsp;
                 {user !== null && user !== undefined ?(inGroceryList ? <Button className="grocery-button" variant="outline-danger" onClick={handleGroceryClick}>Remove from List</Button>
                     :
                     <Button className="grocery-button" variant="success" onClick={handleGroceryClick}>Add to Grocery List</Button>):""}
