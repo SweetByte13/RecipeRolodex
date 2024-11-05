@@ -7,15 +7,15 @@ function SignUp() {
     return (
         <div>
             <NavBar />
-           <br></br>
+           <br />
             <main>
-                <h1 className="signup-header">Welcome to RecipeRolodex!</h1>
-                <h4 className="signup-title">Please use the form below to sign up!</h4>
+                <h1 className="signup-header text-center">Welcome to RecipeRolodex!</h1>
+                <h4 className="signup-title text-center">Please use the form below to sign up!</h4>
                 <SignUpForm />
             </main>
             <Footer />
         </div>
-    )
+    );
 }
 
 export default SignUp;

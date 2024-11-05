@@ -1,29 +1,29 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Formik, FieldArray } from 'formik';
-import * as yup from 'yup'
-import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Button from 'react-bootstrap/Button';
+import * as yup from 'yup';
+import { Formik, FieldArray } from 'formik';
 
 function RecipeForm() {
     const navigate = useNavigate();
 
-    const [publicCheckbox, setPublicCheckBox] = useState(false)
+    const [publicCheckbox, setPublicCheckBox] = useState(false);
     const [selectedFile, setSelectedFile] = useState(null);
-    const [instructions, setInstructions] = useState("")
-    const [title, setTitle] = useState("")
-    const [category, setCategory] = useState("")
+    const [instructions, setInstructions] = useState("");
+    const [title, setTitle] = useState("");
+    const [category, setCategory] = useState("");
     const [inputFields, setInputFields] = useState([
         { ingredient: '', amount: '', measurement: '' }
-    ])
+    ]);
 
     const validationSchema = yup.object().shape({
-        title: yup.string(),
-        category: yup.string()
-    })
+        title: yup.string().required("Title is required"),
+        category: yup.string().required("Category is required")
+    });
 
     const initialValues = {
         image: '',
@@ -31,14 +31,26 @@ function RecipeForm() {
         instruction: instructions,
         category: category,
         public_private: publicCheckbox
-    }
+    };
+
+    const handleFormChange = (index, event) => {
+        const values = [...inputFields];
+        values[index][event.target.name] = event.target.value;
+        setInputFields(values);
+    };
+
+    const handleRemoveFieldClick = (index) => {
+        const values = [...inputFields];
+        values.splice(index, 1);
+        setInputFields(values);
+    };
 
     let formFields = inputFields.map((input, index) => {
         return (
             <div key={index}>
-                <Row>
-                    <Col md={5}>
-                        <Form.Group className="mb-3">
+                <Row className="mb-3">
+                    <Col xs={12} md={5}>
+                        <Form.Group>
                             <Form.Control
                                 type='text'
                                 id='ingredient'
@@ -49,7 +61,7 @@ function RecipeForm() {
                             />
                         </Form.Group>
                     </Col>
-                    <Col md={3}>
+                    <Col xs={6} md={3}>
                         <Form.Control
                             type='number'
                             id='amount'
@@ -59,7 +71,7 @@ function RecipeForm() {
                             onChange={event => handleFormChange(index, event)}
                         />
                     </Col>
-                    <Col md={3}>
+                    <Col xs={6} md={3}>
                         <Form.Select onChange={event => handleFormChange(index, event)} value={input.measurement} name="measurement" aria-label="measurements">
                             <option>select a unit of measurement:</option>
                             <option value="tsp">teaspoon</option>
@@ -74,21 +86,17 @@ function RecipeForm() {
                             <option value="each">each</option>
                         </Form.Select>
                     </Col>
-                    <Col md={1}>
+                    <Col xs={12} md={1}>
                         {inputFields.length > 1 && (
-                            <Button data-index={index} className="minus-ingredient-button" variant="outline-danger" size="sm" onClick={handleRemoveFieldclick}>
+                            <Button data-index={index} className="minus-ingredient-button" variant="outline-danger" size="sm" onClick={() => handleRemoveFieldClick(index)}>
                                 -
                             </Button>
                         )}
                     </Col>
                 </Row>
-            </div >)
-    })
-    function handleFormChange(index, event) {
-        let data = [...inputFields];
-        data[index][event.target.name] = event.target.value;
-        setInputFields(data);
-    }
+            </div>
+        );
+    });
 
     function handleCheckBoxChange(event) {
         setPublicCheckBox(event.target.checked)
@@ -97,13 +105,6 @@ function RecipeForm() {
     function handleAddFieldsClick() {
         let newField = { ingredient: '', amount: '', measurement: '' }
         setInputFields([...inputFields, newField])
-    }
-
-    function handleRemoveFieldclick(event) {
-        const index = event.target.dataset.index
-        const values = [...inputFields];
-        values.splice(index, 1);
-        setInputFields(values);
     }
 
     function handleTextareaChange(event) {

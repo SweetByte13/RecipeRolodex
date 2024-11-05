@@ -70,8 +70,8 @@ function EditRecipeForm() {
     let formFields = inputFields.map((input, index) => {
         return (
             <div key={index}>
-                <Row>
-                    <Col md={5}>
+                <Row className="mb-3">
+                    <Col xs={12} md={5}>
                         <Form.Group className="mb-3">
                             <Form.Control
                                 type='text'
@@ -80,10 +80,11 @@ function EditRecipeForm() {
                                 placeholder="Ingredient..."
                                 value={input.ingredient}
                                 onChange={event => handleFormChange(index, event)}
+                                className="w-100"
                             />
                         </Form.Group>
                     </Col>
-                    <Col md={3}>
+                    <Col xs={6} md={3}>
                         <Form.Control
                             type='text'
                             id='amount'
@@ -91,33 +92,48 @@ function EditRecipeForm() {
                             placeholder="Amount..."
                             value={input.amount}
                             onChange={event => handleFormChange(index, event)}
+                            className="w-100"
                         />
                     </Col>
-                    <Col md={3}>
-                        <Form.Select onChange={event => handleFormChange(index, event)} value={input.measurement} name="measurement" aria-label="measurements">
-                            <option>select a unit of measurement:</option>
+                    <Col xs={6} md={3}>
+                        <Form.Select
+                            onChange={event => handleFormChange(index, event)}
+                            value={input.measurement}
+                            name="measurement"
+                            aria-label="measurements"
+                            className="w-100"
+                        >
+                            <option>Select a unit of measurement:</option>
                             <option value="tsp">teaspoon</option>
                             <option value="tbl">tablespoon</option>
                             <option value="cup">cup</option>
                             <option value="oz">ounce</option>
                             <option value="lb">pound</option>
-                            <option value="ml">mililiter</option>
+                            <option value="ml">milliliter</option>
                             <option value="fl oz">fluid ounce</option>
                             <option value="g">gram</option>
                             <option value="kg">kilogram</option>
                             <option value="each">each</option>
                         </Form.Select>
                     </Col>
-                    <Col md={1}>
+                    <Col xs={12} md={1} className="d-flex align-items-center">
                         {inputFields.length > 1 && (
-                            <Button data-index={index} className="minus-ingredient-button" variant="outline-danger" size="sm" onClick={handleRemoveFieldclick}>
+                            <Button
+                                data-index={index}
+                                className="minus-ingredient-button"
+                                variant="outline-danger"
+                                size="sm"
+                                onClick={handleRemoveFieldclick}
+                            >
                                 -
                             </Button>
                         )}
                     </Col>
                 </Row>
-            </div >)
-    })
+            </div>
+        );
+    });
+
 
     function handleFormChange(index, event) {
         let data = [...inputFields];
@@ -211,21 +227,19 @@ function EditRecipeForm() {
     }
 
     return (
-        <div className="recipe-template-container" >
+        <div className="recipe-template-container">
             <main>
-                <h2 className="create-recipe-header"> Create your own Recipes:</h2>
-                <div className="create-recipe-subheader"><strong >You may keep your recipes private or share them with our other users!</strong></div>
-                <br></br>
-                <br></br>
-                <Container className="recipe-form-container" >
-                    <Formik enableReinitialize
-                        initialValues={initialValues}
-                        validationSchema={validationSchema}
-                        onSubmit={handleFormSubmit}
-                    >
+                <h2 className="create-recipe-header">Create your own Recipes:</h2>
+                <div className="create-recipe-subheader">
+                    <strong>You may keep your recipes private or share them with our other users!</strong>
+                </div>
+                <br />
+                <br />
+                <Container className="recipe-form-container">
+                    <Formik enableReinitialize initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleFormSubmit}>
                         {({ values, handleBlur, handleSubmit }) => (
                             <Form className="recipe-form" onSubmit={handleSubmit}>
-                                <Row >
+                                <Row>
                                     <Container>
                                         <Form.Group className="mb-3">
                                             <Form.Label className="fw-bold">Upload Image:</Form.Label>
@@ -235,50 +249,59 @@ function EditRecipeForm() {
                                                 accept=".png, .jpeg, .jpg"
                                                 type="file"
                                                 onChange={handleImageFileChange}
+                                                className="w-100"
                                             />
                                         </Form.Group>
                                     </Container>
-                                    <br></br>
-                                    <Form.Label className="fw-bold">Category:</Form.Label>
-                                    <Form.Select
-                                        name="category"
-                                        aria-label="category"
-                                        value={values.category}
-                                        onChange={handleCategoryChange}>
-                                        <option>Select a category:</option>
-                                        <option value="Appetizers">Appetizers</option>
-                                        <option value="Soups">Soups</option>
-                                        <option value="Salads">Salads</option>
-                                        <option value="Main Dishes">Main Dishes</option>
-                                        <option value="Side Dishes">Side Dishes</option>
-                                        <option value="Breads">Breads</option>
-                                        <option value="Desserts">Desserts</option>
-                                        <option value="Candies">Candies</option>
-                                        <option value="Snacks">Snacks</option>
-                                        <option value="Beverages">Beverages</option>
-                                        <option value="Condiments">Condiments</option>
-                                    </Form.Select>
                                 </Row>
-                                <br></br>
-                                <Col>
-                                    <Form.Group className="mb-3">
-                                        <Form.Label className="fw-bold">Recipe Title:</Form.Label>
-                                        <Form.Control
-                                            type='text'
-                                            id='title'
-                                            name='title'
-                                            placeholder="Recipe title..."
-                                            value={values.title}
-                                            onChange={handleTitleChange}
-                                            onBlur={handleBlur}
-                                        />
-                                    </Form.Group>
-                                </Col>
-                                <Row>
+                                <Row className="my-3">
+                                    <Col>
+                                        <Form.Label className="fw-bold">Category:</Form.Label>
+                                        <Form.Select
+                                            name="category"
+                                            aria-label="category"
+                                            value={values.category}
+                                            onChange={handleCategoryChange}
+                                            className="w-100"
+                                        >
+                                            <option>Select a category:</option>
+                                            <option value="Appetizers">Appetizers</option>
+                                            <option value="Soups">Soups</option>
+                                            <option value="Salads">Salads</option>
+                                            <option value="Main Dishes">Main Dishes</option>
+                                            <option value="Side Dishes">Side Dishes</option>
+                                            <option value="Breads">Breads</option>
+                                            <option value="Desserts">Desserts</option>
+                                            <option value="Candies">Candies</option>
+                                            <option value="Snacks">Snacks</option>
+                                            <option value="Beverages">Beverages</option>
+                                            <option value="Condiments">Condiments</option>
+                                        </Form.Select>
+                                    </Col>
+                                </Row>
+                                <br />
+                                <Row className="my-3">
+                                    <Col>
+                                        <Form.Group className="mb-3">
+                                            <Form.Label className="fw-bold">Recipe Title:</Form.Label>
+                                            <Form.Control
+                                                type="text"
+                                                id="title"
+                                                name="title"
+                                                placeholder="Recipe title..."
+                                                value={values.title}
+                                                onChange={handleTitleChange}
+                                                onBlur={handleBlur}
+                                                className="w-100"
+                                            />
+                                        </Form.Group>
+                                    </Col>
+                                </Row>
+                                <Row className="my-3">
                                     <Col>
                                         <Form.Label className="fw-bold">Ingredient:</Form.Label>
                                     </Col>
-                                    <Col>
+                                    <Col className="text-end">
                                         <Button className="float-sm-end" variant="success" size="sm" onClick={handleAddFieldsClick}>
                                             Add ingredient
                                         </Button>
@@ -287,14 +310,16 @@ function EditRecipeForm() {
                                 <br></br>
                                 <FieldArray
                                     name="ingredients"
-                                    render={() => formFields} />
-                                <br></br>
+                                    render={() => formFields}
+                                />
+                                <br />
                                 <textarea
                                     onChange={handleTextareaChange}
                                     value={values.instruction}
-                                    className="instruction-area"
+                                    className="instruction-area w-100"
                                     name="instructions"
-                                    id="instruction-textarea"></textarea>
+                                    id="instruction-textarea"
+                                />
                                 <Form.Switch className="public_private_toggle">
                                     <Form.Check
                                         type="switch"
@@ -306,16 +331,17 @@ function EditRecipeForm() {
                                     />
                                 </Form.Switch>
                                 <div className="d-grid gap-2">
-                                    <Button className='recipe-form-button' type='submit' variant="success" size="lg" onSubmit={handleSubmit}>
+                                    <Button className='recipe-form-button w-100' type='submit' variant="success" size="lg" onSubmit={handleSubmit}>
                                         Submit Recipe
                                     </Button>
-                                    <Button className='recipe-form-delete-button' variant="outline-danger" size="lg" onClick={handleRecipeDelete}>
+                                    <Button className='recipe-form-delete-button w-100' variant="outline-danger" size="lg" onClick={handleRecipeDelete}>
                                         Delete Recipe
                                     </Button>
-                                    <br></br>
-                                    <br></br>
-                                    <br></br>
+                                    <br />
+                                    <br />
+                                    <br />
                                 </div>
+
                             </Form>
                         )}
                     </Formik>

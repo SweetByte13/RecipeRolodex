@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { AppContext } from "../context/Context";
 import { useNavigate } from "react-router-dom";
 import { Formik } from 'formik';
-import * as yup from 'yup'
+import * as yup from 'yup';
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
@@ -13,14 +13,14 @@ function LoginForm() {
     const { setUser } = useAppContext();
 
     let validationSchema = yup.object().shape({
-        username: yup.string().required("USername is required").min(5, "Username is too short, must be at least five characters."),
+        username: yup.string().required("Username is required").min(5, "Username is too short, must be at least five characters."),
         password: yup.string().required("Password is required").min(6, "Password is too short, must be longer than six characters.")
-    })
+    });
 
     const initialValues = {
         username: '',
         password: ''
-    }
+    };
 
     function handleLoginSubmit(values, { setSubmitting }) {
         fetch("/api/login", {
@@ -31,16 +31,15 @@ function LoginForm() {
             body: JSON.stringify(values)
         }).then((resp) => {
             if (resp.ok) {
-                return resp.json()
+                return resp.json();
             } else {
-                alert('Invalid credentials')
+                alert('Invalid credentials');
             }
         }).then((user) => {
             setUser(user);
-            console.log(user);
-            navigate("/")
-        })
-        setSubmitting(false)
+            navigate("/");
+        });
+        setSubmitting(false);
     }
 
     return (
@@ -51,42 +50,49 @@ function LoginForm() {
                 onSubmit={handleLoginSubmit}
             >
                 {({ handleSubmit, values, handleChange, errors, handleBlur }) => (
-                    <Form className="login-form" onSubmit={handleSubmit}>
-                        <Form.Label>Username:</Form.Label>
-                        <Form.Control
-                            type='text'
-                            id='username'
-                            name='username'
-                            placeholder="Username..."
-                            required values={values.username}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                        />
-                        <Form.Control.Feedback type="invalid">
-                            {errors.username}
-                        </Form.Control.Feedback>
-                        <br></br>
-                        <Form.Label>Password:</Form.Label>
-                        <Form.Control
-                            type='password'
-                            id='password'
-                            name='password'
-                            placeholder="Password..."
-                            required values={values.password}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                        />
-                        <Form.Control.Feedback type="invalid">
-                            {errors.password}
-                        </Form.Control.Feedback>
-                        <br></br>
-                        <Button className="login-button" type='submit' variant="success">
+                    <Form className="login-form w-75 mx-auto" onSubmit={handleSubmit}>
+                        <Form.Group className="mb-3 text-left w-75 mx-auto">
+                            <Form.Label>Username:</Form.Label>
+                            <Form.Control
+                                type='text'
+                                id='username'
+                                name='username'
+                                placeholder="Username..."
+                                required
+                                value={values.username}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                className="w-100"
+                            />
+                            <Form.Control.Feedback type="invalid">
+                                {errors.username}
+                            </Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group className="mb-3 text-left w-75 mx-auto">
+                            <Form.Label>Password:</Form.Label>
+                            <Form.Control
+                                type='password'
+                                id='password'
+                                name='password'
+                                placeholder="Password..."
+                                required
+                                value={values.password}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                className="w-100"
+                            />
+                            <Form.Control.Feedback type="invalid">
+                                {errors.password}
+                            </Form.Control.Feedback>
+                        </Form.Group>
+                        <Button className="login-button w-50 mx-auto d-block" type='submit' variant="success">
                             Log In
                         </Button>
                     </Form>
                 )}
             </Formik>
         </Container>
-    )
+    );
 }
+
 export default LoginForm;

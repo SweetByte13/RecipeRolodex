@@ -27,7 +27,7 @@ function ImageCarousel() {
                 />
                 <Carousel.Caption>
                     <h3>Bundt Cake</h3>
-                    <p>Light and Fluffy Bundt Cake Dusted with Confectioners' Sugar</p>
+                    {/* <p>Light and Fluffy Bundt Cake Dusted with Confectioners' Sugar</p> */}
                 </Carousel.Caption>
             </Carousel.Item>
             <Carousel.Item>
