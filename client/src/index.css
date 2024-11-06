@@ -327,3 +327,17 @@ button:last-child {
   margin-right: auto;
   padding-bottom: 7%;
 }
+
+.inline-icons {
+  margin-right: 65px;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Center the icons horizontally */
+  gap: 16px; /* Space between icons */
+}
+
+.inline-icons svg {
+  width: 24px; /* Adjust the width of the icons as needed */
+  height: 24px; /* Adjust the height of the icons as needed */
+  fill: currentColor; /* Ensure the color is consistent */
+}

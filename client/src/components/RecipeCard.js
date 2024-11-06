@@ -106,20 +106,18 @@ function RecipeCard({ recipe }) {
                     :
                     <Button className="grocery-button" variant="success" onClick={handleGroceryClick}>Add to Grocery List</Button>) : ""}
                 <br></br>
-                <div stlye={{marginTop: "15px"}}>
                     {user !== null && user !== undefined ?
                         (isCreator ?
-                            <PencilFill style={{ float: 'right'}} variant="success" onClick={handleEditClick}></PencilFill>
+                            <PencilFill style={{ float: 'right', marginTop: "15px"}} variant="success" onClick={handleEditClick}></PencilFill>
                             :
                             (!liked ? (
-                                <Heart style={{ float: 'right'}} color="grey" onClick={handleLikedClick}></Heart>
+                                <Heart style={{ float: 'right', marginTop: "15px"}} color="grey" onClick={handleLikedClick}></Heart>
                             ) : (
-                                <HeartFill style={{ float: 'right'}} color="red" onClick={handleLikedClick}></HeartFill>))
+                                <HeartFill style={{ float: 'right', marginTop: "15px"}} color="red" onClick={handleLikedClick}></HeartFill>))
                         )
                         :
                         ""
                     }
-                </div>
             </Card.Body>
         </Card>
     );
