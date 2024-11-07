@@ -329,10 +329,11 @@ button:last-child {
 }
 
 .inline-icons {
-  margin-right: 65px;
+  /* margin-right: 65px; */
   display: flex;
   align-items: center;
-  justify-content: center; /* Center the icons horizontally */
+  /* justify-content: center;  */
+  /* Center the icons horizontally */
   gap: 16px; /* Space between icons */
 }
 
